@@ -1,0 +1,54 @@
+* {
+  font-family: 'Roboto Condensed', sans-serif !important;
+}
+
+a {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.fill-flex {
+  flex: 1;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.wrap-content {
+  flex-wrap: wrap;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
