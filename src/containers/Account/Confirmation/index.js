@@ -1,0 +1,172 @@
+/**
+ * Created by vladtomsa on 01/10/2018
+ */
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { translate } from 'react-i18next';
+import { withStyles } from '@material-ui/core/styles';
+import { confirmAccount } from 'actions/auth';
+import { authConstants } from 'constants/auth';
+import { connect } from 'react-redux';
+import Fade from 'react-reveal/Fade';
+import Zoom from 'react-reveal/Zoom';
+import bip39 from 'bip39';
+import personajs from 'personajs';
+
+import styles from './styles';
+import CreatePasswordForm from './Form';
+import PersonaIdentity from './PersonaIdentity';
+
+class AccountCreate extends Component {
+
+  state = {
+    activeStep: 0,
+    passphrase: 'Vlad',
+    address: 'Vad',
+  };
+
+  componentDidMount() {
+    const passphrase = bip39.generateMnemonic(null, null, bip39.wordlists['english']);
+
+    const keyPair = personajs.crypto.getKeys(passphrase);
+    const publicKey = keyPair.publicKey;
+
+    const address = personajs.crypto.getAddress(publicKey, 66);
+
+    this.setState({ passphrase, address });
+  }
+
+  onSubmit = ({ password }) => {
+    const passphrase = bip39.generateMnemonic(null, null, bip39.wordlists['english']);
+
+    const keyPair = personajs.crypto.getKeys(passphrase);
+    const publicKey = keyPair.publicKey;
+
+    const address = personajs.crypto.getAddress(publicKey, 66);
+
+
+    const { match: { params: { token } } } = this.props;
+
+    this.props.confirmAccount({
+      address,
+      token,
+      password,
+    })
+      .then((success) => {
+        if ( success ) this.setState({ passphrase, address: publicKey, activeStep: 1 })
+      });
+  };
+
+  render() {
+    const { classes, isLoading, t } = this.props;
+    const { activeStep, address, passphrase } = this.state;
+
+    const isConfirmLoading = isLoading === authConstants.ON_CONFIRM_ACCOUNT_INIT;
+
+    const steps = [
+      // {
+      //   label: 'Create Password',
+      //   content: (
+      //     <CreatePasswordForm
+      //       initialValues={{ password: 'Qwerty123!@#', passwordConfirmation: 'Qwerty123!@#' }}
+      //       onSubmit={this.onSubmit}
+      //       isLoading={isConfirmLoading}
+      //     />
+      //   )
+      // },
+
+      {
+        label: 'Create identity',
+        content: (
+          <PersonaIdentity
+            address={address}
+            passphrase={passphrase}
+          />
+        )
+      },
+    ];
+
+    return (
+      <div className={classes.content}>
+        <Grid container justify="center">
+          <Grid item xs={11} sm={10}>
+            <Zoom top>
+              <Paper elevation={12}>
+                <div className={classes.header}>
+                  <div>
+                    <div style={{ padding: 16 }}>
+                      <Typography component="h4">{ t('Confirm account') }</Typography>
+                    </div>
+
+                    {
+                      isConfirmLoading
+                        ? <LinearProgress />
+                        : null
+                    }
+                  </div>
+
+
+                </div>
+                <div className={classes.stepperContainer}>
+                  {
+                    isConfirmLoading
+                      ? (
+                        <Fade>
+                          <div className="flex justify-center align-center">
+                            <CircularProgress size={24}/>
+                            &nbsp;
+                            <Typography color="secondary">
+                              { t('Confirming account. This may take a while ... ') }
+                            </Typography>
+                          </div>
+                          <br />
+                        </Fade>
+                      )
+                      : null
+                  }
+
+                  <Fade spy={activeStep}>
+                    { steps[activeStep].content }
+                  </Fade>
+                </div>
+              </Paper>
+            </Zoom>
+          </Grid>
+        </Grid>
+      </div>
+    )
+  }
+}
+
+AccountCreate.propTypes = {
+  confirmAccount: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
+  isLoading: PropTypes.any,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      token: PropTypes.string,
+    })
+  }).isRequired,
+  t: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  confirmAccount: (data) => dispatch(confirmAccount(data)),
+});
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)(AccountCreate);
+
+const withStyle = withStyles(styles)(withConnect);
+
+const withTranslate = translate('common')(withStyle);
+
+export default withTranslate;

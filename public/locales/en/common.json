@@ -1,3 +1,5 @@
 {
-  "Home": "Home"
+  "Home": "Home",
+  "ACCOUNT_CONFIRMED_SUCCESSFULLY": "You have completed your account registration successfully",
+  "PERSONA_ADDRESS_CREATED": "In order to start creating your identity, the fallowing Persona address was associated with your account <strong>{{address}}</strong>"
 }

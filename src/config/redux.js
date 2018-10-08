@@ -6,12 +6,16 @@ import { routerMiddleware, routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 import createHistory from 'history/createBrowserHistory';
 import thunk from 'redux-thunk';
+import authReducer from 'reducers/auth';
+import notificationReducer from 'reducers/notification';
 
 export const history = createHistory();
 
 export const rootReducer = combineReducers({
   form: formReducer,
   router: routerReducer,
+  auth: authReducer,
+  notification: notificationReducer,
 });
 
 export default function configureStore(initialState) {

@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { Route } from 'react-router';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
-
+import { isLoggedIn, logout } from 'actions/auth';
+import * as notificationActions from 'actions/notifications';
 import Layout from 'components/Layout';
+import Notification from 'components/Notification';
 import ConnectedSwitch from 'components/ConnectedSwitch';
 import { getApplicationRoutes } from 'config/routes';
 
@@ -18,7 +21,9 @@ const styles = {
 
 class App extends Component {
   render() {
-    const routes = getApplicationRoutes();
+    const { notification, onLogout, onNotificationClose, userInfo } = this.props;
+
+    const routes = getApplicationRoutes(userInfo);
 
     const router = (
       <ConnectedSwitch>
@@ -34,14 +39,42 @@ class App extends Component {
 
     return (
       <Fragment>
-        <Layout>
+        {
+          !!(notification)
+            ? (
+              <Notification
+                notification={notification}
+                onNotificationClose={onNotificationClose}
+              />
+            )
+            : null
+        }
+
+        <Layout userInfo={userInfo} onLogout={onLogout}>
           { router }
         </Layout>
       </Fragment>
     );
   }
+
+  componentDidMount() {
+    this.props.checkIsLoggedIn();
+  }
 }
 
-const withStyle = withStyles(styles)(App);
+const mapStateToProps = (state) => ({
+  notification: state.notification.notification,
+  userInfo: state.auth.userInfo,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  checkIsLoggedIn: () => dispatch(isLoggedIn()),
+  onNotificationClose: () => dispatch(notificationActions.onNotificationClose()),
+  onLogout: () => dispatch(logout()),
+});
+
+const withRedux = connect(mapStateToProps, mapDispatchToProps)(App);
+
+const withStyle = withStyles(styles)(withRedux);
 
 export default withRouter(withStyle);

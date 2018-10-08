@@ -8,16 +8,16 @@ import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 
-import Email from 'mdi-material-ui/At';
+import Account from 'mdi-material-ui/Account';
 import Eye from 'mdi-material-ui/Eye';
 import EyeOff from 'mdi-material-ui/EyeOff';
-import Facebook from 'mdi-material-ui/FacebookBox';
-import Google from 'mdi-material-ui/Google';
 import Key from 'mdi-material-ui/Key';
 
 import { RenderTextField, RenderCheckbox } from 'components/FormInputs';
@@ -27,13 +27,7 @@ import styles from './styles';
 const validate = (values) => {
   const errors = {};
 
-  if (!values.username) {
-    errors.username = 'Username required';
-  } else if (
-    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.username)
-  ) {
-    errors.username = 'Invalid email address';
-  }
+  if (!values.username) errors.username = 'Username required';
 
   if (!values.password) errors.password = 'Password required';
 
@@ -50,7 +44,7 @@ class Login extends Component {
   handleMouseDownPassword = event => event.preventDefault();
 
   render() {
-    const { classes, handleSubmit, t } = this.props;
+    const { classes, handleSubmit, isLoading, t } = this.props;
 
     return (
       <form className={classes.modalWrapper} onSubmit={handleSubmit}>
@@ -60,18 +54,19 @@ class Login extends Component {
               <div className="content">
                 <Typography component="h4">{ t('Login') }</Typography>
               </div>
+              <LinearProgress />
             </Paper>
 
             <div className={classes.formContent}>
               <Field
                 name="username"
                 component={ RenderTextField }
-                type="email"
-                placeholder="Email"
+                placeholder="Username"
+                disabled={isLoading}
                 required
                 startAdornment={
                   <InputAdornment position="start">
-                    <Email />
+                    <Account />
                   </InputAdornment>
                 }
               />
@@ -82,6 +77,7 @@ class Login extends Component {
                 component={ RenderTextField }
                 type={this.state.showPassword ? 'text' : 'password'}
                 placeholder="Password"
+                disabled={isLoading}
                 required
                 startAdornment={
                   <InputAdornment position="start">
@@ -105,6 +101,7 @@ class Login extends Component {
               <Field
                 name="rememberMe"
                 component={RenderCheckbox}
+                disabled={isLoading}
                 label="Remember me"
                 color="primary"
               />
@@ -113,8 +110,17 @@ class Login extends Component {
             </div>
 
             <div className="flex justify-center wrap-content">
-              <Button variant="raised" color="primary" type="submit" className="flex align-center">
-                { t("Login") }
+              <Button variant="raised" color="primary" type="submit" className={`flex align-center ${classes.submitButton}`} disabled={isLoading}>
+                <div className="flex align-center">
+                  { t("Login") }&nbsp;
+                  {
+                    isLoading
+                      ? (
+                        <CircularProgress size={16} />
+                      )
+                      : null
+                  }
+                </div>
               </Button>
             </div>
             <br />
@@ -127,6 +133,8 @@ class Login extends Component {
 
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func,
+  isLoading: PropTypes.any,
   onSubmit: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 };

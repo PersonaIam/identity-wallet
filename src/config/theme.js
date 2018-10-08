@@ -16,13 +16,20 @@ const themeOverrides = {
       letterSpacing: 1.1,
       textTransform: 'none',
     },
+    raisedPrimary: {
+      color: '#FFFFFF',
+      background: `linear-gradient(45deg, #01579B, #323561)`,
+      '&:hover': {
+        background: `linear-gradient(45deg, #01A9EE, #01579B)`,
+      }
+    },
   },
 };
 
 const theme = {
   palette: {
     primary: {
-      main: '#393C6D',
+      main: '#01579B',
       dark: '#323561',
     },
     secondary: {

@@ -47,6 +47,12 @@ const styles = (theme) => {
         color: theme.palette.text.secondary,
       },
     },
+    tooltipContainer: {
+      padding: 8,
+      '& *': {
+        color: '#ffffff !important',
+      },
+    },
     submitButton: {
       color: '#FFFFFF',
       fontWeight: 600,
