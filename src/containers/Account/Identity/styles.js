@@ -3,6 +3,9 @@
  */
 const styles = () => {
   return {
+    root: {
+      marginTop: 32,
+    },
     cardHeaderContent: {
       paddingTop: 10,
       paddingLeft: 8,

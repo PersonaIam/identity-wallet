@@ -4,35 +4,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import Fade from 'react-reveal/Fade';
 import QRCode from 'qrcode.react';
 import { getToken, toshiToPersona } from 'helpers/personaService';
 import styles from './styles';
 
 const AccountDetailsHeader = ({ accountInfo, classes, t }) => {
   return (
-    <Paper>
-      <CardContent className="flex align-center">
-        <QRCode size={100} value={accountInfo.address || ''}/>
+    <Fade>
+      <Paper className={classes.root}>
+        <CardContent className="flex align-center">
+          <QRCode size={94} value={accountInfo.address || ''}/>
 
-        <div className={classes.root}>
-          <Typography variant="caption">
-            {t('Address')}
-          </Typography>
+          <div className={classes.accountDetails}>
+            <Typography variant="caption">
+              {t('ADDRESS')}
+            </Typography>
 
-          <Typography variant="headline" component="h2">
-            { accountInfo.address }
-          </Typography>
+            <Typography variant="headline" component="h2">
+              { accountInfo.address }
+            </Typography>
 
-          <Typography variant="body1">
-            {t('Balance')}: {toshiToPersona(accountInfo.balance, true, 4)} {getToken()}
-          </Typography>
-        </div>
-      </CardContent>
-    </Paper>
+            <Typography variant="body1">
+              {t('BALANCE')}: {toshiToPersona(accountInfo.balance, true, 4)} {getToken()}
+            </Typography>
+          </div>
+        </CardContent>
+      </Paper>
+    </Fade>
   )
 };
 

@@ -1,5 +1,7 @@
 import Loadable from 'react-loadable';
 import Loading from 'components/Loading';
+import AccountDetailsIcon from 'mdi-material-ui/AccountCardDetails';
+import DashboardIcon from 'mdi-material-ui/ViewDashboard';
 
 const AccountCreate = Loadable({
   loader: () => import('containers/Account/Confirmation'),
@@ -59,11 +61,16 @@ const routes =  [
     exact: true,
     component: Dashboard,
     isAvailable: isLoggedIn,
+    showInMenu: true,
+    icon: DashboardIcon,
   },
   {
     path: '/identity',
     exact: true,
     component: Identity,
+    isAvailable: isLoggedIn,
+    showInMenu: true,
+    icon: AccountDetailsIcon,
   },
   {
     path: '/',
@@ -75,4 +82,8 @@ const routes =  [
 
 export const getApplicationRoutes = (userInfo) => {
   return routes.filter((route) => isRouteAvailable(route, userInfo));
+};
+
+export const getMenuRoutes = () => {
+  return routes.filter((route) => route.showInMenu);
 };

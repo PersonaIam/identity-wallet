@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { isLoggedIn, logout } from 'actions/auth';
+import { openSidenav, closeSidenav } from 'actions/global';
 import * as notificationActions from 'actions/notifications';
 import Layout from 'components/Layout';
 import Notification from 'components/Notification';
@@ -21,7 +22,7 @@ const styles = {
 
 class App extends Component {
   render() {
-    const { notification, onLogout, onNotificationClose, userInfo } = this.props;
+    const { notification, onLogout, onNotificationClose, openSidenav, closeSidenav, sidenavOpened, userInfo } = this.props;
 
     const routes = getApplicationRoutes(userInfo);
 
@@ -50,7 +51,13 @@ class App extends Component {
             : null
         }
 
-        <Layout userInfo={userInfo} onLogout={onLogout}>
+        <Layout
+          userInfo={userInfo}
+          onLogout={onLogout}
+          sidenavOpened={sidenavOpened}
+          openSidenav={openSidenav}
+          closeSidenav={closeSidenav}
+        >
           { router }
         </Layout>
       </Fragment>
@@ -72,6 +79,7 @@ const mapStateToProps = (state) => {
 
   return {
     notification: state.notification.notification,
+    sidenavOpened: state.global.sidenavOpened,
     userInfo: userInfo,
   }
 };
@@ -80,6 +88,8 @@ const mapDispatchToProps = (dispatch) => ({
   checkIsLoggedIn: () => dispatch(isLoggedIn()),
   onNotificationClose: () => dispatch(notificationActions.onNotificationClose()),
   onLogout: () => dispatch(logout()),
+  openSidenav: () => dispatch(openSidenav()),
+  closeSidenav: () => dispatch(closeSidenav()),
 });
 
 const withRedux = connect(mapStateToProps, mapDispatchToProps)(App);

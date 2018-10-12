@@ -7,7 +7,11 @@ export const toolbarHeight = {
   md: 80,
 };
 
-const toolbarRadius = 10;
+export const logoWidth = 250;
+
+export const toolbarRadius = 10;
+
+export const toolbarMarginTop = 16;
 
 const styles = theme => {
   return {
@@ -20,7 +24,7 @@ const styles = theme => {
       [theme.breakpoints.up('md')]: {
         minHeight: toolbarHeight.md,
         borderRadius: toolbarRadius,
-        marginTop: 36,
+        marginTop: toolbarMarginTop,
       },
     },
     toolbar: {
@@ -46,16 +50,26 @@ const styles = theme => {
         minHeight: toolbarHeight.md,
         padding: '16px 24px',
         borderRadius: `${toolbarRadius}px 0 0 ${toolbarRadius}px`,
+        width: logoWidth,
       },
       '& img': {
         width: '100%',
         maxWidth: 200,
         height: 'auto',
       },
+      '& svg': {
+        color: '#FFFFFF',
+      },
+      '& button': {
+        marginRight: theme.spacing.unit,
+      }
     },
     userMenuToggle: {
       '& *': {
         color: `${theme.palette.text.secondary} !important`,
+        [theme.breakpoints.down('xs')]: {
+          color: '#FFFFFF !important',
+        },
       },
     },
   }

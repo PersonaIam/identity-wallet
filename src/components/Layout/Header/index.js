@@ -9,6 +9,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Collapse from '@material-ui/core/Collapse';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuList from '@material-ui/core/MenuList';
@@ -18,8 +20,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import Account from 'mdi-material-ui/Account';
 import Exit from 'mdi-material-ui/ExitToApp';
+import Menu from 'mdi-material-ui/Menu';
 import LanguageToggle from 'components/LanguageToggle';
-import AccountDetails from './AccountDetails';
 import styles from './styles';
 
 class Header extends Component {
@@ -30,7 +32,7 @@ class Header extends Component {
   togglePopover = (target) => this.setState({ anchorEl: target });
 
   render() {
-    const { classes, onLogout, t, userInfo } = this.props;
+    const { classes, onLogout, t, userInfo, openSidenav } = this.props;
     const { anchorEl } = this.state;
 
     const userMenuOpen = Boolean(anchorEl);
@@ -40,6 +42,11 @@ class Header extends Component {
         <AppBar position="static" className={classes.appBar}>
           <Toolbar variant="regular" className={classes.toolbar}>
             <div className={classes.logo}>
+              <Hidden mdUp>
+                <IconButton onClick={openSidenav}>
+                  <Menu />
+                </IconButton>
+              </Hidden>
               <Link to="/">
                 <img src="/images/persona-logo.png" alt="Logo"/>
               </Link>
@@ -50,18 +57,14 @@ class Header extends Component {
             {
               userInfo && userInfo
                 ? [
-                  <Button
+                  <IconButton
                     key="userMenuToggle"
                     className={classes.userMenuToggle}
                     onClick={(ev) => this.togglePopover(ev.currentTarget)}
                     onMouseEnter={(ev) => this.togglePopover(ev.currentTarget)}
                   >
-                  <span className="flex align-center">
-                    <Account/>
-                    &nbsp;
-                    { userInfo.username }
-                  </span>
-                  </Button>,
+                    <Account />
+                  </IconButton>,
                   <Popover
                     key="userMenu"
                     open={userMenuOpen}
@@ -88,7 +91,7 @@ class Header extends Component {
                             <ListItemIcon>
                               <Exit />
                             </ListItemIcon>
-                            <ListItemText inset primary={t('Logout')} />
+                            <ListItemText inset primary={t('LOGOUT')} />
                           </MenuItem>
                         </MenuList>
                       </ClickAwayListener>
@@ -101,14 +104,14 @@ class Header extends Component {
                     component={Link}
                     to="/login"
                   >
-                    { t('Login') }
+                    { t('LOGIN') }
                   </Button>,
                   <Button
                     key="register"
                     component={Link}
                     to="/register"
                   >
-                    { t('Register') }
+                    { t('REGISTER') }
                   </Button>
                 ]
             }
@@ -116,17 +119,6 @@ class Header extends Component {
             <LanguageToggle />
           </Toolbar>
         </AppBar>
-
-        {
-          userInfo && userInfo.userBlockchainAccount
-            ? (
-              <div>
-                <br />
-                <AccountDetails accountInfo={userInfo.userBlockchainAccount } t={t}/>
-              </div>
-            )
-            : null
-        }
       </div>
     );
   }
@@ -135,6 +127,7 @@ class Header extends Component {
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
   onLogout: PropTypes.func.isRequired,
+  openSidenav: PropTypes.func.isRequired,
   userInfo: PropTypes.any,
 };
 

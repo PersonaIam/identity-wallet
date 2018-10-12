@@ -26,7 +26,7 @@ const validate = (values, props) => {
   errors[uiSchema.name] = validateField(uiSchema, values[uiSchema.name]);
 
   if (!values.passphrase) {
-    errors.passphrase = 'Passphrase is required';
+    errors.passphrase = 'PASSPHRASE_REQUIRED';
   }
 
   return errors;
@@ -39,7 +39,6 @@ class IdentityForm extends Component {
     const {name} = uiSchema;
 
     return (
-
       <Dialog
         maxWidth="md"
         open={true}

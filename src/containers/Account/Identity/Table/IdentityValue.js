@@ -60,7 +60,7 @@ class IdentityValue extends Component {
   };
 
   toggleDownloadFileAttribute = () => {
-    const {attribute: {value}, getFileAttribute, passphrase, selectedFileAttribute} = this.props;
+    const {attribute: {value}, getFileAttribute} = this.props;
 
     getFileAttribute(value)
       .then((fileData) => {
@@ -164,10 +164,10 @@ class IdentityValue extends Component {
               <FilePreview
                 fileData={decryptedValue}
                 onClose={() => {
-                  console.log('onClsoe');
                   this.toggleDecryptedValue(null);
                   deselectFileAttribute();
                 }}
+                t={t}
               />
             )
             : null

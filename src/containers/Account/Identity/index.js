@@ -31,7 +31,9 @@ class AccountIdentity extends Component {
   };
 
   componentDidMount() {
-    this.props.getAttributeTypes();
+    const { getAttributeTypes, getUserAttributes, userInfo  } = this.props;
+    getAttributeTypes();
+    getUserAttributes(userInfo.personaAddress)
   }
 
   getAttributesProgress = () => {
@@ -89,7 +91,7 @@ class AccountIdentity extends Component {
     const isUserAttributesLoading = isLoading === attributesConstants.ON_GET_USER_ATTRIBUTES_INIT;
 
     return (
-      <div>
+      <div className={classes.root}>
         <Paper elevation={12}>
           <CardHeader icon={<AccountDetails />}>
             <div>
@@ -162,9 +164,6 @@ class AccountIdentity extends Component {
 AccountIdentity.propTypes = {
   attributeTypes: PropTypes.any,
   classes: PropTypes.object.isRequired,
-  formValues: PropTypes.object,
-  formSyncErrors: PropTypes.object,
-  formMeta: PropTypes.object,
   getAttributeTypes: PropTypes.func.isRequired,
   getUserAttributes: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

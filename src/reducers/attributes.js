@@ -2,10 +2,12 @@
  * Created by vladtomsa on 09/10/2018
  */
 import { attributesConstants } from 'constants/attributes';
+import moment from 'moment';
 
 const initialState = {
   attributeTypes: [],
   userAttributes: [],
+  lastCheck: null,
   selectedFileAttribute: null,
   isLoading: null,
 };
@@ -21,7 +23,7 @@ export default (state = initialState, { type, payload }) => {
     case (attributesConstants.ON_GET_ATTRIBUTE_TYPES_SUCCESS):
       return { ...state, isLoading: null, attributeTypes: payload };
     case (attributesConstants.ON_GET_USER_ATTRIBUTES_SUCCESS):
-      return { ...state, isLoading: null, userAttributes: payload };
+      return { ...state, isLoading: null, userAttributes: payload, lastCheck: moment() };
     case (attributesConstants.ON_GET_FILE_ATTRIBUTE_SUCCESS):
       return { ...state, isLoading: null, selectedFileAttribute: payload };
     case (attributesConstants.ON_DESELECT_FILE_ATTRIBUTE):
