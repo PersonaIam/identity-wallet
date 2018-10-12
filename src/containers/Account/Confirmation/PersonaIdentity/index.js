@@ -15,13 +15,7 @@ const PersonaIdentity = ({ address, classes, passphrase, t }) => {
     <div className={classes.identity}>
       <br />
 
-      <Typography variant="display1" component="h4" color="primary">{ t('Welcome to Persona Identity') }</Typography>
-
-      {/*<div className="flex justify-center">*/}
-        {/*<div>*/}
-          {/*<img src="/images/persona-welcome.png" alt="Welcome to Persona Identity"/>*/}
-        {/*</div>*/}
-      {/*</div>*/}
+      <Typography variant="display1" component="h4" color="primary">{ t('WELCOME_TO_PERSONA') }!</Typography>
 
       <br />
       <br />
@@ -29,7 +23,7 @@ const PersonaIdentity = ({ address, classes, passphrase, t }) => {
       <Typography variant="caption" component="p">
         { t('ACCOUNT_CONFIRMED_SUCCESSFULLY') }! <br />
         <span dangerouslySetInnerHTML={{__html: t('PERSONA_ADDRESS_CREATED', { address })}} />.<br /><br />
-        { t('This address is controlled by the following pass phrase') }:
+        { t('ADDRESS_PASSPHRASE_CONTROL') }:
       </Typography>
 
       <Paper elevation={0} className={classes.passphrase}>
@@ -40,7 +34,7 @@ const PersonaIdentity = ({ address, classes, passphrase, t }) => {
         <strong className="flex">
           <Info />
           <span style={{ marginTop: 4 }}>
-            { t('We CANNOT recover this pass phrase! It is your responsibility to keep it safe and not forget it.') }!
+            { t('DONT_FORGET_PASSPHRASE') }!
           </span>
         </strong>
         <br />
@@ -48,7 +42,7 @@ const PersonaIdentity = ({ address, classes, passphrase, t }) => {
         <strong className="flex">
           <Info />
           <span style={{ marginTop: 4 }}>
-            { t('If you are unable to provide this pass phrase, all data associated with your address will be un-accessible') }!
+            { t('NO_PASSPHRASE_NO_ADDDRESS') }!
           </span>
         </strong>
       </Typography>
@@ -56,23 +50,23 @@ const PersonaIdentity = ({ address, classes, passphrase, t }) => {
       <br />
 
       <Typography variant="caption" component="p">
-        { t('We strongly recommend you either') }:
+        { t('STORE_PASSPHRASE_RECOMMANDATIONS') }:
       </Typography>
 
       <ul>
         <li>
           <Typography variant="caption" component="p">
-            { t('Save your pass phrase on a secure drive') }
+            { t('SECURE_DRIVE') }
           </Typography>
         </li>
         <li>
           <Typography variant="caption" component="p">
-            { t('Write it on a paper') }
+            { t('WRITE_ON_PAPER') }
           </Typography>
         </li>
         <li>
           <Typography variant="caption" component="p">
-            { t('Send pieces of it to entrusted people, family members, friends') }
+            { t('SEND_TO_FRIENDS') }
           </Typography>
         </li>
       </ul>

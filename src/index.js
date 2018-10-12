@@ -13,9 +13,11 @@ import configureStore, {history} from 'config/redux';
 
 // Material UI dependencies
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {createGenerateClassName, jssPreset} from '@material-ui/core/styles';
 import JssProvider from 'react-jss/lib/JssProvider';
+import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import {create} from 'jss';
 import customTheme from 'config/theme';
 
@@ -47,9 +49,11 @@ const app = (
       <MuiThemeProvider theme={theme}>
         <CssBaseline/>
 
-        <ConnectedRouter history={history}>
-          <App/>
-        </ConnectedRouter>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <ConnectedRouter history={history}>
+            <App/>
+          </ConnectedRouter>
+        </MuiPickersUtilsProvider>
       </MuiThemeProvider>
     </JssProvider>
   </Provider>

@@ -27,9 +27,9 @@ import styles from './styles';
 const validate = (values) => {
   const errors = {};
 
-  if (!values.username) errors.username = 'Username required';
+  if (!values.username) errors.username = 'USERNAME_REQUIRED';
 
-  if (!values.password) errors.password = 'Password required';
+  if (!values.password) errors.password = 'PASSWORD_REQUIRED';
 
   return errors;
 };
@@ -52,7 +52,7 @@ class Login extends Component {
           <Paper elevation={12}>
             <Paper className={`${classes.header} text-center`}>
               <div className="content">
-                <Typography component="h4">{ t('Login') }</Typography>
+                <Typography component="h4">{ t('LOGIN') }</Typography>
               </div>
               <LinearProgress />
             </Paper>
@@ -61,7 +61,7 @@ class Login extends Component {
               <Field
                 name="username"
                 component={ RenderTextField }
-                placeholder="Username"
+                placeholder={t('USERNAME')}
                 disabled={isLoading}
                 required
                 startAdornment={
@@ -76,7 +76,7 @@ class Login extends Component {
                 name="password"
                 component={ RenderTextField }
                 type={this.state.showPassword ? 'text' : 'password'}
-                placeholder="Password"
+                placeholder={t('PASSOWRD')}
                 disabled={isLoading}
                 required
                 startAdornment={
@@ -102,7 +102,7 @@ class Login extends Component {
                 name="rememberMe"
                 component={RenderCheckbox}
                 disabled={isLoading}
-                label="Remember me"
+                label="REMEMBER_ME"
                 color="primary"
               />
               <br />
@@ -112,7 +112,7 @@ class Login extends Component {
             <div className="flex justify-center wrap-content">
               <Button variant="raised" color="primary" type="submit" className={`flex align-center ${classes.submitButton}`} disabled={isLoading}>
                 <div className="flex align-center">
-                  { t("Login") }&nbsp;
+                  { t("LOGIN") }&nbsp;
                   {
                     isLoading
                       ? (

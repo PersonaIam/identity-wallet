@@ -10,8 +10,6 @@ export const toolbarHeight = {
 const toolbarRadius = 10;
 
 const styles = theme => {
-  console.log(theme);
-
   return {
     appBar: {
       background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,

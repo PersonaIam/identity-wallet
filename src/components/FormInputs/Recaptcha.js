@@ -13,7 +13,6 @@ const RecaptchaField = (props) => {
 
   return (
     <FormControl error={!!(touched && error)} fullWidth >
-      recs
       <Recaptcha
         className="flex justify-center"
         sitekey="6LcH_nIUAAAAAAAq_jKpp4gJ_3H8G-JrqFWB4zTL"

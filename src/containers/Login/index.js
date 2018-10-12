@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from "react-router-redux";
 import { withStyles } from '@material-ui/core/styles';
 import Zoom from 'react-reveal/Zoom';
 import { login } from 'actions/auth';

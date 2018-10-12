@@ -23,17 +23,17 @@ const emailRegex = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 const validate = (values) => {
   const errors = {};
 
-  if (!values.username) errors.username = 'Username required';
+  if (!values.username) errors.username = 'USERNAME_REQUIRED';
 
   if (!values.email) {
-    errors.email = 'Email required';
+    errors.email = 'EMAIL_REQUIRED';
   } else if (
     !emailRegex.test(values.email)
   ) {
-    errors.email = 'Invalid email address';
+    errors.email = 'INVALID_EMAIL';
   }
 
-  if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'Please confirm your authenticity';
+  if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
 
   return errors;
 };
@@ -48,7 +48,7 @@ class RegisterForm extends Component {
           <Paper elevation={12}>
             <Paper className={`${classes.header} text-center`}>
               <div className="content">
-                <Typography component="h4">{ t('Register') }</Typography>
+                <Typography component="h4">{ t('REGISTER') }</Typography>
               </div>
             </Paper>
 
@@ -56,7 +56,7 @@ class RegisterForm extends Component {
               <Field
                 name="username"
                 component={ RenderTextField }
-                placeholder="Username"
+                placeholder={t('USERNAME')}
                 required
                 startAdornment={
                   <InputAdornment position="start">
@@ -70,7 +70,7 @@ class RegisterForm extends Component {
                 name="email"
                 component={ RenderTextField }
                 type="email"
-                placeholder="Email"
+                placeholder={t('EMAIL')}
                 required
                 startAdornment={
                   <InputAdornment position="start">
@@ -93,7 +93,7 @@ class RegisterForm extends Component {
 
             <div className="flex justify-center wrap-content">
               <Button variant="raised" color="primary" type="submit" className={`flex align-center ${classes.submitButton}`}>
-                { t("Register") }
+                { t('REGISTER') }
               </Button>
             </div>
             <br />

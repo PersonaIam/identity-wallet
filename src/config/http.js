@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { Base64 } from 'js-base64';
 
-const token = Base64.encode('tvlad:Qwerty123!@#');
+export const http = axios.create({
+  baseURL: `${API_URL}/api`,
+});
 
-const http = axios.create({
-  baseURL: `http://localhost:8000/api`,
+export const blockchain = axios.create({
+  baseURL: `${PERSONA_URL}/api`,
 });
 
 http.interceptors.response.use(
@@ -18,4 +19,19 @@ http.interceptors.response.use(
   }
 );
 
-export default http;
+blockchain.interceptors.response.use(
+  (response) => {
+    if (response.data && !response.data.success) {
+      return Promise.reject({message: response.data.error})
+    }
+
+    return response.data
+  },
+  (error) => {
+    if (error && error.response && error.response.data) {
+      return Promise.reject(error.response.data.message ? error.response.data.message : error.response.data);
+    } else {
+      return Promise.reject({message: 'Server error'});
+    }
+  }
+);

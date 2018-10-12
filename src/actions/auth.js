@@ -1,9 +1,11 @@
 /**
  * Created by vladtomsa on 01/10/2018
  */
-import http from 'config/http';
+import { http } from 'config/http';
 import { Base64 } from 'js-base64';
 import { push } from 'react-router-redux';
+import { getUserAttributes } from './attributes';
+import { getBlockchainAccount } from './blockchainAccount';
 import { onNotificationSuccessInit, onNotificationErrorInit } from './notifications';
 import {
   authConstants,
@@ -45,6 +47,8 @@ export const confirmAccount = (data) => async (dispatch) => {
     dispatch(onNotificationErrorInit(error));
   }
 };
+
+
 
 export const login = ({ username, password, rememberMe }) => async (dispatch) => {
   try {
@@ -101,13 +105,19 @@ const createAccountInit = () => ({ type: authConstants.ON_CREATE_ACCOUNT_INIT })
 const createAccountSuccess = () => ({ type: authConstants.ON_CREATE_ACCOUNT_SUCCESS });
 const createAccountFailure = (error) => ({ type: authConstants.ON_CREATE_ACCOUNT_FAILURE, payload: error });
 
-
 const confirmAccountInit = () => ({ type: authConstants.ON_CONFIRM_ACCOUNT_INIT });
 const confirmAccountSuccess = () => ({ type: authConstants.ON_CONFIRM_ACCOUNT_SUCCESS });
 const confirmAccountFailure = () => ({ type: authConstants.ON_CONFIRM_ACCOUNT_FAILURE });
 
 const loginInit = () => ({ type: authConstants.ON_LOGIN_INIT });
-const loginSuccess = (data) => ({ type: authConstants.ON_LOGIN_SUCCESS, payload: data });
+const loginSuccess = (data) => async (dispatch) => {
+  const personaAddress = data.personaAddress;
+
+  dispatch(getUserAttributes(personaAddress));
+  dispatch(getBlockchainAccount(personaAddress));
+
+  dispatch({ type: authConstants.ON_LOGIN_SUCCESS, payload: data });
+};
 const loginFailure = () => ({ type: authConstants.ON_LOGIN_FAILURE });
 
 export const logoutInit = () => ({ type: authConstants.ON_LOGOUT });

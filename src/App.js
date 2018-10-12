@@ -62,10 +62,19 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  notification: state.notification.notification,
-  userInfo: state.auth.userInfo,
-});
+const mapStateToProps = (state) => {
+  const { auth, blockchainAccount: { userBlockchainAccount } } = state;
+  let userInfo = auth.userInfo;
+
+  if (userInfo){
+    userInfo = { ...userInfo, userBlockchainAccount };
+  }
+
+  return {
+    notification: state.notification.notification,
+    userInfo: userInfo,
+  }
+};
 
 const mapDispatchToProps = (dispatch) => ({
   checkIsLoggedIn: () => dispatch(isLoggedIn()),

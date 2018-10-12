@@ -15,9 +15,7 @@ import { authConstants } from 'constants/auth';
 import { connect } from 'react-redux';
 import Fade from 'react-reveal/Fade';
 import Zoom from 'react-reveal/Zoom';
-import bip39 from 'bip39';
-import personajs from 'personajs';
-
+import { generatePersonaAddress, generatePassphrase } from 'helpers/personaService';
 import styles from './styles';
 import CreatePasswordForm from './Form';
 import PersonaIdentity from './PersonaIdentity';
@@ -26,30 +24,13 @@ class AccountCreate extends Component {
 
   state = {
     activeStep: 0,
-    passphrase: 'Vlad',
-    address: 'Vad',
+    passphrase: null,
+    address: null,
   };
 
-  componentDidMount() {
-    const passphrase = bip39.generateMnemonic(null, null, bip39.wordlists['english']);
-
-    const keyPair = personajs.crypto.getKeys(passphrase);
-    const publicKey = keyPair.publicKey;
-
-    const address = personajs.crypto.getAddress(publicKey, 66);
-
-    this.setState({ passphrase, address });
-  }
-
   onSubmit = ({ password }) => {
-    const passphrase = bip39.generateMnemonic(null, null, bip39.wordlists['english']);
-
-    const keyPair = personajs.crypto.getKeys(passphrase);
-    const publicKey = keyPair.publicKey;
-
-    const address = personajs.crypto.getAddress(publicKey, 66);
-
-
+    const passphrase = generatePassphrase();
+    const address = generatePersonaAddress(passphrase);
     const { match: { params: { token } } } = this.props;
 
     this.props.confirmAccount({
@@ -58,7 +39,7 @@ class AccountCreate extends Component {
       password,
     })
       .then((success) => {
-        if ( success ) this.setState({ passphrase, address: publicKey, activeStep: 1 })
+        if ( success ) this.setState({ passphrase, address, activeStep: 1 })
       });
   };
 
@@ -69,19 +50,18 @@ class AccountCreate extends Component {
     const isConfirmLoading = isLoading === authConstants.ON_CONFIRM_ACCOUNT_INIT;
 
     const steps = [
-      // {
-      //   label: 'Create Password',
-      //   content: (
-      //     <CreatePasswordForm
-      //       initialValues={{ password: 'Qwerty123!@#', passwordConfirmation: 'Qwerty123!@#' }}
-      //       onSubmit={this.onSubmit}
-      //       isLoading={isConfirmLoading}
-      //     />
-      //   )
-      // },
+      {
+        label: 'CREATE_PASSWORD',
+        content: (
+          <CreatePasswordForm
+            onSubmit={this.onSubmit}
+            isLoading={isConfirmLoading}
+          />
+        )
+      },
 
       {
-        label: 'Create identity',
+        label: 'CREATE_IDENTITY',
         content: (
           <PersonaIdentity
             address={address}
@@ -100,7 +80,7 @@ class AccountCreate extends Component {
                 <div className={classes.header}>
                   <div>
                     <div style={{ padding: 16 }}>
-                      <Typography component="h4">{ t('Confirm account') }</Typography>
+                      <Typography component="h4">{ t('CONFIRM_ACCOUNT') }</Typography>
                     </div>
 
                     {
@@ -121,7 +101,7 @@ class AccountCreate extends Component {
                             <CircularProgress size={24}/>
                             &nbsp;
                             <Typography color="secondary">
-                              { t('Confirming account. This may take a while ... ') }
+                              { t('CONFIRM_WAIT') }
                             </Typography>
                           </div>
                           <br />

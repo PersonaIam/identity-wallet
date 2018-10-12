@@ -16,3 +16,10 @@ export const AVAILABLE_LANGUAGES = [{
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
 export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
+
+export const ACCEPTED_FILE_TYPES = {
+  PDF: 'data:application/pdf',
+  IMAGE: 'data:image/',
+};
+
+export const PERSONATOSHI_UNIT = Math.pow(10, 8); // 1 PERSONA has 100000000 "toshi"

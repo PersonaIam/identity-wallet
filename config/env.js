@@ -1,4 +1,15 @@
 'use strict';
+const API_URLS = {
+  localnet: 'http://localhost:8000',
+  testnet: 'http://localhost:8000',
+  mainnet: 'http://localhost:8000',
+};
+
+const PERSONA_URLS = {
+  localnet: 'http://localhost:4100',
+  testnet: 'http://localhost:4100',
+  mainnet: 'http://localhost:4100',
+};
 
 const fs = require('fs');
 const path = require('path');
@@ -8,6 +19,9 @@ const paths = require('./paths');
 delete require.cache[require.resolve('./paths')];
 
 const NODE_ENV = process.env.NODE_ENV;
+const PERSONA_ENV = process.env.PERSONA_ENV || 'localnet';
+const API_ENV = process.env.API_ENV || 'localnet';
+
 if (!NODE_ENV) {
   throw new Error(
     'The NODE_ENV environment variable is required but was not specified.'
@@ -61,6 +75,9 @@ process.env.NODE_PATH = (process.env.NODE_PATH || '')
 const REACT_APP = /^REACT_APP_/i;
 
 function getClientEnvironment(publicUrl) {
+  const API_URL = API_URLS[API_ENV];
+  const PERSONA_URL = PERSONA_URLS[PERSONA_ENV];
+
   const raw = Object.keys(process.env)
     .filter(key => REACT_APP.test(key))
     .reduce(
@@ -77,10 +94,16 @@ function getClientEnvironment(publicUrl) {
         // This should only be used as an escape hatch. Normally you would put
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
+        API_URL,
+        PERSONA_URL,
+        PERSONA_ENV,
       }
     );
   // Stringify all values so we can feed into Webpack DefinePlugin
   const stringified = {
+    'API_URL': JSON.stringify(API_URL),
+    'PERSONA_URL': JSON.stringify(PERSONA_URL),
+    'PERSONA_ENV': JSON.stringify(PERSONA_ENV),
     'process.env': Object.keys(raw).reduce((env, key) => {
       env[key] = JSON.stringify(raw[key]);
       return env;

@@ -13,13 +13,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
 import Popover from '@material-ui/core/Popover';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import Account from 'mdi-material-ui/Account';
 import Exit from 'mdi-material-ui/ExitToApp';
 import LanguageToggle from 'components/LanguageToggle';
+import AccountDetails from './AccountDetails';
 import styles from './styles';
 
 class Header extends Component {
@@ -36,85 +36,98 @@ class Header extends Component {
     const userMenuOpen = Boolean(anchorEl);
 
     return (
-      <AppBar position="static" className={classes.appBar}>
-        <Toolbar variant="regular" className={classes.toolbar}>
-          <div className={classes.logo}>
-            <Link to="/">
-              <img src="/images/persona-logo.png" alt="Logo"/>
-            </Link>
-          </div>
+      <div>
+        <AppBar position="static" className={classes.appBar}>
+          <Toolbar variant="regular" className={classes.toolbar}>
+            <div className={classes.logo}>
+              <Link to="/">
+                <img src="/images/persona-logo.png" alt="Logo"/>
+              </Link>
+            </div>
 
-          <span className="fill-flex">&nbsp;</span>
+            <span className="fill-flex">&nbsp;</span>
 
-          {
-            userInfo
-              ? [
-                <Button
-                  key="userMenuToggle"
-                  className={classes.userMenuToggle}
-                  onClick={(ev) => this.togglePopover(ev.currentTarget)}
-                  onMouseEnter={(ev) => this.togglePopover(ev.currentTarget)}
-                >
+            {
+              userInfo && userInfo
+                ? [
+                  <Button
+                    key="userMenuToggle"
+                    className={classes.userMenuToggle}
+                    onClick={(ev) => this.togglePopover(ev.currentTarget)}
+                    onMouseEnter={(ev) => this.togglePopover(ev.currentTarget)}
+                  >
                   <span className="flex align-center">
                     <Account/>
                     &nbsp;
                     { userInfo.username }
                   </span>
-                </Button>,
-                <Popover
-                  key="userMenu"
-                  open={userMenuOpen}
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                  }}
-                  disableRestoreFocus
-                >
-                  <Collapse in={userMenuOpen}>
-                    <ClickAwayListener onClickAway={() => this.togglePopover(null)}>
-                      <MenuList>
-                        <MenuItem
-                          onClick={() => {
-                            this.togglePopover(null);
-                            onLogout();
-                          }}
-                        >
-                          <ListItemIcon>
-                            <Exit />
-                          </ListItemIcon>
-                          <ListItemText inset primary={t('Logout')} />
-                        </MenuItem>
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Collapse>
-                </Popover>
-              ]
-              : [
-                <Button
-                  key="login"
-                  component={Link}
-                  to="/login"
-                >
-                  { t('Login') }
-                </Button>,
-                <Button
-                  key="register"
-                  component={Link}
-                  to="/register"
-                >
-                  { t('Register') }
-                </Button>
-              ]
-          }
-          &nbsp;&nbsp;
-          <LanguageToggle />
-        </Toolbar>
-      </AppBar>
+                  </Button>,
+                  <Popover
+                    key="userMenu"
+                    open={userMenuOpen}
+                    anchorEl={anchorEl}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    disableRestoreFocus
+                  >
+                    <Collapse in={userMenuOpen}>
+                      <ClickAwayListener onClickAway={() => this.togglePopover(null)}>
+                        <MenuList>
+                          <MenuItem
+                            onClick={() => {
+                              this.togglePopover(null);
+                              onLogout();
+                            }}
+                          >
+                            <ListItemIcon>
+                              <Exit />
+                            </ListItemIcon>
+                            <ListItemText inset primary={t('Logout')} />
+                          </MenuItem>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Collapse>
+                  </Popover>
+                ]
+                : [
+                  <Button
+                    key="login"
+                    component={Link}
+                    to="/login"
+                  >
+                    { t('Login') }
+                  </Button>,
+                  <Button
+                    key="register"
+                    component={Link}
+                    to="/register"
+                  >
+                    { t('Register') }
+                  </Button>
+                ]
+            }
+            &nbsp;&nbsp;
+            <LanguageToggle />
+          </Toolbar>
+        </AppBar>
+
+        {
+          userInfo && userInfo.userBlockchainAccount
+            ? (
+              <div>
+                <br />
+                <AccountDetails accountInfo={userInfo.userBlockchainAccount } t={t}/>
+              </div>
+            )
+            : null
+        }
+      </div>
     );
   }
 }

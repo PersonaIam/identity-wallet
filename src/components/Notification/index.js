@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
+import Slide from '@material-ui/core/Slide';
 import CloseIcon from 'mdi-material-ui/Close';
 import ErrorIcon from 'mdi-material-ui/AlertCircle';
 import SuccessIcon from 'mdi-material-ui/CheckCircle';
@@ -44,6 +45,16 @@ const styles = theme => ({
   },
   notificationError: {
     color: theme.palette.error.main,
+  },
+  'snackbar-success': {
+    '& >div': {
+      background: theme.palette.secondary.main,
+    }
+  },
+  'snackbar-error': {
+    '& >div': {
+      background: theme.palette.error.main,
+    }
   }
 });
 
@@ -51,7 +62,10 @@ const NOTIFICATION_POSITION = {
   vertical: 'top',
   horizontal: 'right'
 };
+
 const NOTIFICATION_TIMEOUT = 3000;
+
+const TransitionComponent = (props) => <Slide {...props} direction="left"/>;
 
 const Notification = (props) => {
   const { classes, notification, onNotificationClose, t } = props;
@@ -90,6 +104,8 @@ const Notification = (props) => {
       }
       autoHideDuration={NOTIFICATION_TIMEOUT}
       anchorOrigin={NOTIFICATION_POSITION}
+      className={classes[`snackbar-${notification.type}`]}
+      TransitionComponent={TransitionComponent}
       action={[
         <IconButton
           key="close"

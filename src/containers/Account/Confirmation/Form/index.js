@@ -9,13 +9,9 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
-
-import Eye from 'mdi-material-ui/Eye';
-import EyeOff from 'mdi-material-ui/EyeOff';
 import Info from 'mdi-material-ui/Information';
 import Key from 'mdi-material-ui/Key';
 import KeyChange from 'mdi-material-ui/KeyChange';
@@ -25,20 +21,21 @@ import RecaptchaField from 'components/FormInputs/Recaptcha';
 
 import styles from './styles';
 
+// eslint-disable-next-line
 const strongPasswordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
 const validate = (values) => {
   const errors = {};
 
-  if (!values.password) errors.password = 'Password required';
-  else if (!strongPasswordRegex.test(values.password)) errors.password = 'Password to week';
+  if (!values.password) errors.password = 'PASSWORD_REQUIRED';
+  else if (!strongPasswordRegex.test(values.password)) errors.password = 'PASSWORD_WEAK';
 
-  if (!values.passwordConfirmation) errors.passwordConfirmation = 'Please confirm password';
+  if (!values.passwordConfirmation) errors.passwordConfirmation = 'PASSWORD_CONFIRM';
 
   if (values.password && values.passwordConfirmation && values.password !== values.passwordConfirmation)
-    errors.passwordConfirmation = 'Passwords do not match';
+    errors.passwordConfirmation = 'PASSWORDS_DONT_MATCH';
 
-  if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'Please confirm your authenticity';
+  if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
 
   return errors;
 };
@@ -48,33 +45,29 @@ class CreatePasswordForm extends Component {
     showPassword: false,
   };
 
-  toggleShowPassword = () => this.setState((prevState) => ({ showPassword: !prevState.showPassword }));
-
-  handleMouseDownPassword = event => event.preventDefault();
-
   render() {
     const { classes, handleSubmit, isLoading, t } = this.props;
 
     const passwordHint = (
       <div className={classes.tooltipContainer}>
         <Typography component="p">
-          { t('Must contain at least 1 lowercase alphabetical character;') }
+          { t('1_LOWER_CASE') }
         </Typography>
 
         <Typography component="p">
-          { t('Must contain at least 1 uppercase alphabetical character;') }
+          { t('1_UPPER_CASE') }
         </Typography>
 
         <Typography component="p">
-          { t('Must contain at least 1 numeric character;') }
+          { t('1_NUMERIC') }
         </Typography>
 
         <Typography component="p">
-          { t('Must contain at least 1 special character;') }
+          { t('1_SPECIAL') }
         </Typography>
 
         <Typography component="p">
-          { t('Must be 8 characters or longer;') }
+          { t('*_LONG') }
         </Typography>
       </div>
     );
@@ -86,7 +79,7 @@ class CreatePasswordForm extends Component {
             name="password"
             component={ RenderTextField }
             type={this.state.showPassword ? 'text' : 'password'}
-            label="Password"
+            label="PASSWORD"
             disabled={isLoading}
             required
             startAdornment={
@@ -97,14 +90,6 @@ class CreatePasswordForm extends Component {
             endAdornment={
               <InputAdornment position="end">
                 <Fragment>
-                  {/*<IconButton*/}
-                    {/*aria-label="Toggle password visibility"*/}
-                    {/*onClick={this.toggleShowPassword}*/}
-                    {/*onMouseDown={this.handleMouseDownPassword}*/}
-                  {/*>*/}
-                    {/*{this.state.showPassword ? <EyeOff /> : <Eye />}*/}
-                  {/*</IconButton>*/}
-
                   <Tooltip title={passwordHint}>
                     <Info />
                   </Tooltip>
@@ -118,7 +103,7 @@ class CreatePasswordForm extends Component {
             name="passwordConfirmation"
             component={ RenderTextField }
             type={this.state.showPassword ? 'text' : 'password'}
-            label="Password Confirmation"
+            label="PASSWORD_CONFIRMATION"
             disabled={isLoading}
             required
             startAdornment={
@@ -129,14 +114,6 @@ class CreatePasswordForm extends Component {
             endAdornment={
               <InputAdornment position="end">
                 <Fragment>
-                  {/*<IconButton*/}
-                    {/*aria-label="Toggle password visibility"*/}
-                    {/*onClick={this.toggleShowPassword}*/}
-                    {/*onMouseDown={this.handleMouseDownPassword}*/}
-                  {/*>*/}
-                    {/*{this.state.showPassword ? <EyeOff /> : <Eye />}*/}
-                  {/*</IconButton>*/}
-
                   <Tooltip title={passwordHint}>
                     <Info />
                   </Tooltip>
@@ -148,18 +125,18 @@ class CreatePasswordForm extends Component {
           <br />
           <br />
 
-          {/*<Field*/}
-            {/*name="isCaptchaVerified"*/}
-            {/*component={ RecaptchaField }*/}
-          {/*/>*/}
-          {/*<br />*/}
-          {/*<br />*/}
+          <Field
+            name="isCaptchaVerified"
+            component={ RecaptchaField }
+          />
+          <br />
+          <br />
         </div>
 
         <div className="flex justify-center wrap-content">
           <Button variant="raised" color="primary" type="submit" className={`flex align-center ${classes.submitButton}`} disabled={isLoading}>
             <div className="flex align-center">
-              { t("Create password") }&nbsp;
+              { t('CREATE_PASSWORD') }&nbsp;
               {
                 isLoading
                   ? (
@@ -189,5 +166,5 @@ const withStyle = withStyles(styles)(withTranslate);
 
 export default reduxForm({
   form: 'CreatePasswordForm',
-  // validate,
+  validate,
 })(withStyle);

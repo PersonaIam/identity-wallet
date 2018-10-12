@@ -16,6 +16,11 @@ const Home = Loadable({
   loading: Loading,
 });
 
+const Identity = Loadable({
+  loader: () => import('containers/Account/Identity'),
+  loading: Loading,
+});
+
 const Login = Loadable({
   loader: () => import('containers/Login'),
   loading: Loading,
@@ -54,6 +59,11 @@ const routes =  [
     exact: true,
     component: Dashboard,
     isAvailable: isLoggedIn,
+  },
+  {
+    path: '/identity',
+    exact: true,
+    component: Identity,
   },
   {
     path: '/',

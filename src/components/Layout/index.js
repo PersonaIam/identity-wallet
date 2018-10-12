@@ -1,12 +1,12 @@
 /**
  * Created by vladtomsa on 26/09/2018
  */
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 import Header from './Header';
-import Sidenav from './Sidenav';
+// import Sidenav from './Sidenav';
 
 const toolbarHeightXS = 56;
 const toolbarHeight = 64;
@@ -18,7 +18,7 @@ const styles = (theme) => {
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing.unit * 3,
+      paddingTop: theme.spacing.unit * 3,
       minHeight: `calc(100vh - ${toolbarHeightXS}px)`,
       [theme.breakpoints.up('sm')]: {
         minHeight: `calc(100vh - ${toolbarHeight}px)`,
@@ -34,11 +34,11 @@ const Layout = ({ children, classes, onLogout, userInfo }) => {
         <Header userInfo={userInfo} onLogout={onLogout}/>
 
         <div className={classes.root}>
-          {
-            !!userInfo
-              ? <div><Sidenav /></div>
-              : null
-          }
+          {/*{*/}
+            {/*!!userInfo*/}
+              {/*? <div><Sidenav /></div>*/}
+              {/*: null*/}
+          {/*}*/}
 
           <div className={classes.content}>
             {  children }

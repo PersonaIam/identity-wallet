@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux';
 
 class Dashboard extends Component {
@@ -11,7 +12,9 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <pre>{ JSON.stringify(userInfo, null, 2) }</pre>
+        <Paper elevation={12}>
+          <pre>{ JSON.stringify({...userInfo, personaAddress: 'vlad'}, null, 2) }</pre>
+        </Paper>
       </div>
     );
   }

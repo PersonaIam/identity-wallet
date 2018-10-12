@@ -6,9 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { translate } from 'react-i18next';
 
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { AVAILABLE_LANGUAGES } from 'constants/index';
 import styles from './styles';
@@ -52,12 +52,14 @@ class LanguageToggle extends Component {
     return (
       selectedIndex || selectedIndex === 0 ?
       <div>
-        <Avatar
-          onClick={this.toggleMenuOpen}
-          alt={selectedLanguage.code}
-          src={`/flags/${selectedLanguage.flag}.svg`}
-          className={classes.avatar}
-        />
+        <Tooltip title={t('LANGUAGE')}>
+          <Avatar
+            onClick={this.toggleMenuOpen}
+            alt={selectedLanguage.code}
+            src={`/flags/${selectedLanguage.flag}.svg`}
+            className={classes.avatar}
+          />
+        </Tooltip>
 
         <Menu
           anchorEl={anchorEl}

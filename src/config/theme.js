@@ -1,12 +1,8 @@
 /**
  * Created by vladtomsa on 26/09/2018
  */
-import blue from '@material-ui/core/colors/lightBlue';
-import indigo from '@material-ui/core/colors/indigo';
 import red from '@material-ui/core/colors/red';
 
-const primary = blue;
-const secondary = indigo;
 const error = red;
 
 const themeOverrides = {
@@ -33,6 +29,7 @@ const theme = {
       dark: '#323561',
     },
     secondary: {
+      light: '#B3E5FC',
       main: '#09D0FF',
       dark: '#01A9EE',
     },

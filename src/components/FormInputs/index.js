@@ -10,20 +10,21 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-// import CalendarIcon from 'mdi-material-ui/Calendar';
+import CalendarIcon from 'mdi-material-ui/Calendar';
 // import ClockIcon from 'mdi-material-ui/Clock';
-// import LeftIcon from 'mdi-material-ui/ChevronLeft';
-// import RightIcon from 'mdi-material-ui/ChevronRight';
+import LeftIcon from 'mdi-material-ui/ChevronLeft';
+import RightIcon from 'mdi-material-ui/ChevronRight';
 
-// import {
-//   DatePicker,
-//   // TimePicker,
-//   DateTimePicker,
-// } from 'material-ui-pickers';
-// import {
-//   DATE_FORMAT,
-//   DATE_TIME_FORMAT,
-// } from 'constants';
+import {
+  DatePicker,
+  // TimePicker,
+  // DateTimePicker,
+} from 'material-ui-pickers';
+
+import {
+  DATE_FORMAT,
+  // DATE_TIME_FORMAT,
+} from 'constants';
 
 import {withStyles} from '@material-ui/core/styles';
 import {translate} from 'react-i18next';
@@ -58,7 +59,7 @@ const styles = {
 };
 
 export const RenderSelectField = withStyles(styles)(
-  translate('common')(({ input, label, meta, required, options, disabled, displayErrorWhenNotTouched, t, tReady, classes, ...custom }) => {
+  translate('common')(({ input, label, meta, required, options, disabled, displayErrorWhenNotTouched, t, tReady, classes, hideNoneOption, ...custom }) => {
     const  { touched, error } = meta;
     return (
       <FormControl disabled={disabled} error={!!((touched || displayErrorWhenNotTouched) && error)} fullWidth>
@@ -76,9 +77,15 @@ export const RenderSelectField = withStyles(styles)(
             }
           }}
         >
-          <MenuItem value="">
-            <em>{ t('None') }</em>
-          </MenuItem>
+          {
+            hideNoneOption
+              ? null
+              : (
+                <MenuItem value="">
+                  <em>{ t('None') }</em>
+                </MenuItem>
+              )
+          }
           { options.map((option, index) => (<MenuItem key={index} value={option.value}>{t(option.name)}</MenuItem>)) }
         </Select>
 
@@ -104,34 +111,35 @@ export const RenderCheckbox = translate('common')(({ input, label, disabled, t, 
   );
 });
 
-// export const RenderDatePicker = translate('common')(({ input, label, disablePast, meta, t, tReady, required, format, minDate, openToYearSelection }) => {
-//   const { touched, error } = meta;
-//
-//   return (
-//     <div className="date-picker-wrapper">
-//       <DatePicker
-//         label={<span>{t(label)} <span>{required ? '*' : ''}</span></span>}
-//         invalidLabel={''}
-//         autoOk
-//         clearable
-//         keyboard
-//         onOpen={input.onBlur}
-//         onChange={(e) => input.onChange(e ? e.format(format || DATE_FORMAT) : null)}
-//         error={!!(touched && error)}
-//         helperText={!!(touched && error) ? error : ''}
-//         value={input.value}
-//         format={format || DATE_FORMAT}
-//         leftArrowIcon={<LeftIcon/>}
-//         rightArrowIcon={<RightIcon/>}
-//         keyboardIcon={<CalendarIcon/>}
-//         disablePast={!!disablePast}
-//         minDate={minDate}
-//         openToYearSelection={openToYearSelection}
-//         fullWidth
-//       />
-//     </div>
-//   );
-// });
+export const RenderDatePicker = translate('common')(({ input, label, disablePast, meta, t, tReady, required, format, minDate, maxDate, openToYearSelection }) => {
+  const { touched, error } = meta;
+
+  return (
+    <div className="date-picker-wrapper">
+      <DatePicker
+        label={<span>{t(label)} <span>{required ? '*' : ''}</span></span>}
+        invalidLabel={''}
+        autoOk
+        clearable
+        keyboard
+        onOpen={input.onBlur}
+        onChange={(e) => input.onChange(e ? e.format(format || DATE_FORMAT) : null)}
+        error={!!(touched && error)}
+        helperText={!!(touched && error) ? error : ''}
+        value={input.value}
+        format={format || DATE_FORMAT}
+        leftArrowIcon={<LeftIcon/>}
+        rightArrowIcon={<RightIcon/>}
+        keyboardIcon={<CalendarIcon/>}
+        disablePast={!!disablePast}
+        minDate={minDate}
+        maxDate={maxDate}
+        openToYearSelection={openToYearSelection}
+        fullWidth
+      />
+    </div>
+  );
+});
 
 // export const RenderTimePicker = ({ input, label }) => {
 //   return (
