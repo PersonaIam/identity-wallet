@@ -35,12 +35,12 @@ export const confirmAccount = (data) => async (dispatch) => {
   try {
     dispatch(confirmAccountInit());
 
-    await http.put('/users/confirm', data);
+    const response = await http.put('/users/confirm', data);
 
     dispatch(confirmAccountSuccess());
     dispatch(onNotificationSuccessInit('Account confirmed'));
 
-    return true;
+    return response;
   }
   catch (error) {
     dispatch(confirmAccountFailure());

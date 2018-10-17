@@ -1,12 +1,33 @@
 /**
  * Created by vladtomsa on 11/10/2018
  */
-import { PERSONATOSHI_UNIT } from 'constants';
+import { PERSONATOSHI_UNIT, PERSONA_MAINNET_NAME } from 'constants';
 import personajs from 'personajs';
 import bip39 from 'bip39';
 
 export const getNetwork = () => {
   return personajs.networks[PERSONA_ENV];
+};
+
+export const isMainnet = () => {
+  const { name } = getNetwork();
+  return name === PERSONA_MAINNET_NAME
+};
+
+export const dateToPersonaStamp = (time) => {
+  const { getTime, getTimeTestnet } = personajs.slots;
+
+  const getTimeFunc = isMainnet() ? getTime : getTimeTestnet;
+
+  return getTimeFunc(time);
+};
+
+export const personaStampToDate = (time) => {
+  const { getRealTime, getRealTimeTestNet } = personajs.slots;
+
+  const getTimeFunc = isMainnet() ? getRealTime : getRealTimeTestNet;
+
+  return getTimeFunc(time);
 };
 
 export const getToken = () => {

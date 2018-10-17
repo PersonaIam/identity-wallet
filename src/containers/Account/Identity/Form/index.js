@@ -21,9 +21,10 @@ import PassphraseInput from 'components/FormInputs/PassphraseInput';
 
 const validate = (values, props) => {
   const { uiSchema } = props;
-  const errors = {};
 
-  errors[uiSchema.name] = validateField(uiSchema, values[uiSchema.name]);
+  let errors = {};
+
+  errors = validateField(uiSchema, values);
 
   if (!values.passphrase) {
     errors.passphrase = 'PASSPHRASE_REQUIRED';

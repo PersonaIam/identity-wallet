@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
-import { confirmAccount } from 'actions/auth';
+import { confirmAccount, login } from 'actions/auth';
 import { authConstants } from 'constants/auth';
 import { connect } from 'react-redux';
 import Fade from 'react-reveal/Fade';
@@ -26,6 +26,7 @@ class AccountCreate extends Component {
     activeStep: 0,
     passphrase: null,
     address: null,
+    loginInfo: null,
   };
 
   onSubmit = ({ password }) => {
@@ -38,9 +39,23 @@ class AccountCreate extends Component {
       token,
       password,
     })
-      .then((success) => {
-        if ( success ) this.setState({ passphrase, address, activeStep: 1 })
+      .then((response) => {
+        if ( response && response.username ) {
+          const loginInfo = {
+            username: response.username,
+            password,
+          };
+          this.setState({ passphrase, address, activeStep: 1, loginInfo })
+        }
       });
+  };
+
+  onLogin = () => {
+    const { loginInfo } = this.state;
+
+    if (loginInfo) {
+      this.props.login(loginInfo);
+    }
   };
 
   render() {
@@ -66,6 +81,7 @@ class AccountCreate extends Component {
           <PersonaIdentity
             address={address}
             passphrase={passphrase}
+            onLogin={this.onLogin}
           />
         )
       },
@@ -74,7 +90,7 @@ class AccountCreate extends Component {
     return (
       <div className={classes.content}>
         <Grid container justify="center">
-          <Grid item xs={11} sm={10}>
+          <Grid item xs={11} sm={activeStep === 0 ? 7 : 10}>
             <Zoom top>
               <Paper elevation={12}>
                 <div className={classes.header}>
@@ -127,6 +143,7 @@ AccountCreate.propTypes = {
   confirmAccount: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   isLoading: PropTypes.any,
+  login: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       token: PropTypes.string,
@@ -141,6 +158,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   confirmAccount: (data) => dispatch(confirmAccount(data)),
+  login: (data) => dispatch(login(data)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)(AccountCreate);

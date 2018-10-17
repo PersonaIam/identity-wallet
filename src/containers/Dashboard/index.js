@@ -98,7 +98,7 @@ class Dashboard extends Component {
                       </Typography>
 
                       <Tooltip title={t('RELOAD')}>
-                        <IconButton mini color="secondary" onClick={() => getUserAttributes(userInfo.personaAddress)}>
+                        <IconButton color="secondary" onClick={() => getUserAttributes(userInfo.personaAddress)}>
                           <Reload  fontSize="small"/>
                         </IconButton>
                       </Tooltip>

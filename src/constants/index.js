@@ -23,3 +23,5 @@ export const ACCEPTED_FILE_TYPES = {
 };
 
 export const PERSONATOSHI_UNIT = Math.pow(10, 8); // 1 PERSONA has 100000000 "toshi"
+
+export const PERSONA_MAINNET_NAME = 'persona'; // used in helpers/personaservice to check if web accesses mainnet / testenv/ localnet

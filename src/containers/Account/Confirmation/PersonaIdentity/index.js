@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Info from 'mdi-material-ui/Information'
@@ -10,7 +11,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { translate } from 'react-i18next';
 import styles from './styles';
 
-const PersonaIdentity = ({ address, classes, passphrase, t }) => {
+const PersonaIdentity = ({ address, classes, onLogin, passphrase, t }) => {
   return (
     <div className={classes.identity}>
       <br />
@@ -70,6 +71,14 @@ const PersonaIdentity = ({ address, classes, passphrase, t }) => {
           </Typography>
         </li>
       </ul>
+
+      <br />
+
+      <div className="flex justify-center">
+        <Button onClick={onLogin} variant="raised" color="primary">
+          {t('ACCESS_APP')}
+        </Button>
+      </div>
     </div>
   );
 };
@@ -78,6 +87,7 @@ PersonaIdentity.propTypes = {
   address: PropTypes.string.isRequired,
   passphrase: PropTypes.string.isRequired,
   t: PropTypes.func.isRequired,
+  onLogin: PropTypes.func.isRequired,
 };
 
 const withTranslate = translate('common')(PersonaIdentity);

@@ -22,6 +22,10 @@ http.interceptors.response.use(
 blockchain.interceptors.response.use(
   (response) => {
     if (response.data && !response.data.success) {
+      if (response.data.error === 'Account not found') {
+        return response.data;
+      }
+
       return Promise.reject({message: response.data.error})
     }
 

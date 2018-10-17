@@ -19,8 +19,10 @@ import Reload from 'mdi-material-ui/Reload';
 import { getAttributeTypes, getUserAttributes, createUserAttribute } from 'actions/attributes';
 import { attributesConstants } from 'constants/attributes';
 import { AVAILABLE_DATA_TYPES } from 'helpers/getFormFieldsFromJSONConfig';
+import { dateToPersonaStamp } from 'helpers/personaService';
 import CardHeader from './CardHeader';
 import IdentityForm from './Form';
+import moment from 'moment';
 import Table from './Table';
 import styles from './styles';
 
@@ -71,6 +73,12 @@ class AccountIdentity extends Component {
       type: name,
       value: this.extractDataFromValues(values)
     };
+
+    if (values.expire_timestamp) {
+      const date = moment(values.expire_timestamp).valueOf();
+
+      attributeData.expire_timestamp = dateToPersonaStamp(date);
+    }
 
     const passphrase = values.passphrase;
 

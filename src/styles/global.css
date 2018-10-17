@@ -23,7 +23,7 @@ body {
 }
 
 .flex {
-  display: flex;
+  display: flex !important;
 }
 
 .justify-center {

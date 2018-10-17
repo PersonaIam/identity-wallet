@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { isLoggedIn, logout } from 'actions/auth';
 import { openSidenav, closeSidenav } from 'actions/global';
+import { getBlockchainAccount } from 'actions/blockchainAccount';
 import * as notificationActions from 'actions/notifications';
 import Layout from 'components/Layout';
 import Notification from 'components/Notification';
@@ -21,6 +22,15 @@ const styles = {
 };
 
 class App extends Component {
+
+  reloadAccount = () => {
+    const { userInfo, reloadAccount } = this.props;
+
+    if (userInfo && userInfo.personaAddress) {
+      reloadAccount(userInfo.personaAddress);
+    }
+  };
+
   render() {
     const { notification, onLogout, onNotificationClose, openSidenav, closeSidenav, sidenavOpened, userInfo } = this.props;
 
@@ -57,6 +67,7 @@ class App extends Component {
           sidenavOpened={sidenavOpened}
           openSidenav={openSidenav}
           closeSidenav={closeSidenav}
+          reloadAccount={this.reloadAccount}
         >
           { router }
         </Layout>
@@ -90,6 +101,7 @@ const mapDispatchToProps = (dispatch) => ({
   onLogout: () => dispatch(logout()),
   openSidenav: () => dispatch(openSidenav()),
   closeSidenav: () => dispatch(closeSidenav()),
+  reloadAccount: (address) => dispatch(getBlockchainAccount(address)),
 });
 
 const withRedux = connect(mapStateToProps, mapDispatchToProps)(App);

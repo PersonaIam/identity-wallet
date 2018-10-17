@@ -1,10 +1,11 @@
 /**
  * Created by vladtomsa on 09/10/2018
  */
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Field } from 'redux-form';
 import { RenderTextField, RenderDatePicker } from 'components/FormInputs';
 import FileUpload from 'components/FormInputs/FileUpload';
+import moment from 'moment';
 
 export const AVAILABLE_DATA_TYPES = {
   TEXT: 'text',
@@ -47,13 +48,36 @@ export const getFormFields = (fieldConfig) => {
       break;
   }
 
-  return (
-    <Field {...props} />
+  const formFields = (
+    <Fragment>
+      <Field {...props} />
+      {
+        options && options.expirable
+          ? (
+            <div>
+              <br />
+
+              <Field
+                label="EXPIRATION_DATE"
+                name="expire_timestamp"
+                component={RenderDatePicker}
+                minDate={moment().toDate()}
+                required
+              />
+            </div>
+          )
+          : null
+      }
+    </Fragment>
   );
+
+  return formFields;
 };
 
-export const validateField = (fieldConfig, value) => {
-  const { name, validation } = fieldConfig;
+export const validateField = (fieldConfig, values) => {
+  const { name, validation, options } = fieldConfig;
+  const value = values[name];
+  let errors = {};
   let error = null;
 
   if (validation) {
@@ -69,5 +93,15 @@ export const validateField = (fieldConfig, value) => {
     }
   }
 
-  return error;
+  if (error) {
+    errors[name] = error;
+  }
+
+  if (options && options.expirable) {
+    if (!values['expire_timestamp']) {
+      errors['expire_timestamp'] = 'expire_timestamp is required';
+    }
+  }
+
+  return errors;
 };

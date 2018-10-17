@@ -4,7 +4,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {withStyles} from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -17,7 +19,22 @@ import {attributesConstants} from 'constants/attributes';
 import FilePreview from './FilePreview';
 import PassphrasePromt from './PassphrasePromtForm';
 
+
+
 const PLAIN_DATA_TYPES = ['file'];
+
+const styles = (theme) => {
+  return {
+    valueContainer: {
+      '& button': {
+        letterSpacing: '1px !important',
+        '& *': {
+          color: theme.palette.text.secondary,
+        },
+      },
+    },
+  };
+};
 
 class IdentityValue extends Component {
   state = {
@@ -74,7 +91,7 @@ class IdentityValue extends Component {
   };
 
   render() {
-    const {attribute: {value, data_type}, deselectFileAttribute, isLoading, t} = this.props;
+    const {attribute: {value, data_type }, classes, deselectFileAttribute, isLoading, t} = this.props;
     const {decryptedValue, isDialogOpen} = this.state;
 
     if (!value) return null;
@@ -85,38 +102,57 @@ class IdentityValue extends Component {
 
     const isFileDownloading = isLoading === attributesConstants.ON_GET_FILE_ATTRIBUTE_INIT;
 
-    const textValue = decryptedValue && !isFile ? decryptedValue : value;
+    const toggleShowHide = () => {
+      this.setState(
+        { toDecrypt: value },
+        () => this.toggleValueView(),
+      )
+    };
 
     const showFilePreview = isFile && decryptedValue;
 
+    const DecryptTooltip = () => (
+      <div style={{ textAlign: 'justify' }}>
+        <p>{t('YOUR_THE_OWNER')}</p>
+        <p>{t('IN_ORDER_TO_VIEW_INFORMATION_PLEASE_DECRYPT')}</p>
+      </div>
+    );
+
     return (
-      <div className="flex space-between">
-        <div>
-          <Typography
-            component="p"
-            variant="body2"
-            style={{wordBreak: 'break-all', padding: '10px 0'}}
-          >
-            {textValue}
-          </Typography>
-        </div>
+      <div className={`flex space-between ${classes.valueContainer}`}>
+        {
+          decryptedValue && !isFile && (
+            <div>
+              <Typography
+                component="p"
+                variant="body2"
+                style={{wordBreak: 'break-all', padding: '10px 0'}}
+              >
+                {decryptedValue}
+              </Typography>
+            </div>
+          )
+        }
 
         {
           !isPlainTextAttributeOnBlockchain
             ? (
               <div>
-                <Tooltip title={t(decryptedValue ? 'HIDE' : 'SHOW_VALUE')}>
-                  <IconButton
-                    onClick={() => {
-                      this.setState(
-                        { toDecrypt: value },
-                        () => this.toggleValueView(),
-                      )
-                    }}
-                  >
-                    {decryptedValue ? <EyeOff/> : <Eye/>}
-                  </IconButton>
-                </Tooltip>
+                {
+                  decryptedValue
+                    ? (
+                      <IconButton onClick={toggleShowHide}>
+                        <EyeOff/>
+                      </IconButton>
+                    )
+                    : (
+                      <Tooltip title={<DecryptTooltip/>}>
+                        <Button size="small" color="inherit" onClick={toggleShowHide} style={{ marginTop: 6, marginLeft: -6 }}>
+                          <Eye />&nbsp;&nbsp;{t('SHOW_VALUE')}
+                        </Button>
+                      </Tooltip>
+                    )
+                }
               </div>
             )
             : null
@@ -125,23 +161,13 @@ class IdentityValue extends Component {
         {
           isFile
             ? (
-              <div>
+              <Button onClick={this.toggleDownloadFileAttribute} disabled={!!isFileDownloading} size="small" style={{ marginTop: 6, marginLeft: -6 }}>
                 {
                   isFileDownloading
-                    ? (
-                      <IconButton>
-                        <CircularProgress color="secondary" size={20}/>
-                      </IconButton>
-                    )
-                    : (
-                      <Tooltip title={t('DOWNLOAD')}>
-                        <IconButton onClick={this.toggleDownloadFileAttribute}>
-                          <FileDownload/>
-                        </IconButton>
-                      </Tooltip>
-                    )
-                }
-              </div>
+                    ? <CircularProgress color="secondary" size={20}/>
+                    : <FileDownload />
+                }&nbsp;&nbsp;{t('DOWNLOAD_AND_PREVIEW')}
+              </Button>
             )
             : null
         }
@@ -179,6 +205,7 @@ class IdentityValue extends Component {
 
 IdentityValue.propTypes = {
   attribute: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
   passphrase: PropTypes.any,
   t: PropTypes.func.isRequired,
 };
@@ -200,4 +227,4 @@ const mapDispatchToProps = (dispatch) => {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)(IdentityValue);
 
-export default withConnect;
+export default withStyles(styles)(withConnect);

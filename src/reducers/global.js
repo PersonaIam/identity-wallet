@@ -4,8 +4,8 @@
 import { globalConstants } from 'constants/global';
 
 const initialState = {
-  // passphrase: null,
-  passphrase: 'blade early broken display angry wine diary alley panda left spy woman',
+  passphrase: null,
+  // passphrase: 'bread inside hungry lunar equal nose culture engine injury jealous key goose',
   sidenavOpened: false,
 };
 

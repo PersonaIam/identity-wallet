@@ -35,7 +35,7 @@ const styles = (theme) => {
   };
 };
 
-const Layout = ({ children, classes, onLogout, t, userInfo, openSidenav, closeSidenav, sidenavOpened, width }) => {
+const Layout = ({ children, classes, onLogout, t, userInfo, openSidenav, closeSidenav, sidenavOpened, reloadAccount, width }) => {
   const isSmallDevice = width === 'xs' || width === 'sm';
 
   const toolbarStickyStyles = {
@@ -55,7 +55,7 @@ const Layout = ({ children, classes, onLogout, t, userInfo, openSidenav, closeSi
   return (
     <StickyContainer>
       <Grid container justify="center">
-        <Grid item xs={12} md={10} lg={9} xl={8}>
+        <Grid item xs={12} md={11} lg={10} xl={8}>
           <Sticky topOffset={isSmallDevice ? 0 : distanceFromTop}>
             {
               ({ style }) => {
@@ -102,7 +102,11 @@ const Layout = ({ children, classes, onLogout, t, userInfo, openSidenav, closeSi
               {
                 userInfo && userInfo.userBlockchainAccount
                   ? (
-                    <AccountDetails accountInfo={userInfo.userBlockchainAccount } t={t}/>
+                    <AccountDetails
+                      userInfo={userInfo}
+                      t={t}
+                      reloadAccount={reloadAccount}
+                    />
                   )
                   : null
               }
@@ -125,6 +129,7 @@ Layout.propTypes = {
   sidenavOpened: PropTypes.bool,
   openSidenav: PropTypes.func.isRequired,
   closeSidenav: PropTypes.func.isRequired,
+  reloadAccount: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
 };
 

@@ -3,6 +3,7 @@
  */
 import { blockchain } from 'config/http';
 import { attributesConstants } from 'constants/attributes';
+import { getBlockchainAccount } from './blockchainAccount';
 import { onNotificationErrorInit, onNotificationSuccessInit } from './notifications';
 import { getPublicKey } from 'helpers/personaService';
 import moment from 'moment';
@@ -125,6 +126,7 @@ const waitForUserAttributes = (address) => async (dispatch) => {
   await timeout(10 * 1000); // await forging block
 
   dispatch(getUserAttributes(address));
+  dispatch(getBlockchainAccount(address));
 };
 
 const getAttributeTypesInit = () => ({ type: attributesConstants.ON_GET_ATTRIBUTE_TYPES_INIT });

@@ -2,13 +2,13 @@
 const API_URLS = {
   localnet: 'http://localhost:8000',
   testnet: 'http://localhost:8000',
-  mainnet: 'http://localhost:8000',
+  persona: 'http://localhost:8000',
 };
 
 const PERSONA_URLS = {
   localnet: 'http://localhost:4100',
   testnet: 'http://localhost:4100',
-  mainnet: 'http://localhost:4100',
+  persona: 'http://localhost:4100',
 };
 
 const fs = require('fs');
