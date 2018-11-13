@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -105,7 +107,10 @@ class FileUpload extends Component {
   };
 
   render() {
-    const { classes, t, disabled, multiple, maxSize, accept, message = 'DROP_FILES_HERE', icon, input: { value } } = this.props;
+    const {
+      classes, t, disabled, multiple, maxSize, accept, message = 'DROP_FILES_HERE',
+      icon, input: { value }, meta: { touched, error },
+    } = this.props;
     const { isLoading } = this.state;
 
     return (
@@ -135,8 +140,6 @@ class FileUpload extends Component {
               { t(message) }
             </Typography>
 
-
-
             {
               maxSize && (
                 <Typography
@@ -149,6 +152,10 @@ class FileUpload extends Component {
             }
           </Paper>
         </Dropzone>
+
+        <FormControl error={!!(touched  && error)} fullWidth>
+          { touched && error ? <FormHelperText>{ t(error) }</FormHelperText> : null }
+        </FormControl>
 
         {
           value && value.length
@@ -176,7 +183,6 @@ class FileUpload extends Component {
               </div>
             )
             : null
-
         }
       </div>
     );

@@ -62,6 +62,7 @@ export const getFormFields = (fieldConfig) => {
                 name="expire_timestamp"
                 component={RenderDatePicker}
                 minDate={moment().toDate()}
+                autoComplete="new-password"
                 required
               />
             </div>

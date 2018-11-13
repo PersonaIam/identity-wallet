@@ -19,6 +19,14 @@ const themeOverrides = {
         background: `linear-gradient(45deg, #01A9EE, #01579B)`,
       }
     },
+    raisedSecondary: {
+      color: '#FFFFFF',
+    },
+  },
+  MuiTab: {
+    root:{
+      textTransform: 'none',
+    },
   },
 };
 

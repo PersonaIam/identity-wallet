@@ -7,9 +7,9 @@ import {connect} from 'react-redux';
 import {withStyles} from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Edit from 'mdi-material-ui/Pencil';
 import Eye from 'mdi-material-ui/Eye';
 import EyeOff from 'mdi-material-ui/EyeOff';
 import FileDownload from 'mdi-material-ui/CloudDownload';
@@ -18,8 +18,6 @@ import {getFileAttribute, deselectFileAttribute} from 'actions/attributes';
 import {attributesConstants} from 'constants/attributes';
 import FilePreview from './FilePreview';
 import PassphrasePromt from './PassphrasePromtForm';
-
-
 
 const PLAIN_DATA_TYPES = ['file'];
 
@@ -33,10 +31,15 @@ const styles = (theme) => {
         },
       },
     },
+    editButton: {
+      '& *': {
+        color: `${theme.palette.secondary.main} !important`
+      }
+    },
   };
 };
 
-class IdentityValue extends Component {
+class Index extends Component {
   state = {
     isDialogOpen: null,
     toDecrypt: null,
@@ -77,7 +80,7 @@ class IdentityValue extends Component {
   };
 
   toggleDownloadFileAttribute = () => {
-    const {attribute: {value}, getFileAttribute} = this.props;
+    const {attribute: { value }, getFileAttribute} = this.props;
 
     getFileAttribute(value)
       .then((fileData) => {
@@ -90,9 +93,24 @@ class IdentityValue extends Component {
       });
   };
 
+  getFileValueForEdit = (attribute, value) => {
+    const { name } = attribute;
+    const fileInfo = value.split(';');
+    const fileType = fileInfo[0];
+
+    return [
+      {
+        fileData: value,
+        fileName: name,
+        fileType,
+      }
+    ];
+  };
+
   render() {
-    const {attribute: {value, data_type }, classes, deselectFileAttribute, isLoading, t} = this.props;
+    const {attribute, classes, deselectFileAttribute, isLoading, onEdit, onAttributeValidateRequest, t} = this.props;
     const {decryptedValue, isDialogOpen} = this.state;
+    const { value, data_type } = attribute;
 
     if (!value) return null;
 
@@ -119,14 +137,14 @@ class IdentityValue extends Component {
     );
 
     return (
-      <div className={`flex space-between ${classes.valueContainer}`}>
+      <div className={`${classes.valueContainer}`}>
         {
           decryptedValue && !isFile && (
             <div>
               <Typography
                 component="p"
-                variant="body2"
-                style={{wordBreak: 'break-all', padding: '10px 0'}}
+                variant="display1"
+                style={{wordBreak: 'break-all', padding: '2px 0', marginBottom: 14, }}
               >
                 {decryptedValue}
               </Typography>
@@ -141,16 +159,52 @@ class IdentityValue extends Component {
                 {
                   decryptedValue
                     ? (
-                      <IconButton onClick={toggleShowHide}>
-                        <EyeOff/>
-                      </IconButton>
+                      <div className="flex wrap-content">
+                        <Button
+                          size="small"
+                          color="inherit"
+                          variant="outlined"
+                          onClick={toggleShowHide}
+                          style={{ marginBottom: 6 }}
+                        >
+                          <EyeOff />&nbsp;&nbsp;{t('HIDE_VALUE')}
+                        </Button>
+                        &nbsp;&nbsp;
+                        <Button
+                          size="small"
+                          color="secondary"
+                          variant="outlined"
+                          onClick={
+                            () => {
+                              onEdit({ ...attribute, value: decryptedValue })
+                              toggleShowHide();
+                            }
+                          }
+                          style={{ marginBottom: 6 }}
+                          className={classes.editButton}
+                        >
+                          <Edit />&nbsp;&nbsp;{t('EDIT')}&nbsp;
+                        </Button>
+
+                      </div>
                     )
                     : (
-                      <Tooltip title={<DecryptTooltip/>}>
-                        <Button size="small" color="inherit" onClick={toggleShowHide} style={{ marginTop: 6, marginLeft: -6 }}>
-                          <Eye />&nbsp;&nbsp;{t('SHOW_VALUE')}
+                      <div className="flex wrap-content">
+                        <Tooltip title={<DecryptTooltip/>}>
+                          <Button size="small" variant="outlined" color="inherit" onClick={toggleShowHide}>
+                            <Eye />&nbsp;&nbsp;{t('SHOW_VALUE')}
+                          </Button>
+                        </Tooltip>
+                        &nbsp;&nbsp;
+                        <Button
+                          onClick={() => onAttributeValidateRequest(attribute)}
+                          variant="outlined"
+                          color="secondary"
+                          className={classes.editButton}
+                        >
+                          { t('VALIDATE_ATTRIBUTE') }
                         </Button>
-                      </Tooltip>
+                      </div>
                     )
                 }
               </div>
@@ -161,13 +215,26 @@ class IdentityValue extends Component {
         {
           isFile
             ? (
-              <Button onClick={this.toggleDownloadFileAttribute} disabled={!!isFileDownloading} size="small" style={{ marginTop: 6, marginLeft: -6 }}>
-                {
-                  isFileDownloading
-                    ? <CircularProgress color="secondary" size={20}/>
-                    : <FileDownload />
-                }&nbsp;&nbsp;{t('DOWNLOAD_AND_PREVIEW')}
-              </Button>
+              <div className="flex wrap-content">
+                <Button onClick={this.toggleDownloadFileAttribute} disabled={!!isFileDownloading} size="small">
+                  {
+                    isFileDownloading
+                      ? <CircularProgress color="secondary" size={20}/>
+                      : <FileDownload />
+                  }
+                  &nbsp;&nbsp;
+                  {t('DOWNLOAD_AND_PREVIEW')}
+                </Button>
+                &nbsp;&nbsp;
+                <Button
+                  onClick={() => onAttributeValidateRequest(attribute)}
+                  variant="outlined"
+                  color="secondary"
+                  className={classes.editButton}
+                >
+                  { t('VALIDATE_ATTRIBUTE') }
+                </Button>
+              </div>
             )
             : null
         }
@@ -193,6 +260,10 @@ class IdentityValue extends Component {
                   this.toggleDecryptedValue(null);
                   deselectFileAttribute();
                 }}
+                onEdit={() => {
+                  onEdit({ ...attribute, value: this.getFileValueForEdit(attribute, decryptedValue) });
+                  toggleShowHide();
+                }}
                 t={t}
               />
             )
@@ -203,10 +274,12 @@ class IdentityValue extends Component {
   }
 }
 
-IdentityValue.propTypes = {
+Index.propTypes = {
   attribute: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   passphrase: PropTypes.any,
+  onEdit: PropTypes.any,
+  onAttributeValidateRequest: PropTypes.any,
   t: PropTypes.func.isRequired,
 };
 
@@ -225,6 +298,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps)(IdentityValue);
+const withConnect = connect(mapStateToProps, mapDispatchToProps)(Index);
 
 export default withStyles(styles)(withConnect);

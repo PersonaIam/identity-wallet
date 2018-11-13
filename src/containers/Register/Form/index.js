@@ -3,34 +3,77 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { Field, FormSection, reduxForm, formValueSelector } from 'redux-form';
 import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
-
+import withWidth from '@material-ui/core/withWidth';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Account from 'mdi-material-ui/Account';
+import City from 'mdi-material-ui/City';
+import Earth from 'mdi-material-ui/Earth';
 import Email from 'mdi-material-ui/At';
-import { RenderTextField } from 'components/FormInputs';
+import MapMarker from 'mdi-material-ui/MapMarker';
+import MapMarkerRadius from 'mdi-material-ui/MapMarkerRadius';
+import Phone from 'mdi-material-ui/Phone';
+import Zoom from 'react-reveal/Zoom';
+import { USER_ROLES } from 'constants/index';
+import { RenderTextField, RenderSelectField } from 'components/FormInputs';
 import RecaptchaField from 'components/FormInputs/Recaptcha';
+import UserRoleToggle from './UserRoleToggle';
 
 import styles from './styles';
 
 const emailRegex = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
 const validate = (values) => {
-  const errors = {};
+  const errors = {
+    contactInfo: {},
+  };
 
   if (!values.username) errors.username = 'USERNAME_REQUIRED';
 
-  if (!values.email) {
-    errors.email = 'EMAIL_REQUIRED';
-  } else if (
-    !emailRegex.test(values.email)
-  ) {
-    errors.email = 'INVALID_EMAIL';
+  if (values.contactInfo) {
+    if (!values.contactInfo.email) {
+      errors.contactInfo.email = 'EMAIL_REQUIRED';
+    } else if (
+      !emailRegex.test(values.contactInfo.email)
+    ) {
+      errors.contactInfo.email = 'INVALID_EMAIL';
+    }
+
+    if (values.userRoleId === USER_ROLES.NOTARY) {
+      if (!values.contactInfo.firstName) {
+        errors.contactInfo.firstName = 'FIRST_NAME_REQUIRED';
+      }
+
+      if (!values.contactInfo.lastName) {
+        errors.contactInfo.lastName = 'LAST_NAME_REQUIRED';
+      }
+
+      if (!values.contactInfo.address) {
+        errors.contactInfo.address = 'ADDRESS_REQUIRED';
+      }
+
+      if (!values.contactInfo.city) {
+        errors.contactInfo.city = 'CITY_REQUIRED';
+      }
+
+      if (!values.contactInfo.zipCode) {
+        errors.contactInfo.zipCode = 'ZIP_CODE_REQUIRED';
+      }
+
+      if (!values.contactInfo.countryId) {
+        errors.contactInfo.countryId = 'COUNTRY_REQUIRED';
+      }
+    }
+  }
+  else {
+    errors.contactInfo.email = 'EMAIL_REQUIRED';
   }
 
   if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
@@ -40,81 +83,262 @@ const validate = (values) => {
 
 class RegisterForm extends Component {
   render() {
-    const { classes, handleSubmit, t } = this.props;
+    const { classes, countries, handleSubmit, t, userRoleId, width } = this.props;
 
-    return (
-      <form className={classes.modalWrapper} onSubmit={handleSubmit}>
+    const isSmallDevice = width === 'xs';
+
+    const shouldRotate = userRoleId === USER_ROLES.NOTARY && !isSmallDevice;
+
+    const contactInfoSection = (
+      <div
+        className={classes.modalWrapper}
+        style={ shouldRotate ? { transform: 'rotate(1deg)' } : {} }
+      >
         <div>
           <Paper elevation={12}>
-            <Paper className={`${classes.header} text-center`}>
+            <Paper className={`${classes.header} ${classes.contactHeader} text-center`}>
               <div className="content">
-                <Typography component="h4">{ t('REGISTER') }</Typography>
+                <Typography component="h4">{ t('CONTACT_INFO') }</Typography>
               </div>
             </Paper>
 
-            <div className={classes.formContent}>
-              <Field
-                name="username"
-                component={ RenderTextField }
-                placeholder={t('USERNAME')}
-                required
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Account />
-                  </InputAdornment>
-                }
-              />
-              <br />
-              <br />
-              <Field
-                name="email"
-                component={ RenderTextField }
-                type="email"
-                placeholder={t('EMAIL')}
-                required
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Email />
-                  </InputAdornment>
-                }
-              />
-              <br />
-              <br />
-              <br />
-
-              <div className="flex justify-center">
+            <FormSection name="contactInfo">
+              <div className={classes.formContent}>
                 <Field
-                  name="isCaptchaVerified"
-                  component={ RecaptchaField }
+                  name="firstName"
+                  component={ RenderTextField }
+                  placeholder={t('FIRST_NAME')}
+                  required
+                  endAdornment={
+                    <InputAdornment position="start">
+                      <Account />
+                    </InputAdornment>
+                  }
+                />
+                <br />
+                <br />
+                <Field
+                  name="lastName"
+                  component={ RenderTextField }
+                  placeholder={t('LAST_NAME')}
+                  required
+                  endAdornment={
+                    <InputAdornment position="start">
+                      <Account />
+                    </InputAdornment>
+                  }
+                />
+                <br />
+                <br />
+                <Field
+                  name="phoneNumber"
+                  component={ RenderTextField }
+                  placeholder={t('PHONE_NUMBER')}
+                  endAdornment={
+                    <InputAdornment position="start">
+                      <Phone />
+                    </InputAdornment>
+                  }
+                />
+                <br />
+                <br />
+                <Field
+                  name="address"
+                  component={ RenderTextField }
+                  placeholder={t('ADDRESS')}
+                  multiline
+                  rows={3}
+                  rowsMax={4}
+                  endAdornment={
+                    <InputAdornment position="start">
+                      <MapMarker />
+                    </InputAdornment>
+                  }
+                />
+
+                <br />
+                <br />
+                <Field
+                  name="city"
+                  component={ RenderTextField }
+                  placeholder={t('CITY')}
+                  endAdornment={
+                    <InputAdornment position="start">
+                      <City />
+                    </InputAdornment>
+                  }
+                />
+                <br />
+                <br />
+                <Field
+                  name="zipCode"
+                  component={ RenderTextField }
+                  placeholder={t('ZIP_CODE')}
+                  endAdornment={
+                    <InputAdornment position="start">
+                      <MapMarkerRadius />
+                    </InputAdornment>
+                  }
+                />
+                <br />
+                <br />
+                <Field
+                  name="countryId"
+                  component={ RenderSelectField }
+                  label={t('COUNTRY')}
+                  options={countries}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <Earth style={{ marginRight: 8 }} />
+                    </InputAdornment>
+                  }
                 />
               </div>
+            </FormSection>
 
-            </div>
-
-            <div className="flex justify-center wrap-content">
-              <Button variant="raised" color="primary" type="submit" className={`flex align-center ${classes.submitButton}`}>
-                { t('REGISTER') }
-              </Button>
-            </div>
             <br />
           </Paper>
         </div>
+      </div>
+    );
+
+    return (
+      <form onSubmit={handleSubmit} noValidate>
+        <Grid container justify="center" spacing={16}>
+          <Grid item xs={11} sm={6} md={5} lg={4}>
+            <div
+              className={classes.modalWrapper}
+              style={ shouldRotate ? { transform: 'rotate(-1deg)' } : {} }
+            >
+              <div>
+                <Paper elevation={12}>
+                  <Paper className={`${classes.header} text-center`}>
+                    <div className="content">
+                      <Typography component="h4">{ t('REGISTER') }</Typography>
+                    </div>
+                  </Paper>
+
+                  <div className={classes.formContent}>
+                    <Field
+                      name="username"
+                      component={ RenderTextField }
+                      placeholder={t('USERNAME')}
+                      required
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <Account />
+                        </InputAdornment>
+                      }
+                    />
+                    <br />
+                    <br />
+                    <FormSection name="contactInfo">
+                      <Field
+                        name="email"
+                        component={ RenderTextField }
+                        type="email"
+                        placeholder={t('EMAIL')}
+                        required
+                        startAdornment={
+                          <InputAdornment position="start">
+                            <Email />
+                          </InputAdornment>
+                        }
+                      />
+                    </FormSection>
+                    <br />
+                    <br />
+                    <Field
+                      name="userRoleId"
+                      component={ UserRoleToggle }
+                      label="BECOME_PERSONA_NOTARY"
+                      t={t}
+                    />
+
+                    <br />
+
+                    {
+                      userRoleId === USER_ROLES.NOTARY && isSmallDevice
+                        ? (
+                          <div>
+                            <br />
+                            <br />
+                            <br />
+                            <Zoom top>
+                              { contactInfoSection }
+                            </Zoom>
+
+                            <br />
+                            <br />
+                          </div>
+                        )
+                        : null
+                    }
+
+                    <div className="flex justify-center">
+                      <Field
+                        name="isCaptchaVerified"
+                        component={ RecaptchaField }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center wrap-content">
+                    <Button variant="raised" color="primary" type="submit" className={`flex align-center ${classes.submitButton}`}>
+                      { t('REGISTER') }
+                    </Button>
+                  </div>
+                  <br />
+                </Paper>
+              </div>
+            </div>
+          </Grid>
+
+          {
+            userRoleId === USER_ROLES.NOTARY && !isSmallDevice
+              ? (
+                <Grid item xs={11} sm={6} md={5} lg={4}>
+                  <Zoom top>
+                    { contactInfoSection }
+                  </Zoom>
+                </Grid>
+              )
+              : null
+          }
+        </Grid>
       </form>
-    )
+    );
   }
 }
 
 RegisterForm.propTypes = {
   classes: PropTypes.object.isRequired,
+  countries: PropTypes.array.isRequired,
   onSubmit: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
+  userRoleId: PropTypes.any,
+  width: PropTypes.string.isRequired,
 };
 
-const withTranslate = translate('common')(RegisterForm);
+
+const selector = formValueSelector('RegisterForm');
+
+const mapStateToProps = (state) => {
+  return {
+    countries: state.global.countries.map(c => ({ name: c.name, value: c.id })),
+    userRoleId: selector(state, 'userRoleId'),
+  };
+};
+
+const withConnect = connect(mapStateToProps)(RegisterForm);
+
+const withTranslate = translate('common')(withConnect);
 
 const withStyle = withStyles(styles)(withTranslate);
+
+const withable = withWidth()(withStyle);
 
 export default reduxForm({
   form: 'RegisterForm',
   validate,
-})(withStyle);
+})(withable);

@@ -19,6 +19,11 @@ const styles = () => {
     accountDetails: {
       marginLeft: 16,
     },
+    accountButton: {
+      '& *': {
+        color: '#FFFFFF',
+      },
+    },
   };
 };
 

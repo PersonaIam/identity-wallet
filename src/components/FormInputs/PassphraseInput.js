@@ -58,7 +58,6 @@ class PassphraseInput extends Component {
       }
     };
 
-
     return (
       <div>
         <RenderTextField {...reduxFormProps} onChange={onInputChange}/>

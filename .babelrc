@@ -1,8 +1,38 @@
 {
-  "presets": ["react", "stage-0"],
   "plugins": [
+    "syntax-dynamic-import",
+    "transform-runtime",
+    "transform-decorators-legacy",
+    "dynamic-import-node",
     ["module-resolver", {
       "root": ["./src"]
     }]
-  ]
+  ],
+  "presets": [
+    [
+      "es2015",
+      {
+        "modules": false
+      }
+    ],
+    "react",
+    "stage-0"
+  ],
+  "env": {
+    "start": {
+      "presets": ["react", "stage-0"]
+    },
+    "test": {
+      "presets": [
+        "es2015",
+        "react",
+        "stage-0"
+      ],
+      "plugins": [
+        ["module-resolver", {
+          "root": ["./src"]
+        }]
+      ]
+    }
+  }
 }

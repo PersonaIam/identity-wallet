@@ -1,6 +1,7 @@
 import Loadable from 'react-loadable';
 import Loading from 'components/Loading';
 import AccountDetailsIcon from 'mdi-material-ui/AccountCardDetails';
+import AccountGroup from 'mdi-material-ui/AccountGroup';
 import DashboardIcon from 'mdi-material-ui/ViewDashboard';
 
 const AccountCreate = Loadable({
@@ -25,6 +26,16 @@ const Identity = Loadable({
 
 const Login = Loadable({
   loader: () => import('containers/Login'),
+  loading: Loading,
+});
+
+const Notaries = Loadable({
+  loader: () => import('containers/Notaries'),
+  loading: Loading,
+});
+
+const Profile = Loadable({
+  loader: () => import('containers/Account/Profile'),
   loading: Loading,
 });
 
@@ -71,6 +82,20 @@ const routes =  [
     isAvailable: isLoggedIn,
     showInMenu: true,
     icon: AccountDetailsIcon,
+  },
+  {
+    path: '/notaries',
+    exact: true,
+    component: Notaries,
+    isAvailable: isLoggedIn,
+    showInMenu: true,
+    icon: AccountGroup,
+  },
+  {
+    path: '/profile',
+    exact: true,
+    component: Profile,
+    isAvailable: isLoggedIn,
   },
   {
     path: '/',

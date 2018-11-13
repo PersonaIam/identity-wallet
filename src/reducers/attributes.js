@@ -20,6 +20,8 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, isLoading: attributesConstants.ON_GET_USER_ATTRIBUTES_INIT };
     case (attributesConstants.ON_GET_FILE_ATTRIBUTE_INIT):
       return { ...state, isLoading: attributesConstants.ON_GET_FILE_ATTRIBUTE_INIT };
+    case (attributesConstants.ON_CREATE_VALIDATION_REQUEST_INIT):
+      return { ...state, isLoading: attributesConstants.ON_CREATE_VALIDATION_REQUEST_INIT };
     case (attributesConstants.ON_GET_ATTRIBUTE_TYPES_SUCCESS):
       return { ...state, isLoading: null, attributeTypes: payload };
     case (attributesConstants.ON_GET_USER_ATTRIBUTES_SUCCESS):
@@ -31,6 +33,8 @@ export default (state = initialState, { type, payload }) => {
     case (attributesConstants.ON_GET_ATTRIBUTE_TYPES_FAILURE):
     case (attributesConstants.ON_GET_USER_ATTRIBUTES_FAILURE):
     case (attributesConstants.ON_GET_FILE_ATTRIBUTE_FAILURE):
+    case (attributesConstants.ON_CREATE_VALIDATION_REQUEST_SUCCESS):
+    case (attributesConstants.ON_CREATE_VALIDATION_REQUEST_FAILURE):
       return { ...state, isLoading: null };
     default:
       return state;

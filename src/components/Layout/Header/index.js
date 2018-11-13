@@ -1,49 +1,37 @@
 /**
  * Created by vladtomsa on 26/09/2018
  */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Collapse from '@material-ui/core/Collapse';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import Popover from '@material-ui/core/Popover';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
-import Account from 'mdi-material-ui/Account';
-import Exit from 'mdi-material-ui/ExitToApp';
 import Menu from 'mdi-material-ui/Menu';
 import LanguageToggle from 'components/LanguageToggle';
-import styles from './styles';
+import styles, { toolbarMarginTop } from './styles';
+import Notifications from './Notifications';
+import UserMenu from './UserMenu';
 
-class Header extends Component {
-  state = {
-    anchorEl: null,
-  };
 
-  togglePopover = (target) => this.setState({ anchorEl: target });
+export class Header extends Component {
 
   render() {
-    const { classes, onLogout, t, userInfo, openSidenav } = this.props;
-    const { anchorEl } = this.state;
-
-    const userMenuOpen = Boolean(anchorEl);
+    const { classes, isFixed, onLogout, openSidenav, t, userInfo } = this.props;
 
     return (
-      <div>
-        <AppBar position="static" className={classes.appBar}>
+      <Fragment>
+        <AppBar position="static" className={classes.appBar} style={{ marginTop: `${isFixed ? 0 : toolbarMarginTop}px` }}>
           <Toolbar variant="regular" className={classes.toolbar}>
             <div className={classes.logo}>
               <Hidden mdUp>
-                <IconButton onClick={openSidenav}>
+                <IconButton
+                  data-test-id="sidenav-menu"
+                  onClick={openSidenav}
+                >
                   <Menu />
                 </IconButton>
               </Hidden>
@@ -55,59 +43,36 @@ class Header extends Component {
             <span className="fill-flex">&nbsp;</span>
 
             {
-              userInfo && userInfo
+              !!userInfo
                 ? [
-                  <IconButton
-                    key="userMenuToggle"
-                    className={classes.userMenuToggle}
-                    onClick={(ev) => this.togglePopover(ev.currentTarget)}
-                    onMouseEnter={(ev) => this.togglePopover(ev.currentTarget)}
-                  >
-                    <Account />
-                  </IconButton>,
-                  <Popover
-                    key="userMenu"
-                    open={userMenuOpen}
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'left',
-                    }}
-                    disableRestoreFocus
-                  >
-                    <Collapse in={userMenuOpen}>
-                      <ClickAwayListener onClickAway={() => this.togglePopover(null)}>
-                        <MenuList>
-                          <MenuItem
-                            onClick={() => {
-                              this.togglePopover(null);
-                              onLogout();
-                            }}
-                          >
-                            <ListItemIcon>
-                              <Exit />
-                            </ListItemIcon>
-                            <ListItemText inset primary={t('LOGOUT')} />
-                          </MenuItem>
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Collapse>
-                  </Popover>
+                  <UserMenu
+                    key="user-menu"
+                    data-test-id="user-menu"
+                    t={t}
+                    userInfo={userInfo}
+                    onLogout={onLogout}
+                  />,
+
+                  <Notifications
+                    key="notifications"
+                    data-test-id="notifications"
+                    t={t}
+                    userInfo={userInfo}
+                  />,
                 ]
                 : [
                   <Button
                     key="login"
+                    data-test-id="login"
                     component={Link}
                     to="/login"
                   >
                     { t('LOGIN') }
                   </Button>,
+
                   <Button
                     key="register"
+                    data-test-id="register"
                     component={Link}
                     to="/register"
                   >
@@ -116,23 +81,23 @@ class Header extends Component {
                 ]
             }
             &nbsp;&nbsp;
-            <LanguageToggle />
+            <LanguageToggle data-test-id="language-toggle"/>
           </Toolbar>
         </AppBar>
-      </div>
+      </Fragment>
     );
   }
 }
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
+  isFixed: PropTypes.bool,
   onLogout: PropTypes.func.isRequired,
   openSidenav: PropTypes.func.isRequired,
   userInfo: PropTypes.any,
+  t: PropTypes.func.isRequired,
 };
 
 const withStyle = withStyles(styles)(Header);
 
-const withTranslate = translate('common')(withStyle);
-
-export default withTranslate;
+export default withStyle;

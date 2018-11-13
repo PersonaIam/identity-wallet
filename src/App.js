@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { isLoggedIn, logout } from 'actions/auth';
-import { openSidenav, closeSidenav } from 'actions/global';
+import { openSidenav, closeSidenav, getCountries } from 'actions/global';
 import { getBlockchainAccount } from 'actions/blockchainAccount';
 import * as notificationActions from 'actions/notifications';
 import Layout from 'components/Layout';
@@ -77,15 +77,17 @@ class App extends Component {
 
   componentDidMount() {
     this.props.checkIsLoggedIn();
+    this.props.getCountries();
   }
 }
 
 const mapStateToProps = (state) => {
-  const { auth, blockchainAccount: { userBlockchainAccount } } = state;
+  const { auth, attributes, blockchainAccount: { userBlockchainAccount } } = state;
+  const userAttributes = attributes && attributes.userAttributes ? attributes.userAttributes : [];
   let userInfo = auth.userInfo;
 
   if (userInfo){
-    userInfo = { ...userInfo, userBlockchainAccount };
+    userInfo = { ...userInfo, userBlockchainAccount, userAttributes };
   }
 
   return {
@@ -102,6 +104,7 @@ const mapDispatchToProps = (dispatch) => ({
   openSidenav: () => dispatch(openSidenav()),
   closeSidenav: () => dispatch(closeSidenav()),
   reloadAccount: (address) => dispatch(getBlockchainAccount(address)),
+  getCountries: () => dispatch(getCountries()),
 });
 
 const withRedux = connect(mapStateToProps, mapDispatchToProps)(App);

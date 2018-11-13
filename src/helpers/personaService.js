@@ -1,9 +1,16 @@
 /**
  * Created by vladtomsa on 11/10/2018
  */
-import { PERSONATOSHI_UNIT, PERSONA_MAINNET_NAME } from 'constants';
+import {
+  PERSONATOSHI_UNIT,
+  PERSONA_MAINNET_NAME,
+  DAYS_BEFORE_EXPIRATION_NOTIFICATION,
+  ATTRIBUTE_EXPIRATIONS_STATES,
+} from 'constants';
 import personajs from 'personajs';
 import bip39 from 'bip39';
+import moment from "moment/moment";
+import {DATE_FORMAT} from "../constants";
 
 export const getNetwork = () => {
   return personajs.networks[PERSONA_ENV];
@@ -28,6 +35,24 @@ export const personaStampToDate = (time) => {
   const getTimeFunc = isMainnet() ? getRealTime : getRealTimeTestNet;
 
   return getTimeFunc(time);
+};
+
+export const getAttributeExpirationStatusAndRemainingDays = (time) => {
+  const expireDate = moment(personaStampToDate(time));
+  const remainingDays = expireDate.diff(moment(), 'days') + 1;
+  let expirationStatus = ATTRIBUTE_EXPIRATIONS_STATES.AVAILABLE;
+
+  if (remainingDays < 0) {
+    expirationStatus = ATTRIBUTE_EXPIRATIONS_STATES.EXPIRED
+  }
+  else if (remainingDays < DAYS_BEFORE_EXPIRATION_NOTIFICATION) {
+    expirationStatus = ATTRIBUTE_EXPIRATIONS_STATES.WILL_EXPIRE;
+  }
+
+  return {
+    expirationStatus,
+    remainingDays,
+  };
 };
 
 export const getToken = () => {

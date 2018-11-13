@@ -10,7 +10,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import withWidth from '@material-ui/core/withWidth';
-import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import { getMenuRoutes } from 'config/routes';
 import styles from './styles';
@@ -71,6 +70,4 @@ Sidenav.propTypes = {
 
 const wWith = withWidth()(Sidenav);
 
-const withTranslate = translate('common')(wWith);
-
-export default withStyles(styles)(withTranslate);
+export default withStyles(styles)(wWith);

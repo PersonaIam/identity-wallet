@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 // import Loadable from 'react-loadable';
 // import Loading from 'components/Loading';
 
@@ -32,7 +32,7 @@ import {translate} from 'react-i18next';
 export const RenderTextField = translate('common')((props) => {
   const { input, label, meta: { touched, error }, displayErrorWhenNotTouched, required, i18n, t, tReady, ...custom} = props;
 
-  const inputProps = {};
+  const inputProps = { required: !!required };
 
   if (custom.minLength) inputProps.maxLength = custom.minLength;
   if (custom.maxLength) inputProps.maxLength = custom.maxLength;
@@ -40,7 +40,7 @@ export const RenderTextField = translate('common')((props) => {
   if (custom.max) inputProps.max = custom.max;
 
   return (
-    <FormControl error={!!((touched || displayErrorWhenNotTouched) && error)} fullWidth>
+    <FormControl required={!!required} error={!!((touched || displayErrorWhenNotTouched) && error)} fullWidth>
       {
         label ? <InputLabel required={required}>{t(label)}</InputLabel> : null
       }
@@ -58,42 +58,60 @@ const styles = {
   },
 };
 
-export const RenderSelectField = withStyles(styles)(
-  translate('common')(({ input, label, meta, required, options, disabled, displayErrorWhenNotTouched, t, tReady, classes, hideNoneOption, ...custom }) => {
-    const  { touched, error } = meta;
-    return (
-      <FormControl disabled={disabled} error={!!((touched || displayErrorWhenNotTouched) && error)} fullWidth>
-        <InputLabel required={required}>{t(label)}</InputLabel>
-        <Select
-          { ...input }
-          { ...custom }
-          MenuProps={{
-            onEnter: () => {
-              setTimeout(() => {
-                if (document.activeElement) {
-                  document.activeElement.blur();
-                }
-              }, 500);
-            }
-          }}
-        >
-          {
-            hideNoneOption
-              ? null
-              : (
-                <MenuItem value="">
-                  <em>{ t('None') }</em>
-                </MenuItem>
-              )
-          }
-          { options.map((option, index) => (<MenuItem key={index} value={option.value}>{t(option.name)}</MenuItem>)) }
-        </Select>
+export const RenderSelectField = withStyles(styles)
+  (translate('common')(
 
-        { !!((touched || displayErrorWhenNotTouched) && error) ? <FormHelperText>{ t(error) }</FormHelperText> : null }
-      </FormControl>
-    );
-  })
-);
+    class extends Component {
+      state = {
+        searchTerm: '',
+      };
+
+      render() {
+        const {input, label, meta, required, options, disabled, displayErrorWhenNotTouched, t, tReady, classes, hideNoneOption, ...custom} = this.props;
+        const {touched, error} = meta;
+
+        return (
+          <FormControl disabled={disabled} error={!!((touched || displayErrorWhenNotTouched) && error)} fullWidth>
+            <InputLabel required={required}>{t(label)}</InputLabel>
+            <Select
+              {...input}
+              {...custom}
+              MenuProps={{
+                onEnter: () => {
+                  setTimeout(() => {
+                    if (document.activeElement) {
+                      document.activeElement.blur();
+                    }
+                  }, 500);
+                },
+              }}
+            >
+              {
+                hideNoneOption
+                  ? null
+                  : (
+                    <MenuItem value="">
+                      <em>{t('None')}</em>
+                    </MenuItem>
+                  )
+              }
+              {
+                options
+                  .map((option, index) => (
+                    <MenuItem key={index} value={option.value} disabled={!!option.disabled}>
+                      {typeof option.name === 'string' ? t(option.name) : option.name}
+                    </MenuItem>
+                    )
+                  )
+              }
+            </Select>
+
+            {!!((touched || displayErrorWhenNotTouched) && error) ? <FormHelperText>{t(error)}</FormHelperText> : null}
+          </FormControl>
+        );
+      }
+    }
+  ));
 
 export const RenderCheckbox = translate('common')(({ input, label, disabled, t, tReady, ...custom}) => {
   return (
@@ -103,6 +121,7 @@ export const RenderCheckbox = translate('common')(({ input, label, disabled, t, 
           checked={input.value}
           onChange={input.onChange}
           disabled={!!disabled}
+          color="secondary"
           { ...custom }
         />
       }

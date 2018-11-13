@@ -53,6 +53,15 @@ export const getUserAttributes = (address) =>  async (dispatch) => {
 
     const { attributes } = await blockchain.get(`/attributes?owner=${address}`);
 
+    attributes.forEach((attribute) => {
+      attribute.attributeAssociations  = attributes
+        .filter(attr => {
+          const associations = JSON.parse(attr.associations) || [];
+
+          return !!associations.includes(attribute.id)
+        });
+    });
+
     dispatch(getUserAttributesSuccess(attributes));
   }
   catch (error) {
@@ -68,7 +77,9 @@ export const createUserAttribute = (attributeData, passphrase) => async (dispatc
     const { blockchainAccount: { userBlockchainAccount: { address } } } = state;
     const postData = createAttributeInfo(attributeData, passphrase, state);
 
-    await blockchain.post(`/attributes`, postData);
+    const httpMethod = attributeData.attributeId ? blockchain.put : blockchain.post;
+
+    await httpMethod(`/attributes`, postData);
 
     dispatch(waitForUserAttributes(address));
     dispatch(createUserAttributesSuccess(postData));
@@ -79,6 +90,40 @@ export const createUserAttribute = (attributeData, passphrase) => async (dispatc
   catch (error) {
     dispatch(onNotificationErrorInit(error));
     dispatch(createUserAttributesFailure());
+  }
+};
+
+export const createAttributeValidationRequest = (data) => async (dispatch, getState) => {
+  try {
+    dispatch(createValidationRequestInit());
+    const state = getState();
+    const { secret, asset } = data;
+    const valiation = asset.validation[0];
+    const { blockchainAccount: { userBlockchainAccount: { address, publicKey } } } = state;
+
+    valiation.owner = address;
+
+    const postData = {
+      secret,
+      publicKey: publicKey || getPublicKey(secret),
+      asset,
+    };
+
+
+    await blockchain.post(`/attribute-validations/validationrequest`, postData);
+
+    dispatch(waitForUserAttributes(address));
+    dispatch(createValidationRequestSuccess(postData));
+    dispatch(onNotificationSuccessInit('Validation request created successfully'));
+
+
+    return true;
+  }
+  catch (error) {
+    dispatch(onNotificationErrorInit(error));
+    dispatch(createValidationRequestFailure());
+
+    return false;
   }
 };
 
@@ -140,6 +185,10 @@ const getUserAttributesFailure = () => ({ type: attributesConstants.ON_GET_USER_
 const createUserAttributesInit = () => ({ type: attributesConstants.ON_CREATE_USER_ATTRIBUTES_INIT });
 const createUserAttributesSuccess = (data) => ({ type: attributesConstants.ON_CREATE_USER_ATTRIBUTES_SUCCESS, payload: data });
 const createUserAttributesFailure = () => ({ type: attributesConstants.ON_CREATE_USER_ATTRIBUTES_FAILURE });
+
+const createValidationRequestInit = () => ({ type: attributesConstants.ON_CREATE_VALIDATION_REQUEST_INIT });
+const createValidationRequestSuccess = () => ({ type: attributesConstants.ON_CREATE_VALIDATION_REQUEST_SUCCESS });
+const createValidationRequestFailure = () => ({ type: attributesConstants.ON_CREATE_VALIDATION_REQUEST_FAILURE });
 
 const getFileAttributeInit = () => ({ type: attributesConstants.ON_GET_FILE_ATTRIBUTE_INIT });
 const getFileAttributeSuccess = (data) => ({ type: attributesConstants.ON_GET_FILE_ATTRIBUTE_SUCCESS, payload: data });

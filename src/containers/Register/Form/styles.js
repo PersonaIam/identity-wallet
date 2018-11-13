@@ -1,17 +1,8 @@
 const styles = (theme) => {
   return {
     modalWrapper: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100%',
-      width: '100%',
       '& >div': {
         position: 'relative',
-        minWidth: '90%',
-        [theme.breakpoints.up('sm')]: {
-          minWidth: 370,
-        },
       }
     },
     header: {
@@ -36,6 +27,9 @@ const styles = (theme) => {
       '& *': {
         color: '#ffffff',
       },
+    },
+    contactHeader: {
+      background: `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
     },
     formContent: {
       padding: '90px 24px 32px',

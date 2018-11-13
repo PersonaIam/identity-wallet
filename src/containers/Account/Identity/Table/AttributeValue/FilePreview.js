@@ -13,12 +13,13 @@ import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
 import Close from 'mdi-material-ui/Close';
 // import Download from 'mdi-material-ui/Download';
+import Edit from 'mdi-material-ui/Pencil';
 import Left from 'mdi-material-ui/ChevronLeft';
 import Right from 'mdi-material-ui/ChevronRight';
 import { Document, Page } from 'react-pdf';
 import { withStyles } from '@material-ui/core/styles';
 // import { saveFile } from 'helpers/fileService';
-import { ACCEPTED_FILE_TYPES } from 'constants';
+import { ACCEPTED_FILE_TYPES } from 'constants/index';
 
 const styles = (theme) => {
   return {
@@ -27,6 +28,7 @@ const styles = (theme) => {
       maxWidth: '95%',
     },
     filePreviewToolbar: {
+      padding: '6px 0',
       position: 'absolute',
       top: 0,
       left: 0,
@@ -74,7 +76,7 @@ class FilePreview extends Component {
   };
 
   getPreiview = () => {
-    const { classes, fileData, onClose, t } = this.props;
+    const { classes, fileData, onClose, onEdit, t } = this.props;
     const { currentPage, totalPages } = this.state;
     let content;
 
@@ -87,6 +89,18 @@ class FilePreview extends Component {
             {/*<Download />*/}
           {/*</IconButton>*/}
         {/*</Tooltip>*/}
+
+        {
+          onEdit
+            ? (
+              <Tooltip title={t('Edit')}>
+                <IconButton onClick={onEdit}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            )
+            : null
+        }
 
         <Tooltip title={t('CLOSE')}>
           <IconButton onClick={onClose}>
@@ -204,6 +218,7 @@ FilePreview.propTypes = {
   classes: PropTypes.object.isRequired,
   fileData: PropTypes.any.isRequired,
   onClose: PropTypes.func.isRequired,
+  onEdit: PropTypes.any,
   t: PropTypes.func.isRequired,
 };
 

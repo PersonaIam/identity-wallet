@@ -1,7 +1,7 @@
 /**
  * Created by vladtomsa on 26/09/2018
  */
-import React from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
@@ -35,90 +35,108 @@ const styles = (theme) => {
   };
 };
 
-const Layout = ({ children, classes, onLogout, t, userInfo, openSidenav, closeSidenav, sidenavOpened, reloadAccount, width }) => {
-  const isSmallDevice = width === 'xs' || width === 'sm';
+class Layout extends Component {
+  constructor(props) {
+    super(props);
+    this.contentRef = createRef();
+  }
 
-  const toolbarStickyStyles = {
-    zIndex: 1000,
-    top: isSmallDevice ? 0 : -16,
-  };
+  render() {
+    const {
+      children, classes, onLogout, t, userInfo, openSidenav, closeSidenav, sidenavOpened, reloadAccount, width
+    } = this.props;
 
-  const sidenav = (
-    <Sidenav
-      isOpen={sidenavOpened}
-      onClose={closeSidenav}
-    />
-  );
+    const isSmallDevice = width === 'xs' || width === 'sm';
 
-  const distanceFromTop = 16;
+    const sidenav = (
+      <Sidenav
+        isOpen={sidenavOpened}
+        onClose={closeSidenav}
+        t={t}
+      />
+    );
 
-  return (
-    <StickyContainer>
-      <Grid container justify="center">
-        <Grid item xs={12} md={11} lg={10} xl={8}>
-          <Sticky topOffset={isSmallDevice ? 0 : distanceFromTop}>
-            {
-              ({ style }) => {
-                return (
-                  <div style={{ ...style, ...toolbarStickyStyles }}>
-                    <Header userInfo={userInfo} onLogout={onLogout} openSidenav={openSidenav}/>
-                  </div>
-                )
-              }
-            }
-          </Sticky>
+    const distanceFromTop = 16;
 
-
-          <div className={classes.root}>
-            {
-              !!userInfo
-                ? (
-                  !isSmallDevice
-                    ? (
-                      <div style={{ minWidth: logoWidth }}>
-                        <Sticky topOffset={distanceFromTop}>
-                          {
-                            ({ style }) => {
-                              return (
-                                <div style={{ ...style, top: 80 }}>
-                                  { sidenav }
-                                </div>
-                              )
-                            }
-                          }
-                        </Sticky>
-                      </div>
-                    )
-                    : (
-                      <div>
-                        { sidenav }
-                      </div>
-                    )
-                )
-                : null
-            }
-
-            <div className={classes.content}>
+    return (
+      <StickyContainer>
+        <Grid container justify="center">
+          <Grid item xs={12} md={11} lg={10} xl={8}>
+            <Sticky topOffset={isSmallDevice ? 0 : distanceFromTop}>
               {
-                userInfo && userInfo.userBlockchainAccount
+                ({ style, isSticky }) => {
+                  if (this.contentRef.current) {
+
+                    if (isSticky) {
+                      this.contentRef.current.style['margin-top'] = '16px';
+                    }
+                    else {
+                      this.contentRef.current.style['margin-top'] = '0px';
+                    }
+                  }
+
+
+                  return (
+                    <div style={{ ...style, zIndex: 1000 }}>
+                      <Header userInfo={userInfo} onLogout={onLogout} openSidenav={openSidenav} isFixed={isSticky} t={t}/>
+                    </div>
+                  )
+                }
+              }
+            </Sticky>
+
+
+            <div className={classes.root} ref={this.contentRef}>
+              {
+                !!userInfo
                   ? (
-                    <AccountDetails
-                      userInfo={userInfo}
-                      t={t}
-                      reloadAccount={reloadAccount}
-                    />
+                    !isSmallDevice
+                      ? (
+                        <div style={{minWidth: logoWidth}}>
+                          <Sticky topOffset={distanceFromTop}>
+                            {
+                              ({style}) => {
+                                return (
+                                  <div style={{...style, top: 80}}>
+                                    {sidenav}
+                                  </div>
+                                )
+                              }
+                            }
+                          </Sticky>
+                        </div>
+                      )
+                      : (
+                        <div>
+                          {sidenav}
+                        </div>
+                      )
                   )
                   : null
               }
 
-              {  children }
+              <div className={classes.content}>
+                {
+                  userInfo && userInfo.userBlockchainAccount
+                    ? (
+                      <AccountDetails
+                        userInfo={userInfo}
+                        t={t}
+                        reloadAccount={reloadAccount}
+                      />
+                    )
+                    : null
+                }
+
+                {children}
+              </div>
             </div>
-          </div>
+          </Grid>
         </Grid>
-      </Grid>
-    </StickyContainer>
-  );
-};
+      </StickyContainer>
+    );
+  }
+}
 
 Layout.propTypes = {
   children: PropTypes.object.isRequired,

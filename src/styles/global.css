@@ -18,6 +18,10 @@ body {
   align-items: center;
 }
 
+.align-bottom {
+  align-items: flex-end;
+}
+
 .fill-flex {
   flex: 1;
 }

@@ -48,6 +48,25 @@ export const confirmAccount = (data) => async (dispatch) => {
   }
 };
 
+export const updateAccount = (data) => async (dispatch) => {
+  try {
+    dispatch(updateAccountInit());
+
+    await http.put('/users/' + data.id, data);
+
+    const userInfo = await http.get('/users/' + data.id);
+
+    debugger;
+
+    dispatch(loginSuccess(userInfo));
+    dispatch(onNotificationSuccessInit('Account updated successfully'));
+  }
+  catch (error) {
+    dispatch(updateAccountFailure(error));
+    dispatch(onNotificationErrorInit(error));
+  }
+};
+
 
 
 export const login = ({ username, password, rememberMe }) => async (dispatch) => {
@@ -108,6 +127,8 @@ const createAccountFailure = (error) => ({ type: authConstants.ON_CREATE_ACCOUNT
 const confirmAccountInit = () => ({ type: authConstants.ON_CONFIRM_ACCOUNT_INIT });
 const confirmAccountSuccess = () => ({ type: authConstants.ON_CONFIRM_ACCOUNT_SUCCESS });
 const confirmAccountFailure = () => ({ type: authConstants.ON_CONFIRM_ACCOUNT_FAILURE });
+const updateAccountInit = () => ({ type: authConstants.ON_UPDATE_ACCOUNT_INIT });
+const updateAccountFailure = () => ({ type: authConstants.ON_UPDATE_ACCOUNT_FAILURE });
 
 const loginInit = () => ({ type: authConstants.ON_LOGIN_INIT });
 const loginSuccess = (data) => async (dispatch) => {

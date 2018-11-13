@@ -10,6 +10,7 @@ import attributesReducer from 'reducers/attributes';
 import authReducer from 'reducers/auth';
 import blockchainAccountReducer from 'reducers/blockchainAccount';
 import globalReducer from 'reducers/global';
+import notariesReducer from 'reducers/notaries';
 import notificationReducer from 'reducers/notification';
 
 export const history = createHistory();
@@ -21,6 +22,7 @@ export const rootReducer = combineReducers({
   auth: authReducer,
   blockchainAccount: blockchainAccountReducer,
   global: globalReducer,
+  notaries: notariesReducer,
   notification: notificationReducer,
 });
 

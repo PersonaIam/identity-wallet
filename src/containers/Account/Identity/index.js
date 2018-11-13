@@ -11,17 +11,20 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Fade from 'react-reveal/Fade';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import AccountDetails from 'mdi-material-ui/AccountCardDetails';
+import CheckCircle from 'mdi-material-ui/CheckCircle';
 import Reload from 'mdi-material-ui/Reload';
-import { getAttributeTypes, getUserAttributes, createUserAttribute } from 'actions/attributes';
+import { getAttributeTypes, getUserAttributes, createUserAttribute, createAttributeValidationRequest } from 'actions/attributes';
 import { attributesConstants } from 'constants/attributes';
 import { AVAILABLE_DATA_TYPES } from 'helpers/getFormFieldsFromJSONConfig';
-import { dateToPersonaStamp } from 'helpers/personaService';
+import { dateToPersonaStamp, personaStampToDate } from 'helpers/personaService';
+import AttributeValidationCreate from './AttributeValidationCreate';
 import CardHeader from './CardHeader';
+import EditAttributeAlert from './EditAttributeAlert';
 import IdentityForm from './Form';
+import SelectAttributeForCreation from './Form/SelectAttributeForCreation';
 import moment from 'moment';
 import Table from './Table';
 import styles from './styles';
@@ -29,7 +32,9 @@ import styles from './styles';
 class AccountIdentity extends Component {
 
   state = {
+    alertContent: null,
     selectedAttribute: null,
+    selectedAttributeForValidation: null,
   };
 
   componentDidMount() {
@@ -50,7 +55,26 @@ class AccountIdentity extends Component {
   };
 
   getAttributeFormInitialValues = () => {
-    return {};
+    const { selectedAttribute } = this.state;
+    const { name, value, userAttribute } = selectedAttribute;
+
+    const initialValues = {
+      [name]: value,
+    };
+
+    if (userAttribute) {
+      initialValues.attributeId = userAttribute.id;
+
+      if (userAttribute.expire_timestamp) {
+        initialValues.expire_timestamp = personaStampToDate(userAttribute.expire_timestamp);
+      }
+
+      if (userAttribute.associations) {
+        initialValues.associations = JSON.parse(userAttribute.associations);
+      }
+    }
+
+    return initialValues;
   };
 
   extractDataFromValues = (values) => {
@@ -65,9 +89,55 @@ class AccountIdentity extends Component {
     return value;
   };
 
-  onSubmit = (values) => {
+  toggleEditAttributeAllert = (attributeData, passphrase) => {
+    const { attributeTypes, t } = this.props;
+    const attributeAssociations = [];
+
+    const associations = attributeData.associations || [];
+
+    attributeTypes.forEach((attribute) => {
+      if (attribute.userAttribute) {
+        associations.forEach((attributeId) => {
+          if (attributeId === attribute.userAttribute.id) {
+            attributeAssociations.push(attribute);
+          }
+        });
+      }
+    });
+
+    const alertContent = (
+      <EditAttributeAlert
+        attributeData={{
+          ...attributeData,
+          attributeAssociations,
+        }}
+        onClose={() => this.setState({ alertContent: null })}
+        onSubmit={() => {
+          this.setState({ alertContent: null });
+          this.saveAttributeData(attributeData, passphrase)
+        }}
+        t={t}
+      />
+    );
+
+    this.setState({ alertContent });
+  };
+
+  saveAttributeData = (attributeData, passphrase) => {
     const { createUserAttribute } = this.props;
+
+    createUserAttribute(attributeData, passphrase)
+      .then((success) => {
+        if (success) {
+          this.onAttributeSelect(null);
+        }
+      });
+  };
+
+  onSubmit = (values) => {
     const { selectedAttribute: { name } } = this.state;
+
+    const passphrase = values.passphrase;
 
     const attributeData = {
       type: name,
@@ -80,27 +150,93 @@ class AccountIdentity extends Component {
       attributeData.expire_timestamp = dateToPersonaStamp(date);
     }
 
-    const passphrase = values.passphrase;
+    if (values.associations && values.associations.length) {
+      attributeData.associations  = values.associations;
+    }
 
-    createUserAttribute(attributeData, passphrase)
-      .then((success) => {
-        if (success) {
-          this.onAttributeSelect(null);
+    if (values.attributeId) {
+      attributeData.attributeId = values.attributeId;
+
+      this.toggleEditAttributeAllert(attributeData, passphrase)
+    }
+    else {
+      this.saveAttributeData(attributeData, passphrase)
+    }
+  };
+
+  getAttributesForCreate = (createdAttributes, remainingAttributes) => {
+    const { classes, t } = this.props;
+
+    const isAnyRemainingAttributesNotFile = -1 !== remainingAttributes.findIndex(
+      (attr) => attr.data_type !== AVAILABLE_DATA_TYPES.FILE
+    );
+
+    const attributForSelection = [
+      ...remainingAttributes.map(
+        (attribute) => {
+          return {
+            value: attribute.name,
+            name: attribute.name,
+            disabled: attribute.data_type === AVAILABLE_DATA_TYPES.FILE && isAnyRemainingAttributesNotFile,
+          };
+        }
+      ),
+      ...createdAttributes.map(
+        (attribute) => {
+          return {
+            value: attribute.name,
+            name: (
+              <span className={classes.createdAttribute}>
+                <Tooltip title={t('EXISTING_ATTRIBUTE', { value: t(attribute.name) })}>
+                  <CheckCircle/>
+                </Tooltip>
+                { t(attribute.name) }
+              </span>
+            )
+          }
+        }
+      ),
+    ];
+
+    return attributForSelection || [];
+  };
+
+  onAttributeValidateRequest = (attribute) => {
+    this.setState({ selectedAttributeForValidation: attribute });
+  };
+
+  onAttributeValidateRequestSubmit = (values) => {
+    this.props.createAttributeValidationRequest(values)
+      .then((value) => {
+        if (value) {
+          this.onAttributeValidateRequest(null);
         }
       });
   };
 
   render() {
     const { attributeTypes, classes, getUserAttributes, isLoading, t, userInfo } = this.props;
-    const { selectedAttribute } = this.state;
+    const { alertContent, selectedAttribute, selectedAttributeForValidation } = this.state;
 
     const attributeProgress = this.getAttributesProgress();
 
     const isUserAttributesLoading = isLoading === attributesConstants.ON_GET_USER_ATTRIBUTES_INIT;
 
+    const createdAttributes = [];
+    const remainingAttributes = [];
+
+    attributeTypes.forEach((attribute) => {
+      if (attribute.value) {
+        createdAttributes.push(attribute);
+      }
+      else {
+        remainingAttributes.push(attribute);
+      }
+    });
+
     return (
       <div className={classes.root}>
-        <Paper elevation={12}>
+        <div >
           <CardHeader icon={<AccountDetails />}>
             <div>
               <LinearProgress
@@ -113,44 +249,67 @@ class AccountIdentity extends Component {
                 }
               />
 
-              <div className={`flex space-between ${classes.cardHeaderContent}`}>
-                <Typography component="h2" variant="display1">{ t('MY_IDENTITY') }</Typography>
+              <div>
+                <div className={`flex space-between ${classes.cardHeaderContent}`}>
+                  <Typography component="h2" variant="display1">{ t('MY_IDENTITY') }</Typography>
 
-                <div className="text-center">
-                  <Fade spy={isUserAttributesLoading}>
-                    {
-                      isUserAttributesLoading
-                        ? (
-                          <Fragment>
-                            <CircularProgress color="secondary" size={32}/>
-                          </Fragment>
-                        )
-                        : (
-                          <div className="flex">
-                            <div>
-                              <Typography component="p" variant="caption">{t('COMPLETED')}</Typography>
+                  <div className="text-center">
+                    <Fade spy={isUserAttributesLoading}>
+                      {
+                        isUserAttributesLoading
+                          ? (
+                            <Fragment>
+                              <CircularProgress color="secondary" size={32}/>
+                            </Fragment>
+                          )
+                          : (
+                            <div className="flex">
+                              <div>
+                                <Typography component="p" variant="caption">{t('COMPLETED')}</Typography>
 
-                              <Typography component="p" color="textPrimary">{attributeProgress}%</Typography>
+                                <Typography component="p" color="textPrimary">{attributeProgress}%</Typography>
+                              </div>
+
+                              <Tooltip title={t('RELOAD')}>
+                                <IconButton color="secondary" onClick={() => getUserAttributes(userInfo.personaAddress)}>
+                                  <Reload />
+                                </IconButton>
+                              </Tooltip>
                             </div>
-
-                            <Tooltip title={t('RELOAD')}>
-                              <IconButton color="secondary" onClick={() => getUserAttributes(userInfo.personaAddress)}>
-                                <Reload />
-                              </IconButton>
-                            </Tooltip>
-                          </div>
-                        )
-                    }
-                  </Fade>
+                          )
+                      }
+                    </Fade>
+                  </div>
                 </div>
+
+                {
+                  isLoading
+                    ? null
+                    : (
+                      <SelectAttributeForCreation
+                        onSubmit={(values) => {
+                          const attribute = remainingAttributes
+                            .find((att) => att.name === values.attribute );
+
+                          this.onAttributeSelect(attribute)
+                        }}
+                        attributes={this.getAttributesForCreate(createdAttributes, remainingAttributes)}
+                        t={t}
+                      />
+                    )
+                }
               </div>
             </div>
           </CardHeader>
 
           <CardContent>
-            <Table attributes={attributeTypes} onAttributeSelect={this.onAttributeSelect} />
+            <Table
+              attributes={createdAttributes}
+              onAttributeSelect={this.onAttributeSelect}
+              onAttributeValidateRequest={this.onAttributeValidateRequest}
+            />
           </CardContent>
-        </Paper>
+        </div>
 
         {
           selectedAttribute
@@ -160,6 +319,25 @@ class AccountIdentity extends Component {
                 onClose={() => this.onAttributeSelect(null)}
                 onSubmit={this.onSubmit}
                 uiSchema={selectedAttribute}
+                createdAttributes={createdAttributes}
+              />
+            )
+            : null
+        }
+
+        {
+          alertContent || null
+        }
+
+        {
+          selectedAttributeForValidation
+            ? (
+              <AttributeValidationCreate
+                selectedAttribute={selectedAttributeForValidation}
+                createdAttributes={createdAttributes}
+                onClose={() => this.onAttributeValidateRequest(null)}
+                onSubmit={this.onAttributeValidateRequestSubmit}
+                t={t}
               />
             )
             : null
@@ -203,6 +381,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAttributeTypes: () => dispatch(getAttributeTypes()),
   getUserAttributes: (address) => dispatch(getUserAttributes(address)),
   createUserAttribute: (attributeInfo, passphrase) => dispatch(createUserAttribute(attributeInfo, passphrase)),
+  createAttributeValidationRequest: (data) => dispatch(createAttributeValidationRequest(data)),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)(AccountIdentity);

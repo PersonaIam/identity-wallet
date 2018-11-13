@@ -72,6 +72,11 @@ const styles = theme => {
         },
       },
     },
+    badge: {
+      color: '#FFF !important',
+      background: `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
+      boxShadow: theme.shadows[6],
+    }
   }
 };
 
