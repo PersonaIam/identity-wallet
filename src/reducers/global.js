@@ -4,8 +4,8 @@
 import { globalConstants } from 'constants/global';
 
 const initialState = {
-  // passphrase: null,
-  passphrase: 'shift add egg okay body shield review hazard galaxy cradle dress stick',
+  passphrase: null,
+  // passphrase: 'shift add egg okay body shield review hazard galaxy cradle dress stick',
   sidenavOpened: false,
   countries: [],
 };
