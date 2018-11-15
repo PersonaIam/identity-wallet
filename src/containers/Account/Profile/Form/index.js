@@ -23,7 +23,6 @@ import Phone from 'mdi-material-ui/Phone';
 import Zoom from 'react-reveal/Zoom';
 import { USER_ROLES } from 'constants/index';
 import { RenderTextField, RenderSelectField } from 'components/FormInputs';
-import RecaptchaField from 'components/FormInputs/Recaptcha';
 import UserRoleToggle from './UserRoleToggle';
 
 import styles from './styles';
@@ -83,7 +82,7 @@ const validate = (values) => {
 
 class AccountProfileForm extends Component {
   render() {
-    const { classes, countries, handleSubmit, t, userRoleId, width } = this.props;
+    const { classes, countries, handleSubmit, t, width } = this.props;
 
     const isSmallDevice = width === 'xs';
 

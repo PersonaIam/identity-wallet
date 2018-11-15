@@ -26,7 +26,7 @@ const NotaryList = ({ notaryInfoList, onSelect, t }) => {
 
 NotaryList.propTypes = {
   notaryInfoList: PropTypes.array.isRequired,
-  onSelect: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
   t: PropTypes.func.isRequired,
 };
 

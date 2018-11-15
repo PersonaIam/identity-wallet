@@ -52,17 +52,23 @@ const NotariesListItem = ({ classes, notaryInfo, onSelect, t }) => {
               </Typography>
             </Grid>
 
-            <Grid item xs={12} md={4} lg={3}>
-              <div className="flex justify-end">
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={() => onSelect(notaryInfo)}
-                >
-                  {t('REQUEST_VALIDATION')}
-                </Button>
-              </div>
-            </Grid>
+            {
+              onSelect
+                ? (
+                  <Grid item xs={12} md={4} lg={3}>
+                    <div className="flex justify-end">
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={() => onSelect(notaryInfo)}
+                      >
+                        {t('REQUEST_VALIDATION')}
+                      </Button>
+                    </div>
+                  </Grid>
+                )
+                : null
+            }
           </Grid>
         </CardContent>
       </Paper>
@@ -73,7 +79,7 @@ const NotariesListItem = ({ classes, notaryInfo, onSelect, t }) => {
 NotariesListItem.propTypes = {
   classes: PropTypes.object.isRequired,
   notaryInfo: PropTypes.object.isRequired,
-  onSelect: PropTypes.func.isRequired,
+  onSelect: PropTypes.func,
   t: PropTypes.func.isRequired,
 };
 

@@ -54,7 +54,7 @@
     "material-ui-pickers": "1.0.0-rc.17",
     "material-ui-superselectfield": "^1.9.8",
     "material-ui-toggle-icon": "^1.0.2",
-    "mdi-material-ui": "5.5.0",
+    "mdi-material-ui": "^5.5.0",
     "moment": "2.22.2",
     "notistack": "0.2.2",
     "object-assign": "4.1.1",

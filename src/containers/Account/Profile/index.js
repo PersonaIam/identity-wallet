@@ -35,7 +35,7 @@ class Profile extends Component {
   };
 
   render() {
-    const { t, userInfo } = this.props;
+    const { userInfo } = this.props;
 
     return (
       <div>

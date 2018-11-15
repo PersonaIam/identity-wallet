@@ -58,10 +58,7 @@ const styles = {
   },
 };
 
-export const RenderSelectField = withStyles(styles)
-  (translate('common')(
-
-    class extends Component {
+export const RenderSelectField = withStyles(styles)(translate('common')(class extends Component {
       state = {
         searchTerm: '',
       };

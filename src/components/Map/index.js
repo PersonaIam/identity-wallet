@@ -5,10 +5,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import debounce from 'lodash/debounce';
 
 import ZoomControl from './ZoomControl';
-
 
 const styles = {
   '@global .leaflet-container': {
@@ -53,7 +51,7 @@ class LocationSelector extends Component {
 
   render() {
     const { lat, lng, zoom } = this.state;
-    const { markers, t } = this.props;
+    const { markers} = this.props;
 
     const position = [lat, lng];
 
@@ -75,12 +73,10 @@ class LocationSelector extends Component {
             markers && markers.length
               ? (
                 markers.map((marker, index) => {
-                  console.log(marker);
-
                   return (
                     <Marker key={index} position={[marker.lat, marker.lng]}>
                       <Popup>
-                          A pretty CSS3 popup. <br /> Easily customizable.
+                        { marker.label }
                       </Popup>
                     </Marker>
                   );

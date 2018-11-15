@@ -55,7 +55,7 @@ const styles = theme => ({
     '& >div': {
       background: theme.palette.error.main,
     }
-  }
+  },
 });
 
 const NOTIFICATION_POSITION = {
@@ -63,7 +63,7 @@ const NOTIFICATION_POSITION = {
   horizontal: 'right'
 };
 
-const NOTIFICATION_TIMEOUT = 3000;
+const NOTIFICATION_TIMEOUT = 4000;
 
 const TransitionComponent = (props) => <Slide {...props} direction="left"/>;
 
@@ -104,7 +104,7 @@ const Notification = (props) => {
       }
       autoHideDuration={NOTIFICATION_TIMEOUT}
       anchorOrigin={NOTIFICATION_POSITION}
-      className={classes[`snackbar-${notification.type}`]}
+      className={`${classes[`snackbar-${notification.type}`]} ${classes.snackbar}`}
       TransitionComponent={TransitionComponent}
       action={[
         <IconButton

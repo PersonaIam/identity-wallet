@@ -20,6 +20,16 @@ const styles = (theme) => ({
       color: 'rgba(255,255,255, 0.9)'
     },
   },
+  sidenavListItem: {
+    paddingLeft: 0,
+  },
+  listSubheader: {
+    lineHeight: '32px',
+    color: 'rgba(255,255,255, 0.9)',
+  },
+  listDivider: {
+    backgroundColor: 'rgba(255,255,255, 0.18)',
+  },
   active: {
     '& *': {
       color: `${theme.palette.secondary.main}`,

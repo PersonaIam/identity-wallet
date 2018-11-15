@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
 
 import Downshift from 'downshift';
@@ -9,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Input from '@material-ui/core/Input';
 import Search from 'mdi-material-ui/Magnify';
-import { RenderInput } from 'components/FormInputs';
 import debounce from "lodash/debounce";
 import styles from './styles';
 

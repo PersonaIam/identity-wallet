@@ -2,12 +2,17 @@
  * Created by vladtomsa on 09/10/2018
  */
 import { blockchain } from 'config/http';
+import { VALIDATION_REQUEST_ACTION } from 'constants/index';
 import { attributesConstants } from 'constants/attributes';
 import { getBlockchainAccount } from './blockchainAccount';
 import { onNotificationErrorInit, onNotificationSuccessInit } from './notifications';
 import { getPublicKey } from 'helpers/personaService';
 import moment from 'moment';
 import personajs from 'personajs';
+
+const timeout = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
 
 const extractInfo = (attributeTypes) => {
   return attributeTypes.map((attribute) => {
@@ -50,6 +55,7 @@ const createAttributeInfo = (attributeData, passphrase, state) => {
 export const getUserAttributes = (address) =>  async (dispatch) => {
   try {
     dispatch(getUserAttributesInit());
+    dispatch(getValidationRequestsSentByUser(address));
 
     const { attributes } = await blockchain.get(`/attributes?owner=${address}`);
 
@@ -127,6 +133,93 @@ export const createAttributeValidationRequest = (data) => async (dispatch, getSt
   }
 };
 
+export const getValidationRequestsSentByUser = (address) => async (dispatch) => {
+  try {
+    dispatch(getValidationRequestsSentByUserInit());
+
+    const params = {
+      owner: address,
+    };
+
+    const userValidationRequests = await getValidationRequests(params);
+
+    dispatch(getValidationRequestsSentByUserSuccess(userValidationRequests));
+  }
+  catch (error) {
+    dispatch(onNotificationErrorInit(error));
+    dispatch(getValidationRequestsSentByUserFailure());
+  }
+};
+
+export const getValidatorValidationRequests = (params) => async (dispatch) => {
+  try {
+    dispatch(getValidationRequestsInit());
+
+    const validatorValidationRequests = await getValidationRequests(params);
+
+    dispatch(getValidationRequestsSuccess(validatorValidationRequests));
+  }
+  catch (error) {
+    dispatch(onNotificationErrorInit(error));
+    dispatch(getValidationRequestsFailure());
+  }
+};
+
+const getValidationRequests = async (params) => {
+  const { attribute_validation_requests } = await blockchain.get(`/attribute-validations/validationrequest`, { params });
+
+  return attribute_validation_requests;
+};
+
+
+export const handleAttributeRequest = (data, actionType) => async (dispatch, getState) => {
+  try {
+    dispatch(validationUpdateInit());
+
+    let url;
+    const { auth: { userInfo: { personaAddress } } } = getState();
+
+    /* eslint-disable default-case */
+    switch (actionType) {
+      case (VALIDATION_REQUEST_ACTION.APPROVE):
+        url = 'approve';
+        break;
+      case (VALIDATION_REQUEST_ACTION.DECLINE):
+        url = 'decline';
+        break;
+      case (VALIDATION_REQUEST_ACTION.NOTARIZE):
+        url = 'notarize';
+        break;
+      case (VALIDATION_REQUEST_ACTION.REJECT):
+        url = 'reject';
+        break;
+      case (VALIDATION_REQUEST_ACTION.CANCEL):
+        url = 'cancel';
+        break;
+    }
+    /* eslint-enable */
+
+    await blockchain.post(`/attribute-validations/${url}`, {
+      ...data,
+      publicKey: data.publicKey || getPublicKey(data.secret),
+    });
+
+    await timeout(10 * 1000); // await forging block
+
+    dispatch(getValidationRequests({ validator: personaAddress }));
+    dispatch(validationUpdateDone());
+
+    return true;
+  }
+  catch (error) {
+    dispatch(onNotificationErrorInit(error));
+    dispatch(validationUpdateDone());
+
+    return false;
+  }
+};
+
+
 export const getAttributeTypes = () =>  async (dispatch) => {
   try {
     dispatch(getAttributeTypesInit());
@@ -162,10 +255,6 @@ export const getFileAttribute = (hash) => async (dispatch) => {
 export const deselectFileAttribute = () => ({ type: attributesConstants.ON_DESELECT_FILE_ATTRIBUTE });
 
 const waitForUserAttributes = (address) => async (dispatch) => {
-  const timeout = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
   dispatch(getUserAttributesInit());
 
   await timeout(10 * 1000); // await forging block
@@ -182,6 +271,15 @@ const getUserAttributesInit = () => ({ type: attributesConstants.ON_GET_USER_ATT
 const getUserAttributesSuccess = (data) => ({ type: attributesConstants.ON_GET_USER_ATTRIBUTES_SUCCESS, payload: data });
 const getUserAttributesFailure = () => ({ type: attributesConstants.ON_GET_USER_ATTRIBUTES_FAILURE });
 
+const getValidationRequestsInit = () => ({ type: attributesConstants.ON_GET_VALIDATION_REQUESTS_INIT });
+const getValidationRequestsSuccess = (data) => ({ type: attributesConstants.ON_GET_VALIDATION_REQUESTS_SUCCESS, payload: data });
+const getValidationRequestsFailure = () => ({ type: attributesConstants.ON_GET_VALIDATION_REQUESTS_FAILURE });
+
+
+const getValidationRequestsSentByUserInit = () => ({ type: attributesConstants.ON_GET_USER_SENT_VALIDATION_REQUESTS_INIT });
+const getValidationRequestsSentByUserSuccess = (data) => ({ type: attributesConstants.ON_GET_USER_SENT_VALIDATION_REQUESTS_SUCCESS, payload: data });
+const getValidationRequestsSentByUserFailure = () => ({ type: attributesConstants.ON_GET_USER_SENT_VALIDATION_REQUESTS_FAILURE });
+
 const createUserAttributesInit = () => ({ type: attributesConstants.ON_CREATE_USER_ATTRIBUTES_INIT });
 const createUserAttributesSuccess = (data) => ({ type: attributesConstants.ON_CREATE_USER_ATTRIBUTES_SUCCESS, payload: data });
 const createUserAttributesFailure = () => ({ type: attributesConstants.ON_CREATE_USER_ATTRIBUTES_FAILURE });
@@ -193,3 +291,6 @@ const createValidationRequestFailure = () => ({ type: attributesConstants.ON_CRE
 const getFileAttributeInit = () => ({ type: attributesConstants.ON_GET_FILE_ATTRIBUTE_INIT });
 const getFileAttributeSuccess = (data) => ({ type: attributesConstants.ON_GET_FILE_ATTRIBUTE_SUCCESS, payload: data });
 const getFileAttributeFailure = () => ({ type: attributesConstants.ON_GET_FILE_ATTRIBUTE_FAILURE });
+
+const validationUpdateInit = (data) => ({ type: attributesConstants.ON_VALIDATION_UPDATE_INIT, payload: data });
+const validationUpdateDone = () => ({ type: attributesConstants.ON_VALIDATION_UPDATE_DONE });

@@ -32,7 +32,9 @@ class App extends Component {
   };
 
   render() {
-    const { notification, onLogout, onNotificationClose, openSidenav, closeSidenav, sidenavOpened, userInfo } = this.props;
+    const {
+      notification, onLogout, onNotificationClose, openSidenav, closeSidenav, sidenavOpened, userInfo, location: { pathname }
+    } = this.props;
 
     const routes = getApplicationRoutes(userInfo);
 
@@ -62,6 +64,7 @@ class App extends Component {
         }
 
         <Layout
+          pathname={pathname}
           userInfo={userInfo}
           onLogout={onLogout}
           sidenavOpened={sidenavOpened}

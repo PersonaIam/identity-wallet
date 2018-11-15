@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { geolocated } from 'react-geolocated';
 import { withStyles } from '@material-ui/core/styles';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker } from 'react-leaflet';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import debounce from 'lodash/debounce';
 
@@ -125,9 +125,9 @@ class LocationSelector extends Component {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <Marker position={position}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
+            {/*<Popup>*/}
+              {/*A pretty CSS3 popup. <br /> Easily customizable.*/}
+            {/*</Popup>*/}
           </Marker>
 
           <ZoomControl

@@ -4,7 +4,7 @@
 import { http } from 'config/http';
 import { Base64 } from 'js-base64';
 import { push } from 'react-router-redux';
-import { getUserAttributes } from './attributes';
+import { getUserAttributes, getValidatorValidationRequests } from './attributes';
 import { getBlockchainAccount } from './blockchainAccount';
 import { onNotificationSuccessInit, onNotificationErrorInit } from './notifications';
 import {
@@ -14,6 +14,7 @@ import {
   REMEMBER_ME_STORAGE_KEY,
 } from 'constants/auth';
 
+import { USER_ROLES } from 'constants/index';
 
 export const createAccount = (data) => async (dispatch) => {
   try {
@@ -136,6 +137,11 @@ const loginSuccess = (data) => async (dispatch) => {
 
   dispatch(getUserAttributes(personaAddress));
   dispatch(getBlockchainAccount(personaAddress));
+
+  // if logged in user is a notary, fetch his validation requests
+  if (data && data.userRoleId === USER_ROLES.NOTARY) {
+    dispatch(getValidatorValidationRequests({ validator: personaAddress }));
+  }
 
   dispatch({ type: authConstants.ON_LOGIN_SUCCESS, payload: data });
 };

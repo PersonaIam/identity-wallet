@@ -2,7 +2,11 @@ import Loadable from 'react-loadable';
 import Loading from 'components/Loading';
 import AccountDetailsIcon from 'mdi-material-ui/AccountCardDetails';
 import AccountGroup from 'mdi-material-ui/AccountGroup';
+import Animation from 'mdi-material-ui/Animation';
+import AccountCheck from 'mdi-material-ui/AccountCheck';
 import DashboardIcon from 'mdi-material-ui/ViewDashboard';
+import { USER_ROLES } from 'constants/index';
+import groupBy from 'lodash/groupBy';
 
 const AccountCreate = Loadable({
   loader: () => import('containers/Account/Confirmation'),
@@ -34,6 +38,11 @@ const Notaries = Loadable({
   loading: Loading,
 });
 
+const NotaryValidationRequests = Loadable({
+  loader: () => import('containers/NotarizationRequests/NotaryValidationRequests'),
+  loading: Loading,
+});
+
 const Profile = Loadable({
   loader: () => import('containers/Account/Profile'),
   loading: Loading,
@@ -44,10 +53,22 @@ const Register = Loadable({
   loading: Loading,
 });
 
+const UserSentValidationRequests = Loadable({
+  loader: () => import('containers/NotarizationRequests/UserSentValidationRequests'),
+  loading: Loading,
+});
+
 
 const isLoggedIn = (userInfo) => !!(userInfo);
 
+const isNotary = (userInfo) => isLoggedIn(userInfo) && userInfo.userRoleId === USER_ROLES.NOTARY;
+
 const isRouteAvailable = (route, userInfo) => (route.isAvailable === undefined || route.isAvailable(userInfo));
+
+export const MENU_GROUPS = {
+  IDENTITY: 'Identity',
+  NOTARY: 'Notary',
+};
 
 const routes =  [
   {
@@ -82,6 +103,7 @@ const routes =  [
     isAvailable: isLoggedIn,
     showInMenu: true,
     icon: AccountDetailsIcon,
+    parent: MENU_GROUPS.IDENTITY,
   },
   {
     path: '/notaries',
@@ -90,6 +112,24 @@ const routes =  [
     isAvailable: isLoggedIn,
     showInMenu: true,
     icon: AccountGroup,
+  },
+  {
+    path: '/my-validation-requests',
+    exact: true,
+    component: UserSentValidationRequests,
+    isAvailable: isLoggedIn,
+    showInMenu: true,
+    icon: AccountCheck,
+    parent: MENU_GROUPS.IDENTITY,
+  },
+  {
+    path: '/validation-requests',
+    exact: true,
+    component: NotaryValidationRequests,
+    isAvailable: isNotary,
+    showInMenu: true,
+    icon: Animation,
+    parent: MENU_GROUPS.NOTARY,
   },
   {
     path: '/profile',
@@ -109,6 +149,23 @@ export const getApplicationRoutes = (userInfo) => {
   return routes.filter((route) => isRouteAvailable(route, userInfo));
 };
 
-export const getMenuRoutes = () => {
-  return routes.filter((route) => route.showInMenu);
+export const getMenuRoutes = (userInfo) => {
+  const availableMenuRoutes = getApplicationRoutes(userInfo).filter((route) => route.showInMenu);
+
+  const groupedRoutes = groupBy(availableMenuRoutes, 'parent');
+
+  let menuRoutes = [];
+
+  Object.keys(groupedRoutes)
+    .forEach(key => {
+      if (key === 'undefined') {
+        // here are the routes that have no parent
+        menuRoutes = [ ...menuRoutes, ...groupedRoutes[key] ];
+      }
+      else {
+        menuRoutes = [ ...menuRoutes, { name: key, children: groupedRoutes[key] } ];
+      }
+    });
+
+  return menuRoutes;
 };

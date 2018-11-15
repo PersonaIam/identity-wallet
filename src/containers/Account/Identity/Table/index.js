@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import Fade from 'react-reveal/Fade';
 import CardContent from '@material-ui/core/CardContent';
 import Chip from '@material-ui/core/Chip';
@@ -16,13 +15,12 @@ import Typography from '@material-ui/core/Typography';
 import AlertCircle from 'mdi-material-ui/AlertCircle';
 import AlertDanger from 'mdi-material-ui/AlertDecagram';
 import CalendarCheck from 'mdi-material-ui/CalendarCheck';
-import { DATE_FORMAT, ATTRIBUTE_EXPIRATIONS_STATES } from 'constants';
+import { DATE_FORMAT, ATTRIBUTE_EXPIRATIONS_STATES } from 'constants/index';
 import { personaStampToDate, getAttributeExpirationStatusAndRemainingDays } from 'helpers/personaService';
 import moment from 'moment';
-import Associations from './AttributeAssociations';
 import AttributeValue from './AttributeValue';
-import AttributeTimeline from './AttributeTimeline';
 import AttributeExtraInfo from './AttributeExtaInfo';
+import AttributeValidations from './AttributeValidations';
 
 const styles = (theme) => {
   return {
@@ -129,11 +127,26 @@ class IdentityTable extends Component {
                         md={12 - mdTimelineSize}
                         lg={12 - lgTimelineSize}
                       >
+                        {/* If there is an expiration time specified display in timeline */}
+                        {
+                          !expire_timestamp
+                            ? (
+                              <Typography variant="caption" className="flex align-center" component="p" style={{ marginBottom: 8 }}>
+                                <CalendarCheck style={{ fontSize: 16, marginRight: 4 }}/>
+                                <span>
+                                  { moment(personaStampToDate(expire_timestamp)).format(DATE_FORMAT) }
+                                </span>
+                              </Typography>
+                            )
+                            : null
+                        }
+
+
                         {
                           attributeWarning
                             ? attributeWarning
                             : (
-                              <Typography variant="subheading" color="textSecondary" gutterBottom>
+                              <Typography variant="title" color="textSecondary" gutterBottom>
                                 { t(attribute.name) }
                               </Typography>
                             )
@@ -145,22 +158,6 @@ class IdentityTable extends Component {
                           onAttributeValidateRequest={onAttributeValidateRequest}
                           t={t}
                         />
-
-
-                        {/* If there is an expiration time specified display in timeline */}
-                        {
-                          !expire_timestamp
-                            ? (
-                              <Typography variant="caption" className="flex align-center" component="p" style={{ marginTop: 8 }}>
-                                <CalendarCheck />&nbsp;
-                                <span>
-                                {t('ADDED_ON')}&nbsp;
-                                  { moment(personaStampToDate(expire_timestamp)).format(DATE_FORMAT) }
-                              </span>
-                              </Typography>
-                            )
-                            : null
-                        }
                       </Grid>
 
                       {
@@ -182,6 +179,10 @@ class IdentityTable extends Component {
                           )
                           : null
                       }
+
+                      <Grid item xs={12}>
+                        <AttributeValidations attribute={attribute} t={t}/>
+                      </Grid>
                     </Grid>
                   </CardContent>
                 </Paper>

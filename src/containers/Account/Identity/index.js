@@ -357,11 +357,16 @@ AccountIdentity.propTypes = {
   userAttributesInfo: PropTypes.array.isRequired,
 };
 
-const mapUserAttributesInfo = (attributeTypes, userAttributes) => {
+const mapUserAttributesInfo = ({attributeTypes, userAttributes, userSentValidationRequests}) => {
   return attributeTypes.map((attributeType) => {
     const attributeName = attributeType.name;
 
     const userAttribute = userAttributes.find((uAttribute) => uAttribute.type === attributeName);
+
+    if (userAttribute) {
+      userAttribute.userAttributeValidations = userSentValidationRequests
+        .filter((validation) => validation.type === attributeName);
+    }
 
     attributeType.userAttribute = userAttribute; // keep all info someware
     attributeType.value = userAttribute ? userAttribute.value : undefined;
@@ -374,7 +379,7 @@ const mapStateToProps = (state) => ({
   attributeTypes: state.attributes.attributeTypes,
   isLoading: state.attributes.isLoading,
   userInfo: state.auth.userInfo,
-  userAttributesInfo: mapUserAttributesInfo(state.attributes.attributeTypes, state.attributes.userAttributes),
+  userAttributesInfo: mapUserAttributesInfo(state.attributes),
 });
 
 const mapDispatchToProps = (dispatch) => ({

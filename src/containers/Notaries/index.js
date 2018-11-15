@@ -68,7 +68,10 @@ class Notaries extends Component {
                 <div>
                   <Map
                     t={t}
-                    markers={notaryInfoList.map(notary => notary.contactInfo)}
+                    markers={notaryInfoList.map(notary => ({
+                      ...notary.contactInfo,
+                      label: `${notary.contactInfo.firstName} ${notary.contactInfo.lastName}`
+                    }))}
                   />
 
                   <NotaryList notaryInfoList={notaryInfoList} t={t}/>

@@ -41,9 +41,23 @@ class Layout extends Component {
     this.contentRef = createRef();
   }
 
+  showAccountDetails = (pathName) => {
+    let showDetails = true;
+
+    if (
+      // pathName === '/my-validation-requests'
+      pathName === '/validation-requests'
+      || pathName === '/notaries'
+    ) {
+      showDetails = false;
+    }
+
+    return showDetails;
+  };
+
   render() {
     const {
-      children, classes, onLogout, t, userInfo, openSidenav, closeSidenav, sidenavOpened, reloadAccount, width
+      children, classes, onLogout, t, userInfo, openSidenav, closeSidenav, sidenavOpened, reloadAccount, width, pathname
     } = this.props;
 
     const isSmallDevice = width === 'xs' || width === 'sm';
@@ -53,6 +67,7 @@ class Layout extends Component {
         isOpen={sidenavOpened}
         onClose={closeSidenav}
         t={t}
+        userInfo={userInfo}
       />
     );
 
@@ -61,7 +76,7 @@ class Layout extends Component {
     return (
       <StickyContainer>
         <Grid container justify="center">
-          <Grid item xs={12} md={11} lg={10} xl={8}>
+          <Grid item xs={12} md={11} lg={11} xl={9}>
             <Sticky topOffset={isSmallDevice ? 0 : distanceFromTop}>
               {
                 ({ style, isSticky }) => {
@@ -117,7 +132,7 @@ class Layout extends Component {
 
               <div className={classes.content}>
                 {
-                  userInfo && userInfo.userBlockchainAccount
+                  userInfo && userInfo.userBlockchainAccount && this.showAccountDetails(pathname)
                     ? (
                       <AccountDetails
                         userInfo={userInfo}
@@ -147,6 +162,7 @@ Layout.propTypes = {
   sidenavOpened: PropTypes.bool,
   openSidenav: PropTypes.func.isRequired,
   closeSidenav: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
   reloadAccount: PropTypes.func.isRequired,
   width: PropTypes.string.isRequired,
 };

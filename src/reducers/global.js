@@ -5,7 +5,7 @@ import { globalConstants } from 'constants/global';
 
 const initialState = {
   // passphrase: null,
-  passphrase: 'elevator any again myself other donate reflect dolphin apple awkward shoulder unusual',
+  passphrase: 'shift add egg okay body shield review hazard galaxy cradle dress stick',
   sidenavOpened: false,
   countries: [],
 };

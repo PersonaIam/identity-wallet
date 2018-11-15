@@ -10,7 +10,7 @@ import {
 import personajs from 'personajs';
 import bip39 from 'bip39';
 import moment from "moment/moment";
-import {DATE_FORMAT} from "../constants";
+// import {DATE_FORMAT} from "../constants";
 
 export const getNetwork = () => {
   return personajs.networks[PERSONA_ENV];

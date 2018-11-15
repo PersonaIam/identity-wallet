@@ -23,6 +23,11 @@ const themeOverrides = {
       color: '#FFFFFF',
     },
   },
+  MuiSnackbarContent: {
+    message: {
+      flex: 1,
+    },
+  },
   MuiTab: {
     root:{
       textTransform: 'none',
