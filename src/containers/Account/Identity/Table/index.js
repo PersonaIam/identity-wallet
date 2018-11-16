@@ -165,8 +165,9 @@ class IdentityTable extends Component {
                                           <Tooltip title={t('N_ASSOCIATIONS', { value: attributeAssociations.length })}>
                                             <Badge
                                               badgeContent={attributeAssociations.length}
-                                              classes={{ badge: classes.badge }}
-                                              color="secondary"
+                                              classes={{
+                                                badge: `${classes.badge} ${attributeAssociations.length ? '' : 'disabled'}`
+                                              }}
                                             >
                                               <MultipleFiles className={classes.infoIconRight}/>
                                             </Badge>
@@ -177,8 +178,9 @@ class IdentityTable extends Component {
                                           <Tooltip title={t('N_VALIDATIONS', { value: userAttributeValidations.length })}>
                                             <Badge
                                               badgeContent={userAttributeValidations.length}
-                                              classes={{ badge: classes.badge }}
-                                              color="secondary"
+                                              classes={{
+                                                badge: `${classes.badge} ${userAttributeValidations.length ? '' : 'disabled'}`
+                                              }}
                                             >
                                               <Incognito className={classes.infoIconRight}/>
                                             </Badge>

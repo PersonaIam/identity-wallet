@@ -3,6 +3,7 @@
  */
 import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
+import grey from '@material-ui/core/colors/grey';
 import {ATTRIBUTE_EXPIRATIONS_STATES} from "constants/index";
 
 const styles = (theme) => {
@@ -43,6 +44,9 @@ const styles = (theme) => {
       color: '#FFF !important',
       background: `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
       boxShadow: theme.shadows[6],
+      '&.disabled': {
+        background: `linear-gradient(45deg, ${grey[400]}, ${grey[500]})`,
+      }
     },
     infoIconRight: {
       color: theme.palette.text.secondary,

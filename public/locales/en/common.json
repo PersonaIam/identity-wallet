@@ -138,7 +138,7 @@
   "APPROVE": "Approve notarisation",
   "NOTARIZE": "Validate attribute",
   "REJECT": "Invalidate attribute",
-  "CANCELED": "Canceled",
+  "CANCELLED": "Canceled",
   "N_VALIDATIONS": "{{value}} validation(s)",
   "BY": "By",
   "EXPIRES_ON": "Expires on {{ value }}",

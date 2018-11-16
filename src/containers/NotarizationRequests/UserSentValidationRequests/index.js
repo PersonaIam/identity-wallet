@@ -66,7 +66,7 @@ class UserSentValidationRequests extends Component {
 
     if (filterFormValue.rejected) toDisplayStatuses.push(VALIDATION_REQUESTS_STATUSES.REJECTED);
 
-    if (filterFormValue.canceled) toDisplayStatuses.push(VALIDATION_REQUESTS_STATUSES.CANCELED);
+    if (filterFormValue.canceled) toDisplayStatuses.push(VALIDATION_REQUESTS_STATUSES.CANCELLED);
 
     const displayAttributes = userSentValidationRequests.filter((attribute) => {
       const isAttributeValid = toDisplayStatuses.findIndex(status => status === attribute.status) !== -1;

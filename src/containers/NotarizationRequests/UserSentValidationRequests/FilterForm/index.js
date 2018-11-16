@@ -105,7 +105,7 @@ class CourseSearchFilter extends Component {
                 <Grid item xs={12} sm={6} md>
                   <Field
                     name="canceled"
-                    label="CANCELED"
+                    label="CANCELLED"
                     component={RenderCheckbox}
                     onChange={() => setTimeout(() => handleSubmit(), false)}
                   />
