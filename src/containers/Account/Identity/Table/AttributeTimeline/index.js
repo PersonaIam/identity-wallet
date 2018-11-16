@@ -14,6 +14,7 @@ import moment from 'moment';
 const styles = (theme) => {
   return {
     root: {
+      borderRadius: '8px 8px 0 0',
       padding: 16,
       '& *': {
         color: '#FFFFFF !important',
@@ -35,6 +36,8 @@ const styles = (theme) => {
 };
 
 const IdentityTimeline = ({ classes, expire_timestamp, timestamp, t, width }) => {
+  if (!expire_timestamp) return null;
+
   const addedDate = moment(personaStampToDate(timestamp));
   const expireDate = moment(personaStampToDate(expire_timestamp));
 

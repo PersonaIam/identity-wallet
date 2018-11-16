@@ -86,7 +86,6 @@ class AttributeValidationCreate extends Component {
       pageSize: params.pageSize || pageSize,
     })
       .then((value) => {
-        console.log(value);
         this.setState({ activeStep: 1 })
       })
   };

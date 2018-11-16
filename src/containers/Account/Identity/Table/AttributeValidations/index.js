@@ -1,7 +1,7 @@
 /**
  * Created by vladtomsa on 15/11/2018
  */
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -28,7 +28,7 @@ import {DATE_TIME_FORMAT, VALIDATION_REQUESTS_STATUSES} from "../../../../../con
 const styles = theme => ({
   root: {
     marginTop: 18,
-    backgroundColor: '#FFFFFF !important',
+    backgroundColor: 'rgba(0,0,0,0) !important',
     boxShadow: 'none !important',
     '&:before': {
       backgroundColor: 'rgba(0,0,0,0)',
@@ -64,84 +64,105 @@ const styles = theme => ({
   },
 });
 
-const AttributeValidations = ({ attribute, classes, t }) => {
-  const { userAttribute: { userAttributeValidations } } = attribute;
-
-  const groupedValidations = groupBy(userAttributeValidations, 'status');
-
-  const getSectionIcon = (section) => {
-    switch (section) {
-      case (VALIDATION_REQUESTS_STATUSES.PENDING_APPROVAL):
-      case (VALIDATION_REQUESTS_STATUSES.IN_PROGRESS):
-        return <Progress style={{ marginRight: 4 }}/>;
-      case (VALIDATION_REQUESTS_STATUSES.COMPLETED):
-        return <CheckCircle className={classes.success} style={{ marginRight: 4 }}/>;
-      default:
-        return <CloseCircle className={classes.error} style={{ marginRight: 4 }}/>;
-    }
+class AttributeValidations extends Component {
+  state = {
+    expanded: true
   };
 
-  return (
-    <ExpansionPanel className={classes.root} disabled={userAttributeValidations.length === 0}>
-      <ExpansionPanelSummary className={classes.pannelSummary} expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="subheading" color="textSecondary">{ t('N_VALIDATIONS', { value: userAttributeValidations.length }) }</Typography>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.pannelDetails}>
-        <Paper className={classes.paper}>
-          <List className={classes.listRoot} disablePadding subheader={<li />}>
-            {
-              Object.keys(groupedValidations)
-                .map(section => (
-                  <li key={`section-${section}`} className={classes.listSection}>
-                    <ul className={classes.ul}>
-                      <ListSubheader className="flex align-center">
-                        { getSectionIcon(section) } { t(section) }
-                      </ListSubheader>
-                      {groupedValidations[section].map(item => (
-                        <ListItem
-                          button
-                          key={`item-${section}-${item}`}
-                          divider
-                        >
-                          <ListItemText
-                            primary={
-                              <Typography
-                                component="span"
-                                className="flex"
-                                variant="body1"
-                                color="textPrimary"
-                                style={{ wordBreak: 'break-all' }}
-                              >
-                                {t('BY') + ': ' + item.validator}
-                              </Typography>
-                            }
-                            secondary={
-                              <Typography
-                                variant="caption"
-                                component="span"
-                                className="flex"
-                                style={{ wordBreak: 'break-all' }}
-                              >
-                                <Calendar style={{ fontSize: '14px', marginRight: 2 }}/>
+  toggleExpanded = () => {
+    this.setState((prevState) => ({ ...prevState, expanded: !prevState.expanded }));
+  };
 
-                                {
-                                  moment(personaStampToDate(item.timestamp)).format(DATE_TIME_FORMAT)
-                                }
-                              </Typography>
-                            }
-                          />
-                        </ListItem>
-                      ))}
-                    </ul>
-                  </li>
-                ))
-            }
-          </List>
-        </Paper>
-      </ExpansionPanelDetails>
-    </ExpansionPanel>
-  );
-};
+  render() {
+    const { attribute, classes, t } = this.props;
+    const { expanded } = this.state;
+
+    const { userAttribute: { userAttributeValidations } } = attribute;
+    const groupedValidations = groupBy(userAttributeValidations, 'status');
+
+    const getSectionIcon = (section) => {
+      switch (section) {
+        case (VALIDATION_REQUESTS_STATUSES.PENDING_APPROVAL):
+        case (VALIDATION_REQUESTS_STATUSES.IN_PROGRESS):
+          return <Progress style={{ marginRight: 4 }}/>;
+        case (VALIDATION_REQUESTS_STATUSES.COMPLETED):
+          return <CheckCircle className={classes.success} style={{ marginRight: 4 }}/>;
+        default:
+          return <CloseCircle className={classes.error} style={{ marginRight: 4 }}/>;
+      }
+    };
+
+    return (
+      <ExpansionPanel
+        className={classes.root}
+        disabled={userAttributeValidations.length === 0}
+        expanded={expanded}
+        onChange={this.toggleExpanded}
+      >
+        <ExpansionPanelSummary
+          className={classes.pannelSummary}
+          expandIcon={<ExpandMoreIcon />}
+        >
+          <Typography variant="subheading" color="textSecondary">{ t('N_VALIDATIONS', { value: userAttributeValidations.length }) }</Typography>
+        </ExpansionPanelSummary>
+
+        <ExpansionPanelDetails className={classes.pannelDetails}>
+          <Paper className={classes.paper}>
+            <List className={classes.listRoot} disablePadding subheader={<li />}>
+              {
+                Object.keys(groupedValidations)
+                  .map(section => (
+                    <li key={`section-${section}`} className={classes.listSection}>
+                      <ul className={classes.ul}>
+                        <ListSubheader className="flex align-center">
+                          { getSectionIcon(section) } { t(section) }
+                        </ListSubheader>
+                        {groupedValidations[section].map(item => (
+                          <ListItem
+                            button
+                            key={`item-${section}-${item}`}
+                            divider
+                          >
+                            <ListItemText
+                              primary={
+                                <Typography
+                                  component="span"
+                                  className="flex"
+                                  variant="body1"
+                                  color="textPrimary"
+                                  style={{ wordBreak: 'break-all' }}
+                                >
+                                  {t('BY') + ': ' + item.validator}
+                                </Typography>
+                              }
+                              secondary={
+                                <Typography
+                                  variant="caption"
+                                  component="span"
+                                  className="flex"
+                                  style={{ wordBreak: 'break-all' }}
+                                >
+                                  <Calendar style={{ fontSize: '14px', marginRight: 2 }}/>
+
+                                  {
+                                    moment(personaStampToDate(item.timestamp)).format(DATE_TIME_FORMAT)
+                                  }
+                                </Typography>
+                              }
+                            />
+                          </ListItem>
+                        ))}
+                      </ul>
+                    </li>
+                  ))
+              }
+            </List>
+          </Paper>
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
+    );
+  }
+}
 
 AttributeValidations.propTypes = {
   classes: PropTypes.object.isRequired,

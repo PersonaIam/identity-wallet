@@ -23,6 +23,18 @@ const AttributeAssociations = (props) => {
 
   const availableAssociationAttributes = createdAttributes.filter((attr) => attr.data_type !== AVAILABLE_DATA_TYPES.FILE);
 
+  const areAllAttributesSelected = availableAssociationAttributes.length === fields.length;
+
+  const selectAll = () => {
+    availableAssociationAttributes.forEach((attribute) => {
+      const associationIndex = createdFields.findIndex((field) => field === attribute.userAttribute.id);
+
+      if (associationIndex === -1) {
+        fields.push(attribute.userAttribute.id);
+      }
+    })
+  };
+
   return (
     <FormControl component="fieldset" required error={!!(error && submitFailed)} variant="outlined">
       <FormLabel component="legend">{ t('INCLUDES_ATTRIBUTES') }</FormLabel>
@@ -38,6 +50,17 @@ const AttributeAssociations = (props) => {
 
       <FormGroup>
         <Grid container spacing={8}>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={!!areAllAttributesSelected}
+                  onChange={selectAll}
+                />
+              }
+              label={t('SELECT_ALL')}
+            />
+          </Grid>
           {
             availableAssociationAttributes.map((attribute) => {
               const associationIndex = createdFields.findIndex((field) => field === attribute.userAttribute.id);

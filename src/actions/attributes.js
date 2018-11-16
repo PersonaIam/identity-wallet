@@ -206,7 +206,7 @@ export const handleAttributeRequest = (data, actionType) => async (dispatch, get
 
     await timeout(10 * 1000); // await forging block
 
-    dispatch(getValidationRequests({ validator: personaAddress }));
+    dispatch(getValidatorValidationRequests({ validator: personaAddress }));
     dispatch(validationUpdateDone());
 
     return true;

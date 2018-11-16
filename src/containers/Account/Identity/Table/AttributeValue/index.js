@@ -39,12 +39,20 @@ const styles = (theme) => {
   };
 };
 
+const initialState = {
+  isDialogOpen: null,
+  toDecrypt: null,
+  decryptedValue: null,
+};
+
 class Index extends Component {
-  state = {
-    isDialogOpen: null,
-    toDecrypt: null,
-    decryptedValue: null,
-  };
+  state = initialState;
+
+  UNSAFE_componentWillReceiveProps(newProps) {
+    if (newProps.attribute !== this.props.attribute) {
+      this.setState({ ...initialState });
+    }
+  }
 
   decyptValue = (passphrase) => {
     const { toDecrypt } = this.state;

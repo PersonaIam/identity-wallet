@@ -109,9 +109,8 @@ class Index extends Component {
       associations && associations.length
         ? (
           <CardContent>
-            {/*<br />*/}
-            {/*<Typography variant="caption">{t('ASSOCIATED_DOCUMENTS')}</Typography>*/}
-            {/*<br />*/}
+            <Typography variant="caption">{t('ASSOCIATED_DOCUMENTS')}</Typography>
+            <br />
             <div className="flex wrap-content">
               {
                 associations.map(

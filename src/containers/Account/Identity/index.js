@@ -220,7 +220,9 @@ class AccountIdentity extends Component {
 
     const attributeProgress = this.getAttributesProgress();
 
-    const isUserAttributesLoading = isLoading === attributesConstants.ON_GET_USER_ATTRIBUTES_INIT;
+    const isUserAttributesLoading =
+      isLoading === attributesConstants.ON_GET_USER_ATTRIBUTES_INIT
+      || isLoading === attributesConstants.ON_GET_USER_SENT_VALIDATION_REQUESTS_INIT;
 
     const createdAttributes = [];
     const remainingAttributes = [];
@@ -303,11 +305,17 @@ class AccountIdentity extends Component {
           </CardHeader>
 
           <CardContent>
-            <Table
-              attributes={createdAttributes}
-              onAttributeSelect={this.onAttributeSelect}
-              onAttributeValidateRequest={this.onAttributeValidateRequest}
-            />
+            {
+              isUserAttributesLoading
+                ? null
+                : (
+                  <Table
+                    attributes={createdAttributes}
+                    onAttributeSelect={this.onAttributeSelect}
+                    onAttributeValidateRequest={this.onAttributeValidateRequest}
+                  />
+                )
+            }
           </CardContent>
         </div>
 
