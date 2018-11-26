@@ -60,25 +60,26 @@ export class Header extends Component {
                     userInfo={userInfo}
                   />,
                 ]
-                : [
-                  <Button
-                    key="login"
-                    data-test-id="login"
-                    component={Link}
-                    to="/login"
-                  >
-                    { t('LOGIN') }
-                  </Button>,
-
-                  <Button
-                    key="register"
-                    data-test-id="register"
-                    component={Link}
-                    to="/register"
-                  >
-                    { t('REGISTER') }
-                  </Button>
-                ]
+                : null
+                // [
+                //   <Button
+                //     key="login"
+                //     data-test-id="login"
+                //     component={Link}
+                //     to="/login"
+                //   >
+                //     { t('LOGIN') }
+                //   </Button>,
+                //
+                //   <Button
+                //     key="register"
+                //     data-test-id="register"
+                //     component={Link}
+                //     to="/register"
+                //   >
+                //     { t('REGISTER') }
+                //   </Button>
+                // ]
             }
             &nbsp;&nbsp;
             <LanguageToggle data-test-id="language-toggle"/>

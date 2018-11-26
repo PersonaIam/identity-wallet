@@ -13,6 +13,11 @@ const AccountCreate = Loadable({
   loading: Loading,
 });
 
+const AdminProviders = Loadable({
+  loader: () => import('containers/Administration/Providers'),
+  loading: Loading,
+});
+
 const Dashboard = Loadable({
   loader: () => import('containers/Dashboard'),
   loading: Loading,
@@ -61,6 +66,8 @@ const UserSentValidationRequests = Loadable({
 
 const isLoggedIn = (userInfo) => !!(userInfo);
 
+const isAdmin = (userInfo) => isLoggedIn(userInfo) && userInfo.userRoleId === USER_ROLES.SYS_ADMIN;
+
 const isNotary = (userInfo) => isLoggedIn(userInfo) && userInfo.userRoleId === USER_ROLES.NOTARY;
 
 const isRouteAvailable = (route, userInfo) => (route.isAvailable === undefined || route.isAvailable(userInfo));
@@ -68,6 +75,7 @@ const isRouteAvailable = (route, userInfo) => (route.isAvailable === undefined |
 export const MENU_GROUPS = {
   IDENTITY: 'Identity',
   NOTARY: 'Notary',
+  ADMIN: 'Administration',
 };
 
 const routes =  [
@@ -136,6 +144,15 @@ const routes =  [
     exact: true,
     component: Profile,
     isAvailable: isLoggedIn,
+  },
+  {
+    path: '/administration/providers',
+    exact: true,
+    component: AdminProviders,
+    isAvailable: isAdmin,
+    showInMenu: true,
+    icon: DashboardIcon,
+    parent: MENU_GROUPS.ADMIN,
   },
   {
     path: '/',

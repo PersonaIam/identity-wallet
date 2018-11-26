@@ -37,7 +37,6 @@ export const readInputFile = (inputFile) => {
 };
 
 export const saveFile = (file, fileName) => {
-  debugger;
   const fileData = file.substr(file.indexOf(',') + 1, file.length);
   const fileType = file.substr(0, file.indexOf(',')).split(':')[1].split(';')[0];
 

@@ -57,8 +57,6 @@ export const updateAccount = (data) => async (dispatch) => {
 
     const userInfo = await http.get('/users/' + data.id);
 
-    debugger;
-
     dispatch(loginSuccess(userInfo));
     dispatch(onNotificationSuccessInit('Account updated successfully'));
   }
@@ -135,15 +133,17 @@ const loginInit = () => ({ type: authConstants.ON_LOGIN_INIT });
 const loginSuccess = (data) => async (dispatch) => {
   const personaAddress = data.personaAddress;
 
-  dispatch(getUserAttributes(personaAddress));
-  dispatch(getBlockchainAccount(personaAddress));
+  if (personaAddress) {
+    dispatch(getUserAttributes(personaAddress));
+    dispatch(getBlockchainAccount(personaAddress));
 
-  // if logged in user is a notary, fetch his validation requests
-  if (data && data.userRoleId === USER_ROLES.NOTARY) {
-    dispatch(getValidatorValidationRequests({ validator: personaAddress }));
+    // if logged in user is a notary, fetch his validation requests
+    if (data && data.userRoleId === USER_ROLES.NOTARY) {
+      dispatch(getValidatorValidationRequests({ validator: personaAddress }));
+    }
+
+    dispatch({ type: authConstants.ON_LOGIN_SUCCESS, payload: data });
   }
-
-  dispatch({ type: authConstants.ON_LOGIN_SUCCESS, payload: data });
 };
 const loginFailure = () => ({ type: authConstants.ON_LOGIN_FAILURE });
 

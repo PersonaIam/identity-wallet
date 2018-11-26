@@ -138,6 +138,11 @@
   "APPROVE": "Approve notarisation",
   "NOTARIZE": "Validate attribute",
   "REJECT": "Invalidate attribute",
+  "PERSONA_ADDRESS": "Persona address",
+  "IS_REG_EMAIL_SENT": "Registration sent",
+  "PROVIDERS": "Providers",
+  "PROVIDER_FORM": "Provider form",
+  "IS_ACTIVE": "Active",
   "CANCELLED": "Canceled",
   "N_VALIDATIONS": "{{value}} validation(s)",
   "BY": "By",
@@ -163,5 +168,12 @@
   "/identity": "Identity",
   "/notaries": "Notaries",
   "/validation-requests": "Validation requests",
-  "/my-validation-requests": "My validation requests"
+  "/my-validation-requests": "My validation requests",
+  "/administration/providers": "Providers",
+  "HOME_1": "Imagine that next time when you sign-up for a service or create a new account with some website you just prove that you are who you say you are without handing a copy of your personal details.",
+  "HOME_2": "We’re working on the next generation of trust&identity protocol,so you can be in control over your data.So you know what,with whom and for how long you share your personal details.",
+  "HOME_3": "Sign-up now and get early access to Persona,the trust protocol",
+  "SUBSCRIPTION_SUCCESS": "Thank you for pre-registering to Persona. We'll send you email notifications with our progress",
+  "PRIVACY_CONFIRM": "I've read and agree with the privacy policy",
+  "AGREE_PRIVACY": "Pleas read and agree to our privacy policy"
 }

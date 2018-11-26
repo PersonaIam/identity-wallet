@@ -2,16 +2,97 @@
  * Created by vladtomsa on 26/09/2018
  */
 import React from 'react';
+import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import Grid from '@material-ui/core/Grid';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { subscriptionConstants } from 'constants/subscriptions';
+import { createSubscription } from 'actions/subscriptions';
+import { withStyles } from '@material-ui/core/styles';
+import styles from './styles';
+import Form from './form';
+import Bounce from 'react-reveal/Bounce';
 
-const Home = ({ t }) => {
+const Home = ({ classes, isLoading, createSubscription,  t }) => {
+  const loading = isLoading === subscriptionConstants.ON_CREATE_SUBSCRIPTIONS_INIT;
+
   return (
-    <div>
-      <h1>{ t('Home') }</h1>
-    </div>
+    <Bounce>
+      <div className={classes.root}>
+        <Grid container spacing={16} justify="center" alignItems="center">
+          <Grid item xs={11} md={6} lg={5}>
+            <img src="/images/overview.png" />
+          </Grid>
+
+          <Grid item xs={11} md={6} lg={5}>
+            <Typography variant="headline" color="textSecondary">
+              { t('HOME_1') }
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <br />
+
+        <Grid container spacing={16} justify="center" alignItems="center">
+          <Grid item xs={11}>
+            <Paper>
+              <Grid container spacing={16} justify="center" alignItems="center">
+                <Grid item xs={12} md={6} lg={5}>
+                  <Typography variant="headline" color="textSecondary">
+                    { t('HOME_2') }
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} md={6} lg={5}>
+                  <img src="/images/safe-channel.png" />
+                </Grid>
+              </Grid>
+
+              {
+                loading
+                  ? <LinearProgress/>
+                  : null
+              }
+
+              <Grid item xs={12} className={classes.form}>
+                <br />
+                <Typography variant="display1" className="text-center">
+                  { t('HOME_3') }
+                </Typography>
+                <br />
+                <br />
+                <Form
+                  t={t}
+                  onSubmit={createSubscription}
+                  isLoading={loading}
+                />
+              </Grid>
+            </Paper>
+          </Grid>
+        </Grid>
+      </div>
+    </Bounce>
   );
 };
 
-const withTranslate = translate('common')(Home);
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.subscription.isLoading,
+  };
+};
 
-export default withTranslate;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createSubscription: (data) => dispatch(createSubscription(data)),
+  };
+};
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps)(Home);
+
+const withTranslate = translate('common')(withConnect);
+
+const withStyle = withStyles(styles)(withTranslate);
+
+export default withStyle;

@@ -12,17 +12,20 @@ export const ATTRIBUTE_EXPIRATIONS_STATES = {
   EXPIRED: 3,
 };
 
-export const AVAILABLE_LANGUAGES = [{
-  code: 'de',
-  name: 'German',
-  flag: 'germany',
-  value: 'GERMAN',
-}, {
-  code: 'en',
-  name: 'English',
-  flag: 'united-states-of-america',
-  value: 'ENGLISH'
-}];
+export const AVAILABLE_LANGUAGES = [
+  // {
+  //   code: 'de',
+  //   name: 'German',
+  //   flag: 'germany',
+  //   value: 'GERMAN',
+  // },
+  {
+    code: 'en',
+    name: 'English',
+    flag: 'united-states-of-america',
+    value: 'ENGLISH'
+  }
+];
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
@@ -37,6 +40,8 @@ export const PERSONA_MAINNET_NAME = 'persona'; // used in helpers/personaservice
 export const USER_ROLES = {
   IDENTITY_USER: 1,
   NOTARY: 2,
+  PROVIDER: 3,
+  SYS_ADMIN: 4,
 };
 
 export const VALIDATION_REQUEST_ACTION = {
