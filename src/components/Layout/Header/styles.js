@@ -7,7 +7,7 @@ export const toolbarHeight = {
   md: 80,
 };
 
-export const logoWidth = 210;
+export const logoWidth = 190;
 
 export const toolbarRadius = 10;
 

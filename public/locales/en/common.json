@@ -175,5 +175,6 @@
   "HOME_3": "Sign-up now and get early access to Persona,the trust protocol",
   "SUBSCRIPTION_SUCCESS": "Thank you for pre-registering to Persona. We'll send you email notifications with our progress",
   "PRIVACY_CONFIRM": "I've read and agree with the privacy policy",
-  "AGREE_PRIVACY": "Pleas read and agree to our privacy policy"
+  "AGREE_PRIVACY": "Pleas read and agree to our privacy policy",
+  "NO_PASSPHRASE_NO_ADDDRESS": "Failing to provide your address associated pass phrase may lead to permanently loosing your address data"
 }

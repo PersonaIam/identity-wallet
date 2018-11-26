@@ -27,14 +27,22 @@ export class Header extends Component {
         <AppBar position="static" className={classes.appBar} style={{ marginTop: `${isFixed ? 0 : toolbarMarginTop}px` }}>
           <Toolbar variant="regular" className={classes.toolbar}>
             <div className={classes.logo}>
-              <Hidden mdUp>
-                <IconButton
-                  data-test-id="sidenav-menu"
-                  onClick={openSidenav}
-                >
-                  <Menu />
-                </IconButton>
-              </Hidden>
+              {
+                !!userInfo
+                  ? (
+                    <Fragment>
+                      <Hidden mdUp>
+                        <IconButton
+                          data-test-id="sidenav-menu"
+                          onClick={openSidenav}
+                        >
+                          <Menu/>
+                        </IconButton>
+                      </Hidden>
+                    </Fragment>
+                  )
+                  : null
+              }
               <Link to="/">
                 <img src="/images/persona-logo.png" alt="Logo"/>
               </Link>
@@ -82,7 +90,12 @@ export class Header extends Component {
                 // ]
             }
             &nbsp;&nbsp;
-            <LanguageToggle data-test-id="language-toggle"/>
+            <a href="https://persona.im/" target="_blank">
+              <Button component="div" color="secondary" variant="outlined">
+                Visit website
+              </Button>
+            </a>
+            {/*<LanguageToggle data-test-id="language-toggle"/>*/}
           </Toolbar>
         </AppBar>
       </Fragment>
