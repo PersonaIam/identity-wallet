@@ -22,6 +22,9 @@ const styles = (theme) => {
       '& button': {
         borderColor: '#FFF',
         padding: '8px 24px',
+        '&:disabled': {
+          opacity: '0.4'
+        },
       },
     },
   };

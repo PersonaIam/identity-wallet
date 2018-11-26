@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import { translate } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -15,7 +16,7 @@ import styles from './styles';
 import Form from './form';
 import Bounce from 'react-reveal/Bounce';
 
-const Home = ({ classes, isLoading, createSubscription,  t }) => {
+const Home = ({ classes, isLoading, createSubscription, readPrivacyPolicy,  t }) => {
   const loading = isLoading === subscriptionConstants.ON_CREATE_SUBSCRIPTIONS_INIT;
 
   return (
@@ -67,6 +68,7 @@ const Home = ({ classes, isLoading, createSubscription,  t }) => {
                   t={t}
                   onSubmit={createSubscription}
                   isLoading={loading}
+                  readPrivacyPolicy={readPrivacyPolicy}
                 />
               </Grid>
             </Paper>
@@ -77,9 +79,12 @@ const Home = ({ classes, isLoading, createSubscription,  t }) => {
   );
 };
 
+const selector = formValueSelector('PreRegisterForm');
+
 const mapStateToProps = (state) => {
   return {
     isLoading: state.subscription.isLoading,
+    readPrivacyPolicy: selector(state, 'readPrivacyPolicy'),
   };
 };
 

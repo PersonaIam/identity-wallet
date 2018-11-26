@@ -12,7 +12,8 @@ import Account from 'mdi-material-ui/Account';
 import Email from 'mdi-material-ui/At';
 import { RenderTextField, RenderCheckbox } from 'components/FormInputs';
 import RecaptchaField from 'components/FormInputs/Recaptcha';
-
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 const emailRegex = new RegExp(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
 const validate = (values) => {
@@ -34,14 +35,14 @@ const validate = (values) => {
 
   if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
 
-  // if (!values.readPrivacyPolicy) errors.readPrivacyPolicy = 'AGREE_PRIVACY';
+  if (!values.readPrivacyPolicy) errors.readPrivacyPolicy = 'AGREE_PRIVACY';
 
   return errors;
 };
 
 class PreRegisterForm extends Component {
   render() {
-    const { handleSubmit, isLoading, t } = this.props;
+    const { handleSubmit, isLoading, t, readPrivacyPolicy } = this.props;
 
     return (
       <form onSubmit={handleSubmit} noValidate>
@@ -92,13 +93,36 @@ class PreRegisterForm extends Component {
             />
           </Grid>
 
-          {/*<Grid item xs={11} md={6}>*/}
-            {/*<Field*/}
-              {/*name="readPrivacyPolicy"*/}
-              {/*component={ RenderCheckbox }*/}
-              {/*label="PRIVACY_CONFIRM"*/}
-            {/*/>*/}
-          {/*</Grid>*/}
+          <Grid item xs={11}>
+            <Typography variant="display1" style={{ paddingLeft: 0 }}>
+              Contact permission
+            </Typography>
+            <Divider style={{ backgroundColor: 'rgba(255,255,255,0.5)' }}/>
+            <br />
+
+            <Typography variant="subheading">
+              We want to send you a notification once Persona is up and running and you can register in order to create
+              your Persona Identity and start enjoying all its benefits.
+            </Typography>
+
+            <Typography variant="subheading">
+              We'll always treat your personal details with the utmost care and will never sell them to other companies
+              for marketing purposes. Please send us an email at&nbsp;
+              <a href="mailto:hello@persona.im">hello@persona.im</a>&nbsp;
+              in case you want your personal details to be removed from our database.
+            </Typography>
+
+            <Grid item xs={11} md={6}>
+              <Field
+                name="readPrivacyPolicy"
+                component={ RenderCheckbox }
+                label="Yes please, I'd like to hear about Persona launch "
+              />
+            </Grid>
+
+            <br />
+            <br />
+          </Grid>
 
           <Grid item xs={11}>
             <Field
@@ -113,7 +137,7 @@ class PreRegisterForm extends Component {
                 <Button
                   type="submit"
                   className="flex align-center"
-                  disabled={isLoading}
+                  disabled={isLoading || !readPrivacyPolicy}
                   variant="outlined"
                 >
                   &nbsp;{t('SUBMIT')}&nbsp;
