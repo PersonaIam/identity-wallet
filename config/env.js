@@ -1,10 +1,13 @@
 'use strict';
+
+// identity-service endpoint
 const API_URLS = {
   localnet: 'http://localhost:8000',
   testnet: 'http://localhost:8000',
   persona: 'http://localhost:8000',
 };
 
+// Persona blockchain endpoint
 const PERSONA_URLS = {
   localnet: 'http://localhost:4100',
   testnet: 'http://localhost:4100',
