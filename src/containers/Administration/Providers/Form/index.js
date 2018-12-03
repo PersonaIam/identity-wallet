@@ -15,15 +15,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-
-import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Account from 'mdi-material-ui/Account';
 import Email from 'mdi-material-ui/At';
 import { administrationsConstants } from 'constants/administration';
-import { USER_ROLES } from 'constants/index';
 import { RenderTextField } from 'components/FormInputs';
 
 import styles from './styles';
@@ -55,7 +51,7 @@ const validate = (values) => {
 
 class AdminProviderForm extends Component {
   render() {
-    const { classes, handleSubmit, initialValues, isLoading, onClose, t, userRoleId, } = this.props;
+    const { classes, handleSubmit, initialValues, isLoading, onClose, t, } = this.props;
 
     const loading = isLoading === administrationsConstants.ON_SAVE_ADMIN_PROVIDERS_INIT;
 
@@ -72,7 +68,7 @@ class AdminProviderForm extends Component {
               : null
           }
           <DialogTitle>
-            <Typography variant="title">
+            <Typography variant="title" component="span">
               { t('PROVIDER_FORM') }
             </Typography>
           </DialogTitle>

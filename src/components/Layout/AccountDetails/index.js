@@ -33,10 +33,17 @@ const AccountDetailsHeader = ({ userInfo, classes, isLoading, reloadAccount, t }
               <QRCode size={94} value={accountInfo.address || ''}/>
 
               <div className={classes.accountDetails}>
-                {/*<Typography color="secondary" component="p" className="flex align-center">*/}
-                {/*/!*<Account />&nbsp;*!/*/}
-                {/*<span>{ userInfo.username }</span>*/}
-                {/*</Typography>*/}
+                {
+                  userInfo && userInfo.contactInfo && (userInfo.contactInfo.firstName || userInfo.contactInfo.lastName)
+                    ? (
+                      <Typography variant="display1" color="secondary" component="p" className="flex align-center">
+                        {/*<Account />&nbsp;*/}
+                        <span>{ userInfo.contactInfo.firstName }&nbsp;{ userInfo.contactInfo.lastName }</span>
+                      </Typography>
+                    )
+                    : null
+                }
+
 
                 <Typography variant="caption">
                   {t('ADDRESS')}

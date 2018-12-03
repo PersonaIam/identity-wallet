@@ -24,7 +24,7 @@ const Home = ({ classes, isLoading, createSubscription, readPrivacyPolicy,  t })
       <div className={classes.root}>
         <Grid container spacing={16} justify="center" alignItems="center">
           <Grid item xs={11} md={6} lg={5}>
-            <img src="/images/overview.png" />
+            <img src="/images/overview.png" alt="Overview"/>
           </Grid>
 
           <Grid item xs={11} md={6} lg={5}>
@@ -47,7 +47,7 @@ const Home = ({ classes, isLoading, createSubscription, readPrivacyPolicy,  t })
                 </Grid>
 
                 <Grid item xs={12} md={6} lg={5}>
-                  <img src="/images/safe-channel.png" />
+                  <img src="/images/safe-channel.png" alt="Safe channel"/>
                 </Grid>
               </Grid>
 

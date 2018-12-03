@@ -59,6 +59,7 @@ class Providers extends Component {
 
   render() {
     const {isLoading, providerInfoList, providersCount, pageNumber, pageSize, selectedProviderInfo, t} = this.props;
+
     return (
       <div>
         <div className="flex space-between">

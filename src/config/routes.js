@@ -4,7 +4,9 @@ import AccountDetailsIcon from 'mdi-material-ui/AccountCardDetails';
 import AccountGroup from 'mdi-material-ui/AccountGroup';
 import Animation from 'mdi-material-ui/Animation';
 import AccountCheck from 'mdi-material-ui/AccountCheck';
+import Bank from 'mdi-material-ui/Bank';
 import DashboardIcon from 'mdi-material-ui/ViewDashboard';
+import MyServicesIcon from 'mdi-material-ui/FileDocumentBoxMultiple';
 import { USER_ROLES } from 'constants/index';
 import groupBy from 'lodash/groupBy';
 
@@ -53,6 +55,22 @@ const Profile = Loadable({
   loading: Loading,
 });
 
+const Providers = Loadable({
+  loader: () => import('containers/Providers'),
+  loading: Loading,
+});
+
+
+const ProviderDetails = Loadable({
+  loader: () => import('containers/Providers/Details'),
+  loading: Loading,
+});
+
+const ProviderServices = Loadable({
+  loader: () => import('containers/Provider/Services'),
+  loading: Loading,
+});
+
 const Register = Loadable({
   loader: () => import('containers/Register'),
   loading: Loading,
@@ -70,11 +88,14 @@ const isAdmin = (userInfo) => isLoggedIn(userInfo) && userInfo.userRoleId === US
 
 const isNotary = (userInfo) => isLoggedIn(userInfo) && userInfo.userRoleId === USER_ROLES.NOTARY;
 
+const isProvider = (userInfo) => isLoggedIn(userInfo) && userInfo.userRoleId === USER_ROLES.PROVIDER;
+
 const isRouteAvailable = (route, userInfo) => (route.isAvailable === undefined || route.isAvailable(userInfo));
 
 export const MENU_GROUPS = {
   IDENTITY: 'Identity',
   NOTARY: 'Notary',
+  PROVIDER: 'Provider',
   ADMIN: 'Administration',
 };
 
@@ -122,6 +143,20 @@ const routes =  [
     icon: AccountGroup,
   },
   {
+    path: '/providers',
+    exact: true,
+    component: Providers,
+    isAvailable: isLoggedIn,
+    showInMenu: true,
+    icon: Bank,
+  },
+  {
+    path: '/providers/:personaAddress',
+    exact: true,
+    component: ProviderDetails,
+    isAvailable: isLoggedIn,
+  },
+  {
     path: '/my-validation-requests',
     exact: true,
     component: UserSentValidationRequests,
@@ -153,6 +188,15 @@ const routes =  [
     showInMenu: true,
     icon: DashboardIcon,
     parent: MENU_GROUPS.ADMIN,
+  },
+  {
+    path: '/provider/services',
+    exact: true,
+    component: ProviderServices,
+    isAvailable: isProvider,
+    showInMenu: true,
+    icon: MyServicesIcon,
+    parent: MENU_GROUPS.PROVIDER,
   },
   {
     path: '/',

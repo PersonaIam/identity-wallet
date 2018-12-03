@@ -37,6 +37,11 @@ export const PERSONATOSHI_UNIT = Math.pow(10, 8); // 1 PERSONA has 100000000 "to
 
 export const PERSONA_MAINNET_NAME = 'persona'; // used in helpers/personaservice to check if web accesses mainnet / testenv/ localnet
 
+export const PROVIDER_SERVICE_STATUSES = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+};
+
 export const USER_ROLES = {
   IDENTITY_USER: 1,
   NOTARY: 2,
@@ -45,10 +50,10 @@ export const USER_ROLES = {
 };
 
 export const VALIDATION_REQUEST_ACTION = {
-  DECLINE : 0,
-  APPROVE : 1,
-  NOTARIZE : 2,
-  REJECT : 3,
+  DECLINE: 0,
+  APPROVE: 1,
+  NOTARIZE: 2,
+  REJECT: 3,
   CANCEL: 4,
 };
 

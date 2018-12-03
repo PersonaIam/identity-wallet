@@ -1,7 +1,7 @@
 /**
  * Created by vladtomsa on 23/11/2018
  */
-import red from '@material-ui/core/colors/red';
+import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
 
 const styles = {
@@ -14,11 +14,11 @@ const styles = {
   },
   active: {
     color: green[500],
-    marginRight: 6,
+    marginRight: 12,
   },
   inactive: {
-    color: red[500],
-    marginRight: 6,
+    color: amber[500],
+    marginRight: 12,
   },
 };
 

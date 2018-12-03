@@ -14,7 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Check from 'mdi-material-ui/Check';
-import Close from 'mdi-material-ui/CloseCircle';
+import CircleSlice from 'mdi-material-ui/CircleSlice8';
 import styles from './styles';
 
 class ProvidersList extends Component {
@@ -51,7 +51,7 @@ class ProvidersList extends Component {
                 <ListItem className={classes.root} divider>
                   <Grid container spacing={16} alignItems="flex-end">
                     <Grid item xs={4}>
-                      <Typography variant="caption" style={{ marginLeft: 26 }}>
+                      <Typography variant="caption" style={{ marginLeft: 32 }}>
                         { t('USERNAME') }
                       </Typography>
                     </Grid>
@@ -92,7 +92,7 @@ class ProvidersList extends Component {
                           {
                             !!provider.isActive
                               ? <Check className={classes.active}/>
-                              : <Close className={classes.inactive}/>
+                              : <CircleSlice className={classes.inactive}/>
                           }
                         </Tooltip>
 
@@ -121,6 +121,7 @@ class ProvidersList extends Component {
               component="div"
               count={count}
               rowsPerPage={pageSize}
+              labelRowsPerPage={t('ROWS_PER_PAGE')}
               page={pageNumber}
               onChangePage={this.handlePageChange}
               onChangeRowsPerPage={this.handleChangePageSize}

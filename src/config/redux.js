@@ -13,6 +13,8 @@ import blockchainAccountReducer from 'reducers/blockchainAccount';
 import globalReducer from 'reducers/global';
 import notariesReducer from 'reducers/notaries';
 import notificationReducer from 'reducers/notification';
+import providerReducer from 'reducers/provider';
+import providersReducer from 'reducers/providers';
 import subscriptionsReducer from 'reducers/subscriptions';
 
 export const history = createHistory();
@@ -27,6 +29,8 @@ export const rootReducer = combineReducers({
   global: globalReducer,
   notaries: notariesReducer,
   notification: notificationReducer,
+  provider: providerReducer, // used for provider user administration
+  providers: providersReducer, // used for simple users
   subscription: subscriptionsReducer,
 });
 

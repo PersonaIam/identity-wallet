@@ -9,7 +9,8 @@
     "build:testnet": "PERSONA_ENV=testnet API_ENV=localnet node scripts/build.js",
     "start:mainnet": "PERSONA_ENV=persona API_ENV=localnet node scripts/start.js",
     "build:mainnet": "PERSONA_ENV=persona API_ENV=localnet node scripts/build.js",
-    "test": "PERSONA_ENV=localnet API_ENV=localnet node $NODE_DEBUG_OPTION scripts/test.js"
+    "test": "PERSONA_ENV=localnet API_ENV=localnet node $NODE_DEBUG_OPTION scripts/test.js",
+    "analyze": "source-map-explorer build/static/js/main.*"
   },
   "dependencies": {
     "@material-ui/core": "3.1.1",
@@ -112,7 +113,8 @@
     "enzyme-adapter-react-16": "^1.6.0",
     "jest-enzyme": "^7.0.0",
     "jest-resolve": "^23.6.0",
-    "react-scripts": "^2.1.1"
+    "react-scripts": "^2.1.1",
+    "source-map-explorer": "^1.6.0"
   },
   "eslintConfig": {
     "extends": "react-app",

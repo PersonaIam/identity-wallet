@@ -11,11 +11,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import Menu from 'mdi-material-ui/Menu';
-import LanguageToggle from 'components/LanguageToggle';
+// import LanguageToggle from 'components/LanguageToggle';
 import styles, { toolbarMarginTop } from './styles';
 import Notifications from './Notifications';
 import UserMenu from './UserMenu';
-
 
 export class Header extends Component {
 
@@ -90,7 +89,7 @@ export class Header extends Component {
                 // ]
             }
             &nbsp;&nbsp;
-            <a href="https://persona.im/" target="_blank">
+            <a href="https://persona.im/" target="_blank" rel="noopener noreferrer">
               <Button component="div" color="secondary" variant="outlined">
                 Visit website
               </Button>
