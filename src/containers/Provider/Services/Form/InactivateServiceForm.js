@@ -1,9 +1,6 @@
 /**
  * Created by vladtomsa on 29/11/2018
  */
-/**
- * Created by vladtomsa on 22/11/2018
- */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';

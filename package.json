@@ -29,6 +29,8 @@
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
     "downshift": "^3.1.5",
+    "eccrypto": "^1.0.4",
+    "eciesjs": "^0.1.2",
     "eslint": "4.10.0",
     "eslint-config-react-app": "2.1.0",
     "eslint-loader": "1.9.0",

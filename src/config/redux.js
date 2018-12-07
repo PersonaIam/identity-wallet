@@ -11,6 +11,7 @@ import attributesReducer from 'reducers/attributes';
 import authReducer from 'reducers/auth';
 import blockchainAccountReducer from 'reducers/blockchainAccount';
 import globalReducer from 'reducers/global';
+import identityUseReducer from 'reducers/identityUse';
 import notariesReducer from 'reducers/notaries';
 import notificationReducer from 'reducers/notification';
 import providerReducer from 'reducers/provider';
@@ -27,6 +28,7 @@ export const rootReducer = combineReducers({
   auth: authReducer,
   blockchainAccount: blockchainAccountReducer,
   global: globalReducer,
+  identityUse: identityUseReducer,
   notaries: notariesReducer,
   notification: notificationReducer,
   provider: providerReducer, // used for provider user administration

@@ -5,7 +5,6 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -18,11 +17,10 @@ import Circle from 'mdi-material-ui/CircleSlice8';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 import {DATE_TIME_FORMAT, PROVIDER_SERVICE_STATUSES} from 'constants/index';
-import {providerConstants} from 'constants/provider';
 import styles from './styles';
 
 function ProviderServiceList(props) {
-  const {classes, isLoading, onRequestService, serviceInfoList, t} = props;
+  const {classes, onRequestService, serviceInfoList, t} = props;
 
   const groupedProviderServices = groupBy(serviceInfoList, 'status');
 
@@ -43,8 +41,6 @@ function ProviderServiceList(props) {
 
                     {
                       serviceList.map((service, index) => {
-                        const loading = isLoading === `${providerConstants.ON_INACTIVATE_SERVICE}_${service.id}`;
-
                         return (
                           <ListItem
                             button
@@ -71,15 +67,23 @@ function ProviderServiceList(props) {
                             {
                               isActive
                                 ? (
-                                  <ListItemSecondaryAction>
-                                    <Button
-                                      variant="contained"
-                                      color="secondary"
-                                      onClick={() => onRequestService(service)}
-                                      className={classes.actionButton}
-                                    >
-                                      {t('REQUEST')}
-                                    </Button>
+                                  <ListItemSecondaryAction className={classes.actionButton}>
+                                    {
+                                      service.userIdentityRequest
+                                        ? (
+                                          t(service.userIdentityRequest.status)
+                                        )
+                                        : (
+                                          <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={() => onRequestService(service)}
+                                          >
+                                            {t('REQUEST')}
+                                          </Button>
+                                        )
+                                    }
+
                                   </ListItemSecondaryAction>
                                 )
                                 : null

@@ -13,9 +13,9 @@ import Edit from 'mdi-material-ui/Pencil';
 import Eye from 'mdi-material-ui/Eye';
 import EyeOff from 'mdi-material-ui/EyeOff';
 import FileDownload from 'mdi-material-ui/CloudDownload';
-import personajs from 'personajs';
 import {getFileAttribute, deselectFileAttribute} from 'actions/attributes';
 import {attributesConstants} from 'constants/attributes';
+import {decryptValue} from 'helpers/personaService';
 import FilePreview from './FilePreview';
 import PassphrasePromt from './PassphrasePromtForm';
 
@@ -50,13 +50,13 @@ class Index extends Component {
 
   UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.attribute !== this.props.attribute) {
-      this.setState({ ...initialState });
+      this.setState({...initialState});
     }
   }
 
   decyptValue = (passphrase) => {
-    const { toDecrypt } = this.state;
-    const decryptedValue = personajs.crypto.decrypt(toDecrypt, passphrase);
+    const {toDecrypt} = this.state;
+    const decryptedValue = decryptValue(toDecrypt, passphrase);
 
     this.toggleDecryptedValue(decryptedValue)
   };
@@ -88,13 +88,13 @@ class Index extends Component {
   };
 
   toggleDownloadFileAttribute = () => {
-    const {attribute: { value }, getFileAttribute} = this.props;
+    const {attribute: {value}, getFileAttribute} = this.props;
 
     getFileAttribute(value)
       .then((fileData) => {
         if (fileData) {
           this.setState(
-            { toDecrypt: fileData },
+            {toDecrypt: fileData},
             () => this.toggleValueView(),
           );
         }
@@ -102,7 +102,7 @@ class Index extends Component {
   };
 
   getFileValueForEdit = (attribute, value) => {
-    const { name } = attribute;
+    const {name} = attribute;
     const fileInfo = value.split(';');
     const fileType = fileInfo[0];
 
@@ -118,7 +118,7 @@ class Index extends Component {
   render() {
     const {attribute, classes, deselectFileAttribute, isLoading, onEdit, onAttributeValidateRequest, t} = this.props;
     const {decryptedValue, isDialogOpen} = this.state;
-    const { value, data_type } = attribute;
+    const {value, data_type} = attribute;
 
     if (!value) return null;
 
@@ -130,7 +130,7 @@ class Index extends Component {
 
     const toggleShowHide = () => {
       this.setState(
-        { toDecrypt: value },
+        {toDecrypt: value},
         () => this.toggleValueView(),
       )
     };
@@ -138,7 +138,7 @@ class Index extends Component {
     const showFilePreview = isFile && decryptedValue;
 
     const DecryptTooltip = () => (
-      <div style={{ textAlign: 'justify' }}>
+      <div style={{textAlign: 'justify'}}>
         <p>{t('YOUR_THE_OWNER')}</p>
         <p>{t('IN_ORDER_TO_VIEW_INFORMATION_PLEASE_DECRYPT')}</p>
       </div>
@@ -152,7 +152,7 @@ class Index extends Component {
               <Typography
                 component="p"
                 variant="display1"
-                style={{wordBreak: 'break-all', padding: '2px 0', marginBottom: 14, }}
+                style={{wordBreak: 'break-all', padding: '2px 0', marginBottom: 14,}}
               >
                 {decryptedValue}
               </Typography>
@@ -173,9 +173,9 @@ class Index extends Component {
                           color="inherit"
                           variant="outlined"
                           onClick={toggleShowHide}
-                          style={{ marginBottom: 6 }}
+                          style={{marginBottom: 6}}
                         >
-                          <EyeOff />&nbsp;&nbsp;{t('HIDE_VALUE')}
+                          <EyeOff/>&nbsp;&nbsp;{t('HIDE_VALUE')}
                         </Button>
                         &nbsp;&nbsp;
                         <Button
@@ -184,14 +184,14 @@ class Index extends Component {
                           variant="outlined"
                           onClick={
                             () => {
-                              onEdit({ ...attribute, value: decryptedValue })
+                              onEdit({...attribute, value: decryptedValue})
                               toggleShowHide();
                             }
                           }
-                          style={{ marginBottom: 6 }}
+                          style={{marginBottom: 6}}
                           className={classes.editButton}
                         >
-                          <Edit />&nbsp;&nbsp;{t('EDIT')}&nbsp;
+                          <Edit/>&nbsp;&nbsp;{t('EDIT')}&nbsp;
                         </Button>
 
                       </div>
@@ -200,7 +200,7 @@ class Index extends Component {
                       <div className="flex wrap-content">
                         <Tooltip title={<DecryptTooltip/>}>
                           <Button size="small" variant="outlined" color="inherit" onClick={toggleShowHide}>
-                            <Eye />&nbsp;&nbsp;{t('SHOW_VALUE')}
+                            <Eye/>&nbsp;&nbsp;{t('SHOW_VALUE')}
                           </Button>
                         </Tooltip>
                         &nbsp;&nbsp;
@@ -210,7 +210,7 @@ class Index extends Component {
                           color="secondary"
                           className={classes.editButton}
                         >
-                          { t('VALIDATE_ATTRIBUTE') }
+                          {t('VALIDATE_ATTRIBUTE')}
                         </Button>
                       </div>
                     )
@@ -228,7 +228,7 @@ class Index extends Component {
                   {
                     isFileDownloading
                       ? <CircularProgress color="secondary" size={20}/>
-                      : <FileDownload />
+                      : <FileDownload/>
                   }
                   &nbsp;&nbsp;
                   {t('DOWNLOAD_AND_PREVIEW')}
@@ -240,7 +240,7 @@ class Index extends Component {
                   color="secondary"
                   className={classes.editButton}
                 >
-                  { t('VALIDATE_ATTRIBUTE') }
+                  {t('VALIDATE_ATTRIBUTE')}
                 </Button>
               </div>
             )
@@ -269,7 +269,7 @@ class Index extends Component {
                   deselectFileAttribute();
                 }}
                 onEdit={() => {
-                  onEdit({ ...attribute, value: this.getFileValueForEdit(attribute, decryptedValue) });
+                  onEdit({...attribute, value: this.getFileValueForEdit(attribute, decryptedValue)});
                   toggleShowHide();
                 }}
                 t={t}

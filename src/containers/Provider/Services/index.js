@@ -8,6 +8,7 @@ import {translate} from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import { getAttributeTypes } from 'actions/attributes';
 import {
   getProviderServices,
   saveProviderService,
@@ -27,6 +28,7 @@ import InactivateServiceForm from './Form/InactivateServiceForm';
 class ProviderServices extends Component {
 
   componentDidMount() {
+    this.props.getAttributeTypes();
     this.getProviderServices();
   };
 
@@ -63,11 +65,14 @@ class ProviderServices extends Component {
     inactivateService(selectedServiceForInactivate, passphrase)
   };
 
-  onSaveProviderService = ({name, description, passphrase}) => {
+  onSaveProviderService = (values) => {
+    const {name, description, attributeTypes, passphrase} = values;
+
     this.props.saveProviderService(
       {
         name,
         description,
+        attributeTypes,
       },
       passphrase,
     );
@@ -75,6 +80,7 @@ class ProviderServices extends Component {
 
   render() {
     const {
+      attributeTypes,
       deselectServiceForInactivate,
       isLoading,
       providerServiceInfoList,
@@ -125,6 +131,7 @@ class ProviderServices extends Component {
           !!selectedProviderServiceInfo
             ? (
               <ServiceForm
+                attributeTypes={attributeTypes}
                 initialValues={selectedProviderServiceInfo}
                 isLoading={isLoading}
                 onClose={() => this.toggleSelectProviderService(null)}
@@ -154,6 +161,8 @@ class ProviderServices extends Component {
 }
 
 ProviderServices.propTypes = {
+  attributeTypes: PropTypes.array.isRequired,
+  getAttributeTypes: PropTypes.func.isRequired,
   saveProviderService: PropTypes.func.isRequired,
   deselectProviderServiceInfo: PropTypes.func.isRequired,
   getProviderServices: PropTypes.func.isRequired,
@@ -168,6 +177,7 @@ ProviderServices.propTypes = {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.provider.isLoading,
+    attributeTypes: state.attributes.attributeTypes,
     providerServiceInfoList: state.provider.providerServiceInfoList,
     selectedProviderServiceInfo: state.provider.selectedProviderServiceInfo,
     selectedServiceForInactivate: state.provider.selectedServiceForInactivate,
@@ -177,6 +187,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getAttributeTypes: () => dispatch(getAttributeTypes()),
     saveProviderService: (data, passphrase) => dispatch(saveProviderService(data, passphrase)),
     deselectProviderServiceInfo: () => dispatch(deselectProviderServiceInfo()),
     getProviderServices: (address) => dispatch(getProviderServices(address)),

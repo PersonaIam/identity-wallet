@@ -1,5 +1,5 @@
 /**
- * Created by vladtomsa on 22/11/2018
+ * Created by vladtomsa on 03/12/2018
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -17,36 +17,32 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 
 import Typography from '@material-ui/core/Typography';
-import { providerConstants } from 'constants/provider';
-import { RenderTextField } from 'components/FormInputs';
+import { identityUseConstants } from 'constants/identityUse';
 import PassphraseInput from 'components/FormInputs/PassphraseInput';
-import AttributesSelection from './AttributesSelection';
+
 import styles from './styles';
+import AttributesSelection from "./AttributesSelection";
 
 const validate = (values) => {
   const errors = {};
 
-  if (!values.name) errors.name = 'SERVICE_NAME_REQUIRED';
-
-  if (!values.description) errors.description = 'SERVICE_DESCRIPTION_REQUIRED';
-
-  if (!values.passphrase) errors.passphrase = 'PASSPHRASE_REQUIRED';
-
-  if (!values.attributeTypes) {
-    errors.attributeTypes = { _error: 'ATTRIBUTES_REQUIRED' };
+  if (!values.attributes) {
+    errors.attributes = { _error: 'ATTRIBUTES_REQUIRED' };
   }
   else {
-    if (!values.attributeTypes.length) errors.attributeTypes = { _error: 'ATTRIBUTES_REQUIRED' };
+    if (!values.attributes.length) errors.attributes = { _error: 'ATTRIBUTES_REQUIRED' };
   }
+
+  if (!values.passphrase) errors.passphrase = 'PASSPHRASE_REQUIRED';
 
   return errors;
 };
 
-class ProviderServiceForm extends Component {
+class CreateIdentityUseRequestForm extends Component {
   render() {
-    const { attributeTypes, classes, handleSubmit, isLoading, onClose, t, } = this.props;
+    const { classes, handleSubmit, isLoading, onClose, serviceInfo, t, userAttributes } = this.props;
 
-    const loading = isLoading === providerConstants.ON_CREATE_PROVIDER_SERVICE_INIT;
+    const loading = isLoading === `${identityUseConstants.CREATE_IDENTITY_USE_REQUEST_INIT}_${serviceInfo.id}`;
 
     return (
       <Dialog
@@ -62,40 +58,19 @@ class ProviderServiceForm extends Component {
           }
           <DialogTitle>
             <Typography variant="title" component="span">
-              { t('SERVICE_FORM') }
+              { t('REQUEST_SERVICE') }
             </Typography>
           </DialogTitle>
           <DialogContent>
             <Grid container spacing={16}>
               <Grid item xs={12}>
-                <Field
-                  name="name"
-                  component={ RenderTextField }
-                  label="SERVICE_NAME"
-                  disabled={loading}
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <Field
-                  name="description"
-                  component={ RenderTextField }
-                  label="SERVICE_DESCRIPTION"
-                  disabled={loading}
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={12}>
                 <FieldArray
-                  name="attributeTypes"
+                  name="attributes"
                   component={AttributesSelection}
-                  attributeTypes={attributeTypes}
+                  attributes={userAttributes}
                   t={t}
                 />
               </Grid>
-
               <Grid item xs={12}>
                 <Field
                   name="passphrase"
@@ -135,17 +110,18 @@ class ProviderServiceForm extends Component {
   }
 }
 
-ProviderServiceForm.propTypes = {
-  attributeTypes: PropTypes.array.isRequired,
+CreateIdentityUseRequestForm.propTypes = {
   classes: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  serviceInfo: PropTypes.object.isRequired,
+  userAttributes: PropTypes.any,
   t: PropTypes.func.isRequired,
 };
 
-const withStyle = withStyles(styles)(ProviderServiceForm);
+const withStyle = withStyles(styles)(CreateIdentityUseRequestForm);
 
 export default reduxForm({
-  form: 'ProviderServiceForm',
+  form: 'CreateIdentityUseRequestForm',
   validate,
 })(withStyle);

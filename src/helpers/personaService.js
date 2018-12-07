@@ -99,6 +99,19 @@ export const toshiToPersona = (amount, keepPrecise, numberOfDecimals) => {
   return numberStringToFixed(personaAmount, numberOfDecimals)
 };
 
+export const encryptValue = (value, publicKey) => {
+  const encryptedValue = personajs.crypto
+    .encrypt(value, publicKey)
+    .toString();
+
+  return encryptedValue;
+};
+
+export const decryptValue = (value, privateKey) => {
+  const decryptedValue = personajs.crypto.decrypt(value, privateKey);
+
+  return decryptedValue;
+};
 
 const numberToFixed = (x) => {
   let e;

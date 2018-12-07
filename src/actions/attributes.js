@@ -6,9 +6,8 @@ import { VALIDATION_REQUEST_ACTION } from 'constants/index';
 import { attributesConstants } from 'constants/attributes';
 import { getBlockchainAccount } from './blockchainAccount';
 import { onNotificationErrorInit, onNotificationSuccessInit } from './notifications';
-import { getPublicKey } from 'helpers/personaService';
+import { getPublicKey, encryptValue } from 'helpers/personaService';
 import moment from 'moment';
-import personajs from 'personajs';
 
 const timeout = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -31,9 +30,7 @@ const extractInfo = (attributeTypes) => {
 const createAttributeInfo = (attributeData, passphrase, state) => {
   const { blockchainAccount: { userBlockchainAccount: { address, publicKey } } } = state;
 
-  const encryptedValue = personajs.crypto
-    .encrypt(attributeData.value, passphrase)
-    .toString();
+  const encryptedValue = encryptValue(attributeData.value, passphrase);
 
   const attributInfo = {
     secret: passphrase,

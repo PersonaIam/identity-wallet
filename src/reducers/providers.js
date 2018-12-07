@@ -28,6 +28,7 @@ export default (state = initialState, { type, payload }) => {
     case (providersConstants.ON_GET_PROVIDER_BY_ADDRESS_FAILURE):
     case (providersConstants.ON_GET_PROVIDERS_FAILURE):
       return { ...state, isLoading: null };
+
     default:
       return state;
   }

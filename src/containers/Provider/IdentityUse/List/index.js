@@ -7,6 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryActions from '@material-ui/core/ListItemSecondaryAction';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Account from 'mdi-material-ui/Account';
@@ -17,64 +18,30 @@ import { personaStampToDate } from 'helpers/personaService';
 import { DATE_TIME_FORMAT, VALIDATION_TYPE } from 'constants/index';
 import moment from 'moment';
 
-import ValidationActions from './ValidationActions/index';
+import IdentityUseActions from './IdentityUseActions/index';
 
-const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
+const NotarizationRequestsList = ({t, title, identityUseRequestInfoList}) => {
   return (
     <div>
       <Typography variant='body1' gutterBottom>
-        {t(title) + ` (${notarizationRequestInfoList.length})`}
+        {t(title) + ` (${identityUseRequestInfoList.length})`}
       </Typography>
       <Divider light/>
 
       {
-        notarizationRequestInfoList && notarizationRequestInfoList.length
+        identityUseRequestInfoList && identityUseRequestInfoList.length
           ? (
             <Paper elevation={6} style={{ marginBottom: 12, marginTop: 6 }}>
               <List disablePadding>
                 {
-                  notarizationRequestInfoList.map((request, index) => {
-                    const renderValidationType = () => {
-                      const validation_type = request.validation_type;
-
-                      switch (validation_type) {
-                        case (VALIDATION_TYPE.FACE_TO_FACE):
-                          return (
-                            <Typography
-                              variant="caption"
-                              component="span"
-                              className="flex"
-                              style={{ wordBreak: 'break-all' }}
-                            >
-                              <Eye style={{ fontSize: '14px', marginRight: 2 }}/>
-
-                              { t(VALIDATION_TYPE.FACE_TO_FACE) }
-                            </Typography>
-                          );
-                        case (VALIDATION_TYPE.REMOTE):
-                          return (
-                            <Typography
-                              variant="caption"
-                              component="span"
-                              className="flex"
-                              style={{ wordBreak: 'break-all' }}
-                            >
-                              <Remote style={{ fontSize: '14px', marginRight: 2 }}/>
-
-                              { t(VALIDATION_TYPE.REMOTE) }
-                            </Typography>
-                          );
-                        default:
-                          return null;
-                      }
-                    };
-
+                  identityUseRequestInfoList.map((request, index) => {
                     return (
                       <ListItem
                         button
+                        onClick={console.log}
                         key={request.id}
                         disableGutters
-                        divider={index !== notarizationRequestInfoList.length - 1}
+                        divider={index !== identityUseRequestInfoList.length - 1}
                         style={{ display: 'block', paddingBottom: 4, paddingLeft: 8, paddingRight: 8, paddingTop: 4 }}
                       >
                         <ListItemText
@@ -108,17 +75,20 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                                   moment(personaStampToDate(request.timestamp)).format(DATE_TIME_FORMAT)
                                 }
                               </Typography>
-
-                              { renderValidationType()}
                             </span>
                           }
                         />
-                        <div className="flex justify-end">
-                          <ValidationActions t={t} validationRequest={request}/>
-                        </div>
-                        {/*<ListItemSecondaryAction>*/}
-                        {/**/}
-                        {/*</ListItemSecondaryAction>*/}
+                        <ListItemSecondaryActions
+                          style={{
+                            position: 'relative',
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            padding: 12,
+                            transform: 'none',
+                          }}
+                        >
+                          <IdentityUseActions t={t} identityUseRequest={request}/>
+                        </ListItemSecondaryActions>
                       </ListItem>
                     );
                   })
@@ -133,7 +103,7 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
 };
 
 NotarizationRequestsList.propTypes = {
-  notarizationRequestInfoList: PropTypes.array.isRequired,
+  identityUseRequestInfoList: PropTypes.array.isRequired,
   title: PropTypes.string,
   t: PropTypes.func.isRequired,
 };

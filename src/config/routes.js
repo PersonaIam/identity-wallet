@@ -6,6 +6,8 @@ import Animation from 'mdi-material-ui/Animation';
 import AccountCheck from 'mdi-material-ui/AccountCheck';
 import Bank from 'mdi-material-ui/Bank';
 import DashboardIcon from 'mdi-material-ui/ViewDashboard';
+import FileMoveIcon from 'mdi-material-ui/FileMove';
+import ForumIcon from 'mdi-material-ui/Forum';
 import MyServicesIcon from 'mdi-material-ui/FileDocumentBoxMultiple';
 import { USER_ROLES } from 'constants/index';
 import groupBy from 'lodash/groupBy';
@@ -32,6 +34,11 @@ const Home = Loadable({
 
 const Identity = Loadable({
   loader: () => import('containers/Account/Identity'),
+  loading: Loading,
+});
+
+const IdentityUse = Loadable({
+  loader: () => import('containers/Account/IdentityUse'),
   loading: Loading,
 });
 
@@ -68,6 +75,11 @@ const ProviderDetails = Loadable({
 
 const ProviderServices = Loadable({
   loader: () => import('containers/Provider/Services'),
+  loading: Loading,
+});
+
+const ProviderIdentityUseRequests = Loadable({
+  loader: () => import('containers/Provider/IdentityUse'),
   loading: Loading,
 });
 
@@ -135,6 +147,15 @@ const routes =  [
     parent: MENU_GROUPS.IDENTITY,
   },
   {
+    path: '/identity-use',
+    exact: true,
+    component: IdentityUse,
+    isAvailable: isLoggedIn,
+    showInMenu: true,
+    icon: ForumIcon,
+    parent: MENU_GROUPS.IDENTITY,
+  },
+  {
     path: '/notaries',
     exact: true,
     component: Notaries,
@@ -196,6 +217,15 @@ const routes =  [
     isAvailable: isProvider,
     showInMenu: true,
     icon: MyServicesIcon,
+    parent: MENU_GROUPS.PROVIDER,
+  },
+  {
+    path: '/provider/identity-use-requests',
+    exact: true,
+    component: ProviderIdentityUseRequests,
+    isAvailable: isProvider,
+    showInMenu: true,
+    icon: FileMoveIcon,
     parent: MENU_GROUPS.PROVIDER,
   },
   {

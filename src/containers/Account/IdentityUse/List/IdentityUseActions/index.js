@@ -7,25 +7,24 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
+import amber from '@material-ui/core/colors/amber';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import {
-  VALIDATION_REQUEST_ACTION,
-  VALIDATION_REQUESTS_STATUSES,
+  IDENTITY_USE_REQUEST_ACTION,
+  IDENTITY_USE_REQUEST_STATUSES,
 } from 'constants/index';
-import { attributesConstants } from 'constants/attributes';
-import CheckCircle from 'mdi-material-ui/CheckCircle';
+import { identityUseConstants } from 'constants/identityUse';
 import CloseCircle from 'mdi-material-ui/CloseCircle';
-import AccountCheck from 'mdi-material-ui/AccountCheck';
-import AccountRemove from 'mdi-material-ui/AccountRemove';
+import Block from 'mdi-material-ui/BlockHelper';
 import MessageText from 'mdi-material-ui/MessageText';
 
-import { handleAttributeRequest } from 'actions/attributes';
+import { handleIdentityUseRequest } from 'actions/identityUse';
 
-import ValidationActionsForm from './Form/index';
+import IdentityUseActionsForm from './Form/index';
 
 const styles = (theme) => {
   return {
@@ -39,30 +38,24 @@ const styles = (theme) => {
       right: 0,
     },
     success: {
-      [theme.breakpoints.up('md')]: {
-        padding: 4,
-      },
       '& svg': {
         color: green[500],
       },
     },
     error: {
-      [theme.breakpoints.up('md')]: {
-        padding: 4,
-      },
       '& svg': {
         color: red[500],
       },
     },
-    reason: {
-      [theme.breakpoints.up('md')]: {
-        padding: 4,
+    block: {
+      '& svg': {
+        color: amber[500],
       },
-    }
+    },
   }
 };
 
-class ValidationActions extends Component {
+class IdentityUseActions extends Component {
 
   state = {
     actionType: null,
@@ -75,71 +68,59 @@ class ValidationActions extends Component {
 
   onValidationSubmit = (values) => {
     const { actionType } = this.state;
-    const { handleAttributeRequest } = this.props;
+    const { handleIdentityUseRequest } = this.props;
 
-    handleAttributeRequest(values, actionType);
+    handleIdentityUseRequest(values, actionType);
   };
 
   getInitialFormValues = () => {
-    const { validationRequest: { type, owner, validator } } = this.props;
+    const { identityUseRequest: { name, owner, provider } } = this.props;
 
     return {
       asset: {
-        validation: [{
-          type,
+        identityuse: [{
           owner,
-          validator,
+          serviceName: name,
+          serviceProvider: provider,
         }],
       },
     };
   };
 
-  getValidationActions = () => {
-    const { classes, validationRequest, t } = this.props;
+  getIdentityUseActions = () => {
+    const { classes, identityUseRequest, t } = this.props;
 
-    const { reason, status } = validationRequest;
+    const { reason, status } = identityUseRequest;
 
     const {
       PENDING_APPROVAL,
-      IN_PROGRESS,
+      ACTIVE,
       DECLINED,
-      REJECTED
-    } = VALIDATION_REQUESTS_STATUSES;
+    } = IDENTITY_USE_REQUEST_STATUSES;
 
 
     switch (status) {
       case PENDING_APPROVAL:
         return (
           <Fragment>
-            <Tooltip title={t('APPROVE_NOTARISATION')}>
-              <IconButton className={classes.success} onClick={() => this.onAction(VALIDATION_REQUEST_ACTION.APPROVE)}>
-                <CheckCircle />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('DECLINE')}>
-              <IconButton className={classes.error} onClick={() => this.onAction(VALIDATION_REQUEST_ACTION.DECLINE)}>
+            <Tooltip title={t('CANCEL')}>
+              <IconButton className={classes.cancel} onClick={() => this.onAction(IDENTITY_USE_REQUEST_ACTION.CANCEL)}>
                 <CloseCircle />
               </IconButton>
             </Tooltip>
           </Fragment>
         );
-      case IN_PROGRESS:
+      case ACTIVE:
         return (
           <Fragment>
-            <Tooltip title={t('APPROVE_NOTARISATION')}>
-              <IconButton className={classes.success} onClick={() => this.onAction(VALIDATION_REQUEST_ACTION.NOTARIZE)} disableRipple>
-                <AccountCheck />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={t('REJECT')}>
-              <IconButton className={classes.error} onClick={() => this.onAction(VALIDATION_REQUEST_ACTION.REJECT)}>
-                <AccountRemove />
+            <Tooltip title={t('END')}>
+              <IconButton className={classes.block} onClick={() => this.onAction(IDENTITY_USE_REQUEST_ACTION.END)} disableRipple>
+                <Block />
               </IconButton>
             </Tooltip>
           </Fragment>
         );
       case DECLINED:
-      case REJECTED:
         return (
           <Fragment>
             {
@@ -167,17 +148,17 @@ class ValidationActions extends Component {
 
     return (
       <div>
-        { this.getValidationActions() }
+        { this.getIdentityUseActions() }
 
         {
           actionType || actionType === 0
             ? (
-              <ValidationActionsForm
+              <IdentityUseActionsForm
                 actionType={actionType}
                 initialValues={this.getInitialFormValues()}
                 onClose={() => this.onAction(null)}
                 onSubmit={this.onValidationSubmit}
-                isLoading={isLoading === attributesConstants.ON_VALIDATION_UPDATE_INIT}
+                isLoading={isLoading === identityUseConstants.ON_IDENTITY_USE_UPDATE_INIT}
                 t={t}
               />
             )
@@ -207,25 +188,25 @@ class ValidationActions extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isLoading: state.attributes.isLoading,
+    isLoading: state.identityUse.isLoading,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleAttributeRequest: (data, actionType) => dispatch(handleAttributeRequest(data, actionType)),
+    handleIdentityUseRequest: (data, actionType) => dispatch(handleIdentityUseRequest(data, actionType)),
   };
 };
 
-ValidationActions.propTypes = {
+IdentityUseActions.propTypes = {
   classes: PropTypes.object.isRequired,
-  handleAttributeRequest: PropTypes.func.isRequired,
+  handleIdentityUseRequest: PropTypes.func.isRequired,
   isLoading: PropTypes.any,
-  validationRequest: PropTypes.object.isRequired,
+  identityUseRequest: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
 };
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps)(ValidationActions);
+const withConnect = connect(mapStateToProps, mapDispatchToProps)(IdentityUseActions);
 
 const withStyle = withStyles(styles)(withConnect);
 

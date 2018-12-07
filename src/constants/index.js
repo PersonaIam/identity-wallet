@@ -33,6 +33,21 @@ export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
 
 export const DAYS_BEFORE_EXPIRATION_NOTIFICATION = 30;
 
+export const IDENTITY_USE_REQUEST_ACTION = {
+  DECLINE: 0,
+  APPROVE: 1,
+  END: 2,
+  CANCEL: 3,
+};
+
+export const IDENTITY_USE_REQUEST_STATUSES = {
+  PENDING_APPROVAL : 'PENDING_APPROVAL',
+  ACTIVE: 'ACTIVE',
+  DECLINED: 'DECLINED',
+  ENDED: 'ENDED',
+  CANCELED: 'CANCELED',
+};
+
 export const PERSONATOSHI_UNIT = Math.pow(10, 8); // 1 PERSONA has 100000000 "toshi"
 
 export const PERSONA_MAINNET_NAME = 'persona'; // used in helpers/personaservice to check if web accesses mainnet / testenv/ localnet
