@@ -100,15 +100,14 @@ export const toshiToPersona = (amount, keepPrecise, numberOfDecimals) => {
 };
 
 export const encryptValue = (value, publicKey) => {
-  const encryptedValue = personajs.crypto
-    .encrypt(value, publicKey)
-    .toString();
+  const encryptedValue = personajs.encryption
+    .encrypt(publicKey, value);
 
   return encryptedValue;
 };
 
 export const decryptValue = (value, privateKey) => {
-  const decryptedValue = personajs.crypto.decrypt(value, privateKey);
+  const decryptedValue = personajs.encryption.decrypt(privateKey, value);
 
   return decryptedValue;
 };

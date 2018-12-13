@@ -11,7 +11,6 @@ import {
   resetIdentityUseRequests,
 } from 'actions/identityUse';
 import Loading from 'components/Loading';
-import { identityUseConstants } from 'constants/identityUse';
 import {IDENTITY_USE_REQUEST_STATUSES} from 'constants/index';
 import groupBy from 'lodash/groupBy';
 import IdentityUseRequestList from './List';
@@ -78,7 +77,7 @@ class IdentityUse extends Component {
   };
 
   render() {
-    const { classes, isLoading, t } = this.props;
+    const { isLoading, t } = this.props;
 
     if (isLoading) return <Loading/>;
 

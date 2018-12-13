@@ -67,26 +67,26 @@ export class Header extends Component {
                     userInfo={userInfo}
                   />,
                 ]
-                : null
-                // [
-                //   <Button
-                //     key="login"
-                //     data-test-id="login"
-                //     component={Link}
-                //     to="/login"
-                //   >
-                //     { t('LOGIN') }
-                //   </Button>,
-                //
-                //   <Button
-                //     key="register"
-                //     data-test-id="register"
-                //     component={Link}
-                //     to="/register"
-                //   >
-                //     { t('REGISTER') }
-                //   </Button>
-                // ]
+                :
+                [
+                  <Button
+                    key="login"
+                    data-test-id="login"
+                    component={Link}
+                    to="/login"
+                  >
+                    { t('LOGIN') }
+                  </Button>,
+
+                  <Button
+                    key="register"
+                    data-test-id="register"
+                    component={Link}
+                    to="/register"
+                  >
+                    { t('REGISTER') }
+                  </Button>
+                ]
             }
             &nbsp;&nbsp;
             <a href="https://persona.im/" target="_blank" rel="noopener noreferrer">

@@ -35,7 +35,7 @@ const validate = (values) => {
   if (values.password && values.passwordConfirmation && values.password !== values.passwordConfirmation)
     errors.passwordConfirmation = 'PASSWORDS_DONT_MATCH';
 
-  if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
+  // if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
 
   return errors;
 };
@@ -125,12 +125,12 @@ class CreatePasswordForm extends Component {
           <br />
           <br />
 
-          <Field
-            name="isCaptchaVerified"
-            component={ RecaptchaField }
-          />
-          <br />
-          <br />
+          {/*<Field*/}
+            {/*name="isCaptchaVerified"*/}
+            {/*component={ RecaptchaField }*/}
+          {/*/>*/}
+          {/*<br />*/}
+          {/*<br />*/}
         </div>
 
         <div className="flex justify-center wrap-content">

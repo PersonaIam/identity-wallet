@@ -10,9 +10,6 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Info from 'mdi-material-ui/Information';
-import {AVAILABLE_DATA_TYPES} from "helpers/getFormFieldsFromJSONConfig";
 
 const AttributesSelection = (props) => {
   const {attributeTypes, fields, meta, t} = props;

@@ -1,7 +1,7 @@
 /**
  * Created by vladtomsa on 03/12/2018
  */
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { withStyles } from '@material-ui/core/styles';
@@ -44,6 +44,26 @@ class CreateIdentityUseRequestForm extends Component {
 
     const loading = isLoading === `${identityUseConstants.CREATE_IDENTITY_USE_REQUEST_INIT}_${serviceInfo.id}`;
 
+    const requiredAttributes = JSON
+      .parse(serviceInfo.attribute_types, null, 2)
+      .map((attribute) => {
+        const userAttribute = userAttributes.find(a => a.type === attribute);
+
+        return {
+          attributeType: attribute,
+          userAttribute,
+        }
+      });
+
+    const missingAttributes = requiredAttributes.filter(a => {
+      const isAttributeValid = a.userAttribute
+        && a.userAttribute.active;
+
+      return !isAttributeValid;
+    });
+
+
+
     return (
       <Dialog
         open={true}
@@ -62,12 +82,41 @@ class CreateIdentityUseRequestForm extends Component {
             </Typography>
           </DialogTitle>
           <DialogContent>
+            {
+              missingAttributes && missingAttributes.length
+                ? (
+                  <Fragment>
+                    <Typography variant="display1" color="secondary" gutterBottom>
+                      {t('CANNOT_REQUEST_SERVICE')}
+                    </Typography>
+
+                    <Typography variant="subheading" color="secondary" gutterBottom>
+                      {t('SERVICE_REQUIRES_SOME_ATTRIBUTES_THAT_ARE_INACTIVE')}:
+                    </Typography>
+
+
+
+                    <Typography variant="subheading" color="secondary" gutterBottom>
+                      {
+                        missingAttributes.map((attribute, index) => {
+                          return (<span key={index}>
+                            {t(attribute.attributeType)} {index !== missingAttributes.length -1 ? ', ': null}
+                          </span>)
+                        })
+                      }
+                    </Typography>
+                    <br />
+                  </Fragment>
+                )
+                : null
+            }
             <Grid container spacing={16}>
               <Grid item xs={12}>
                 <FieldArray
                   name="attributes"
                   component={AttributesSelection}
                   attributes={userAttributes}
+                  requiredAttributes={requiredAttributes}
                   t={t}
                 />
               </Grid>
@@ -92,7 +141,7 @@ class CreateIdentityUseRequestForm extends Component {
             <Button
               type="submit"
               className="flex align-center"
-              disabled={loading}
+              disabled={loading || !!missingAttributes.length}
               variant="outlined"
               color="primary"
             >

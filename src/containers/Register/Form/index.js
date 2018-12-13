@@ -76,7 +76,7 @@ const validate = (values) => {
     errors.contactInfo.email = 'EMAIL_REQUIRED';
   }
 
-  if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
+  // if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
 
   return errors;
 };
@@ -275,12 +275,12 @@ class RegisterForm extends Component {
                         : null
                     }
 
-                    <div className="flex justify-center">
-                      <Field
-                        name="isCaptchaVerified"
-                        component={ RecaptchaField }
-                      />
-                    </div>
+                    {/*<div className="flex justify-center">*/}
+                      {/*<Field*/}
+                        {/*name="isCaptchaVerified"*/}
+                        {/*component={ RecaptchaField }*/}
+                      {/*/>*/}
+                    {/*</div>*/}
                   </div>
 
                   <div className="flex justify-center wrap-content">

@@ -83,6 +83,11 @@ const ProviderIdentityUseRequests = Loadable({
   loading: Loading,
 });
 
+const ProviderIdentityUseRequestsDetails = Loadable({
+  loader: () => import('containers/Provider/IdentityUse/Detail'),
+  loading: Loading,
+});
+
 const Register = Loadable({
   loader: () => import('containers/Register'),
   loading: Loading,
@@ -227,6 +232,11 @@ const routes =  [
     showInMenu: true,
     icon: FileMoveIcon,
     parent: MENU_GROUPS.PROVIDER,
+  },
+  {
+    path: '/provider/identity-use-requests/:serviceId/:owner',
+    exact: true,
+    component: ProviderIdentityUseRequestsDetails,
   },
   {
     path: '/',

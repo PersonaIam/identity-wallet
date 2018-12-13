@@ -12,15 +12,13 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Account from 'mdi-material-ui/Account';
 import Calendar from 'mdi-material-ui/Calendar';
-import Eye from 'mdi-material-ui/Eye';
-import Remote from 'mdi-material-ui/RemoteDesktop';
 import { personaStampToDate } from 'helpers/personaService';
-import { DATE_TIME_FORMAT, VALIDATION_TYPE } from 'constants/index';
+import { DATE_TIME_FORMAT } from 'constants/index';
 import moment from 'moment';
 
 import IdentityUseActions from './IdentityUseActions/index';
 
-const NotarizationRequestsList = ({t, title, identityUseRequestInfoList}) => {
+const NotarizationRequestsList = ({onIdentityUseRequestSelect, t, title, identityUseRequestInfoList}) => {
   return (
     <div>
       <Typography variant='body1' gutterBottom>
@@ -38,7 +36,7 @@ const NotarizationRequestsList = ({t, title, identityUseRequestInfoList}) => {
                     return (
                       <ListItem
                         button
-                        onClick={console.log}
+                        onClick={() => onIdentityUseRequestSelect(request)}
                         key={request.id}
                         disableGutters
                         divider={index !== identityUseRequestInfoList.length - 1}
@@ -104,6 +102,7 @@ const NotarizationRequestsList = ({t, title, identityUseRequestInfoList}) => {
 
 NotarizationRequestsList.propTypes = {
   identityUseRequestInfoList: PropTypes.array.isRequired,
+  onIdentityUseRequestSelect: PropTypes.func.isRequired,
   title: PropTypes.string,
   t: PropTypes.func.isRequired,
 };

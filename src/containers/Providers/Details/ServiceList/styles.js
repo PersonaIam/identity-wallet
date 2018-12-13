@@ -7,6 +7,13 @@ import { PROVIDER_SERVICE_STATUSES } from 'constants/index';
 
 const styles = (theme) => {
   return {
+    listItemText: {
+      paddingRight: 80,
+    },
+    chip: {
+      marginRight: 6,
+      marginTop: 4.
+    },
     [PROVIDER_SERVICE_STATUSES.ACTIVE]: {
       color: green[500],
     },

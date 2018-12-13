@@ -5,6 +5,7 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -14,13 +15,15 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Circle from 'mdi-material-ui/CircleSlice8';
+import Check from 'mdi-material-ui/Check';
+import Close from 'mdi-material-ui/Close';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 import {DATE_TIME_FORMAT, PROVIDER_SERVICE_STATUSES} from 'constants/index';
 import styles from './styles';
 
 function ProviderServiceList(props) {
-  const {classes, onRequestService, serviceInfoList, t} = props;
+  const {classes, onRequestService, serviceInfoList, t, userAttributes} = props;
 
   const groupedProviderServices = groupBy(serviceInfoList, 'status');
 
@@ -41,6 +44,8 @@ function ProviderServiceList(props) {
 
                     {
                       serviceList.map((service, index) => {
+                        const requiredServiceAttributes = JSON.parse(service.attribute_types);
+
                         return (
                           <ListItem
                             button
@@ -51,6 +56,7 @@ function ProviderServiceList(props) {
                               <Circle className={classes[status]}/>
                             </ListItemIcon>
                             <ListItemText
+                              className={classes.listItemText}
                               primary={service.name}
                               secondary={
                                 <Fragment>
@@ -61,6 +67,38 @@ function ProviderServiceList(props) {
                                   <Typography variant="caption" color="textSecondary" component="span">
                                     {moment(service.timestamp).format(DATE_TIME_FORMAT)}
                                   </Typography>
+
+                                  <br />
+
+                                  <Typography variant="caption" color="textSecondary" component="span">
+                                    <strong>{t('REQUIRED_ATTRIBUTES')}</strong>
+                                  </Typography>
+
+                                  <span className="flex wrap-content">
+                                    {
+                                      requiredServiceAttributes && requiredServiceAttributes.length
+                                        ? (
+                                          requiredServiceAttributes.map(attribute => {
+                                            const userAttribute = userAttributes.find(a => a.type === attribute);
+                                            const isAttributeAvailable = userAttribute && userAttribute.active;
+
+                                            return (
+                                              <Chip
+                                                key={attribute}
+                                                className={classes.chip}
+                                                label={t(attribute)}
+                                                color={isAttributeAvailable ? 'primary' : 'default'}
+                                                disabled={!!isAttributeAvailable}
+                                                onDelete={() => null}
+                                                deleteIcon={isAttributeAvailable ? <Check /> : <Close/>}
+                                              />
+                                            )
+                                          })
+                                        )
+                                        : null
+                                    }
+
+                                  </span>
                                 </Fragment>
                               }
                             />
@@ -108,6 +146,7 @@ ProviderServiceList.propTypes = {
   classes: PropTypes.object.isRequired,
   onRequestService: PropTypes.func.isRequired,
   serviceInfoList: PropTypes.array.isRequired,
+  userAttributes: PropTypes.array.isRequired,
   t: PropTypes.func.isRequired,
 };
 

@@ -15,7 +15,7 @@ import Zoom from '@material-ui/core/Zoom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import PassphraseInput from 'components/FormInputs/PassphraseInput';
-import { RenderSelectField, RenderTextField } from 'components/FormInputs/index';
+import { RenderTextField } from 'components/FormInputs/index';
 import { IDENTITY_USE_REQUEST_ACTION } from 'constants/index';
 
 const validate = (values, { actionType }) => {

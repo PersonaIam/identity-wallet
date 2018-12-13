@@ -3,6 +3,7 @@
  */
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
+import {push} from 'react-router-redux';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import {withStyles} from '@material-ui/core/styles';
@@ -61,6 +62,13 @@ class IdentityUse extends Component {
       serviceProvider: personaAddress,
     });
   }
+
+  onIdentityUseRequestSelect = (serviceInfo, identityRequestInfo) => {
+    const serviceId = serviceInfo.id;
+    const owner = identityRequestInfo.owner;
+
+    this.props.goToDetail(serviceId, owner);
+  };
 
   filterDisplayRequests = () => {
     const {identityUseRequestInfoList} = this.props;
@@ -151,6 +159,7 @@ class IdentityUse extends Component {
                                   <IdentityUseRequestsList
                                     title={key}
                                     identityUseRequestInfoList={groupedRequestsInfo[key] || []}
+                                    onIdentityUseRequestSelect={(identityReq) => this.onIdentityUseRequestSelect(service, identityReq)}
                                     t={t}
                                   />
                                 </Grid>
@@ -173,6 +182,7 @@ IdentityUse.propTypes = {
   classes: PropTypes.object.isRequired,
   getIdentityUseRequests: PropTypes.func.isRequired,
   getProviderServices: PropTypes.func.isRequired,
+  goToDetail: PropTypes.func.isRequired,
   identityUseRequestInfoList: PropTypes.array.isRequired,
   providerServiceInfoList: PropTypes.array.isRequired,
   resetIdentityUseRequests: PropTypes.func.isRequired,
@@ -194,6 +204,7 @@ const mapDispatchToProps = (dispatch) => {
     getProviderServices: (address) => dispatch(getProviderServices(address)),
     getIdentityUseRequests: (params) => dispatch(getIdentityUseRequests(params)),
     resetIdentityUseRequests: () => dispatch(resetIdentityUseRequests()),
+    goToDetail: (serviceId, owner) => dispatch(push(`/provider/identity-use-requests/${serviceId}/${owner}`)),
   }
 };
 

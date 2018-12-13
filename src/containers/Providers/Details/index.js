@@ -138,6 +138,7 @@ class Providers extends Component {
                           <ServiceList
                             onRequestService={this.toggleSelectedService}
                             serviceInfoList={selectedProviderInfo.services}
+                            userAttributes={userAttributes}
                             t={t}
                           />
                         )

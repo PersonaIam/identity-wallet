@@ -82,7 +82,7 @@ const validate = (values) => {
 
 class AccountProfileForm extends Component {
   render() {
-    const { classes, countries, handleSubmit, t, width } = this.props;
+    const { classes, countries, handleSubmit, t, userRoleId, width } = this.props;
 
     const isSmallDevice = width === 'xs';
 
@@ -249,13 +249,18 @@ class AccountProfileForm extends Component {
                     </FormSection>
                     <br />
                     <br />
-                    <Field
-                      name="userRoleId"
-                      component={ UserRoleToggle }
-                      label="BECOME_PERSONA_NOTARY"
-                      t={t}
-                    />
-
+                    {
+                      userRoleId !== USER_ROLES.PROVIDER
+                        ? (
+                          <Field
+                            name="userRoleId"
+                            component={ UserRoleToggle }
+                            label="BECOME_PERSONA_NOTARY"
+                            t={t}
+                          />
+                        )
+                        : null
+                    }
                     <br />
 
                     {

@@ -30,11 +30,13 @@ const extractInfo = (attributeTypes) => {
 const createAttributeInfo = (attributeData, passphrase, state) => {
   const { blockchainAccount: { userBlockchainAccount: { address, publicKey } } } = state;
 
-  const encryptedValue = encryptValue(attributeData.value, passphrase);
+  const userPublicKey = publicKey || getPublicKey(passphrase);
+
+  const encryptedValue = encryptValue(attributeData.value, userPublicKey);
 
   const attributInfo = {
     secret: passphrase,
-    publicKey: publicKey || getPublicKey(passphrase),
+    publicKey: userPublicKey,
     asset: {
       attribute: [
         {
@@ -111,7 +113,6 @@ export const createAttributeValidationRequest = (data) => async (dispatch, getSt
       publicKey: publicKey || getPublicKey(secret),
       asset,
     };
-
 
     await blockchain.post(`/attribute-validations/validationrequest`, postData);
 

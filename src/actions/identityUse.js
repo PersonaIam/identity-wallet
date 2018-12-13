@@ -4,10 +4,11 @@
 import {http, blockchain} from 'config/http';
 import {identityUseConstants} from 'constants/identityUse';
 import {onNotificationErrorInit, onNotificationSuccessInit} from './notifications';
-import {getPublicKey, decryptValue} from "../helpers/personaService";
+import {getPublicKey, encryptValue, decryptValue} from "../helpers/personaService";
 import {getProviderByAddress} from "./providers";
 import {IDENTITY_USE_REQUEST_ACTION} from "../constants";
-import {getValidatorValidationRequests} from "./attributes";
+
+import personajs from 'personajs';
 
 const timeout = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -64,7 +65,7 @@ export const createIdentityUseRequest = (attributes, passphrase) => async (dispa
     dispatch(createIdentityUseRequestInit(selectedServiceForIdentityUse.id));
 
 
-    const identityUseRequest = createIdentityUseInfo(attributes, passphrase, state);
+    const identityUseRequest = await createIdentityUseInfo(attributes, passphrase, state);
 
     await blockchain.post('/identity-use', identityUseRequest);
 
@@ -81,18 +82,56 @@ export const createIdentityUseRequest = (attributes, passphrase) => async (dispa
     }
   }
   catch (e) {
+    debugger;
     dispatch(onNotificationErrorInit(e));
     dispatch(createIdentityUseRequestFailure());
   }
 };
 
-const createIdentityUseInfo = (attributes, passphrase, state) => {
+const createIdentityUseInfo = async (attributes, passphrase, state) => {
   const {
     blockchainAccount: {userBlockchainAccount: {address, publicKey}},
     identityUse: {selectedServiceForIdentityUse},
   } = state;
 
   const {name, provider} = selectedServiceForIdentityUse;
+
+  const { account } = await blockchain.get(`/accounts?address=${provider}`);
+  const { attribute_types } = await blockchain.get('/attributes/types/list');
+
+  const providerPublicKey = account.publicKey;
+  const mappedAttributes = [];
+
+  // for async flow
+  for (let i = 0; i < attributes.length; i++) {
+    const attribute = attributes[i];
+
+    let encryptedValue;
+    const {type, value} = attribute;
+    const attributeTypeInfo = attribute_types.find(a => a.name === type);
+
+    debugger;
+
+    if (attributeTypeInfo.data_type === 'file') {
+      const { fileData } = await blockchain.get(`/ipfs/fileByHash?hash=${value}`);
+
+      // ToDo replace with helpers decrypt value
+      const plainTextValue = decryptValue(fileData, passphrase);
+
+      encryptedValue = encryptValue(plainTextValue, providerPublicKey);
+    }
+    else {
+      // ToDo replace with helpers decrypt value
+      const plainTextValue = decryptValue(value, passphrase);
+
+      encryptedValue = encryptValue(plainTextValue, providerPublicKey);
+    }
+
+    mappedAttributes.push({
+      type,
+      value: encryptedValue,
+    });
+  }
 
   const identityUseInfo = {
     secret: passphrase,
@@ -103,14 +142,7 @@ const createIdentityUseInfo = (attributes, passphrase, state) => {
           owner: address,
           serviceName: name,
           serviceProvider: provider,
-          attributes: attributes.map((attribute) => {
-            const {type, value} = attribute;
-
-            return {
-              type,
-              value: decryptValue(value, passphrase)
-            };
-          }),
+          attributes: mappedAttributes,
         },
       ],
     },
