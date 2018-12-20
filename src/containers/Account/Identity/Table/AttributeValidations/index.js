@@ -8,7 +8,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import red from '@material-ui/core/colors/red';
-import green from '@material-ui/core/colors/green';
+import teal from '@material-ui/core/colors/teal';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -57,7 +57,7 @@ const styles = theme => ({
     width: '100%',
   },
   success: {
-    color: green[500],
+    color: teal['A400'],
   },
   error: {
     color: red[500],

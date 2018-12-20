@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
-import green from '@material-ui/core/colors/green';
+import teal from '@material-ui/core/colors/teal';
 import amber from '@material-ui/core/colors/amber';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -42,7 +42,12 @@ const styles = (theme) => {
         padding: 4,
       },
       '& svg': {
-        color: green[500],
+        color: teal['A400'],
+      },
+      '&:disabled': {
+        '& svg': {
+          color: 'rgba(0, 0, 0, 0.26)',
+        },
       },
     },
     error: {
@@ -51,6 +56,11 @@ const styles = (theme) => {
       },
       '& svg': {
         color: red[500],
+      },
+      '&:disabled': {
+        '& svg': {
+          color: 'rgba(0, 0, 0, 0.26)',
+        },
       },
     },
     block: {
@@ -102,7 +112,7 @@ class IdentityUseActions extends Component {
   };
 
   getIdentityUseActions = () => {
-    const { classes, identityUseRequest, t } = this.props;
+    const { classes, disabled, identityUseRequest, t } = this.props;
 
     const { reason, status } = identityUseRequest;
 
@@ -115,18 +125,30 @@ class IdentityUseActions extends Component {
     switch (status) {
       case PENDING_APPROVAL:
         return (
-          <Fragment>
+          <div className="flex">
             <Tooltip title={t('APPROVE_IDENTITY_USE_REQUEST')}>
-              <IconButton className={classes.success} onClick={() => this.onAction(IDENTITY_USE_REQUEST_ACTION.APPROVE)}>
-                <CheckCircle />
-              </IconButton>
+              <div>
+                <IconButton
+                  className={classes.success}
+                  disabled={!!disabled}
+                  onClick={() => this.onAction(IDENTITY_USE_REQUEST_ACTION.APPROVE)}
+                >
+                  <CheckCircle />
+                </IconButton>
+              </div>
             </Tooltip>
             <Tooltip title={t('DECLINE')}>
-              <IconButton className={classes.error} onClick={() => this.onAction(IDENTITY_USE_REQUEST_ACTION.DECLINE)}>
-                <CloseCircle />
-              </IconButton>
+              <div>
+                <IconButton
+                  className={classes.error}
+                  disabled={!!disabled}
+                  onClick={() => this.onAction(IDENTITY_USE_REQUEST_ACTION.DECLINE)}
+                >
+                  <CloseCircle />
+                </IconButton>
+              </div>
             </Tooltip>
-          </Fragment>
+          </div>
         );
 
       case DECLINED:
@@ -136,7 +158,11 @@ class IdentityUseActions extends Component {
               reason
                 ? (
                   <Tooltip title={t('REASON') + reason}>
-                    <IconButton className={classes.reason} onClick={() => this.setState({ displayReasonMessage: reason })} disableRipple>
+                    <IconButton
+                      className={classes.reason}
+                      onClick={() => this.setState({ displayReasonMessage: reason })}
+                      disableRipple
+                    >
                       <MessageText />
                     </IconButton>
                   </Tooltip>
@@ -209,6 +235,7 @@ const mapDispatchToProps = (dispatch) => {
 
 IdentityUseActions.propTypes = {
   classes: PropTypes.object.isRequired,
+  disabled: PropTypes.any,
   handleIdentityUseRequest: PropTypes.func.isRequired,
   isLoading: PropTypes.any,
   identityUseRequest: PropTypes.object.isRequired,

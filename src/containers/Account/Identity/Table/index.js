@@ -139,7 +139,7 @@ class IdentityTable extends Component {
                                       >
                                         <Typography variant="body2" color="textPrimary" className="flex align-center">
                                           {
-                                            attribute.active
+                                            attribute.userAttribute && attribute.userAttribute.active
                                               ? (
                                                 <Tooltip title={t('ACTIVE')}>
                                                   <CircleSlice className={`${classes.statusIcon} ${classes.active}`} />
@@ -195,7 +195,11 @@ class IdentityTable extends Component {
                           </List>
                         </Paper>
                       )
-                      : <Typography variant="display1">{ t('NO_ATTRIBUTES_CREATED_YET') }</Typography>
+                      : (
+                        <div className="text-center">
+                          <Typography variant="display1">{ t('NO_ATTRIBUTES_CREATED_YET') }</Typography>
+                        </div>
+                      )
                   }
 
                 </Grid>

@@ -1,13 +1,13 @@
 import Loadable from 'react-loadable';
 import Loading from 'components/Loading';
 import AccountDetailsIcon from 'mdi-material-ui/AccountCardDetails';
-import AccountGroup from 'mdi-material-ui/AccountGroup';
+// import AccountGroup from 'mdi-material-ui/AccountGroup';
 import Animation from 'mdi-material-ui/Animation';
 import AccountCheck from 'mdi-material-ui/AccountCheck';
 import Bank from 'mdi-material-ui/Bank';
 import DashboardIcon from 'mdi-material-ui/ViewDashboard';
 import FileMoveIcon from 'mdi-material-ui/FileMove';
-import ForumIcon from 'mdi-material-ui/Forum';
+import InformationVariant from 'mdi-material-ui/InformationVariant';
 import MyServicesIcon from 'mdi-material-ui/FileDocumentBoxMultiple';
 import { USER_ROLES } from 'constants/index';
 import groupBy from 'lodash/groupBy';
@@ -47,10 +47,10 @@ const Login = Loadable({
   loading: Loading,
 });
 
-const Notaries = Loadable({
-  loader: () => import('containers/Notaries'),
-  loading: Loading,
-});
+// const Notaries = Loadable({
+//   loader: () => import('containers/Notaries'),
+//   loading: Loading,
+// });
 
 const NotaryValidationRequests = Loadable({
   loader: () => import('containers/NotarizationRequests/NotaryValidationRequests'),
@@ -148,7 +148,7 @@ const routes =  [
     component: Identity,
     isAvailable: isLoggedIn,
     showInMenu: true,
-    icon: AccountDetailsIcon,
+    icon: InformationVariant,
     parent: MENU_GROUPS.IDENTITY,
   },
   {
@@ -157,17 +157,17 @@ const routes =  [
     component: IdentityUse,
     isAvailable: isLoggedIn,
     showInMenu: true,
-    icon: ForumIcon,
+    icon: AccountDetailsIcon,
     parent: MENU_GROUPS.IDENTITY,
   },
-  {
-    path: '/notaries',
-    exact: true,
-    component: Notaries,
-    isAvailable: isLoggedIn,
-    showInMenu: true,
-    icon: AccountGroup,
-  },
+  // {
+  //   path: '/notaries',
+  //   exact: true,
+  //   component: Notaries,
+  //   isAvailable: isLoggedIn,
+  //   showInMenu: true,
+  //   icon: AccountGroup,
+  // },
   {
     path: '/providers',
     exact: true,

@@ -2,14 +2,16 @@
 
 // identity-service endpoint
 const API_URLS = {
-  localnet: 'http://localhost:8000',
+  localnet: 'http://192.168.1.216:8000',
+  // localnet: 'http://localhost:8000',
   testnet: 'http://localhost:8000',
   persona: 'http://localhost:8000',
 };
 
 // Persona blockchain endpoint
 const PERSONA_URLS = {
-  localnet: 'http://localhost:4100',
+  localnet: 'http://192.168.1.216:4100',
+  // localnet: 'http://localhost:4100',
   testnet: 'http://localhost:4100',
   persona: 'http://localhost:4100',
 };

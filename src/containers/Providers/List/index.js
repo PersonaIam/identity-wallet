@@ -60,9 +60,9 @@ class ProvidersList extends Component {
                           )
                         }
 
-                        <Typography variant="body1" component="h3">
-                          { provider.personaAddress }
-                        </Typography>
+                        {/*<Typography variant="body1" component="h3">*/}
+                          {/*{ provider.personaAddress }*/}
+                        {/*</Typography>*/}
                       </div>
                     </Paper>
                   </ButtomBase>

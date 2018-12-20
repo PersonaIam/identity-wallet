@@ -14,6 +14,7 @@ import Eye from 'mdi-material-ui/Eye';
 import EyeOff from 'mdi-material-ui/EyeOff';
 import FileDownload from 'mdi-material-ui/CloudDownload';
 import {getFileAttribute, deselectFileAttribute} from 'actions/attributes';
+import {onNotificationErrorInit} from 'actions/notifications';
 import {attributesConstants} from 'constants/attributes';
 import {decryptValue} from 'helpers/personaService';
 import FilePreview from './FilePreview';
@@ -33,7 +34,7 @@ const styles = (theme) => {
     },
     editButton: {
       '& *': {
-        color: `${theme.palette.secondary.main} !important`
+        color: `${theme.palette.primary.main} !important`
       }
     },
   };
@@ -55,10 +56,16 @@ class Index extends Component {
   }
 
   decyptValue = (passphrase) => {
-    const {toDecrypt} = this.state;
-    const decryptedValue = decryptValue(toDecrypt, passphrase);
+    try {
+      const {toDecrypt} = this.state;
+      const decryptedValue = decryptValue(toDecrypt, passphrase);
 
-    this.toggleDecryptedValue(decryptedValue)
+      this.toggleDecryptedValue(decryptedValue)
+    }
+    catch (e) {
+      console.log(e);
+      this.props.onNotificationErrorInit('FAILED_TO_DECRYPT_VALUE');
+    }
   };
 
   toggleOpenDialog = (value) => {
@@ -138,7 +145,7 @@ class Index extends Component {
     const showFilePreview = isFile && decryptedValue;
 
     const DecryptTooltip = () => (
-      <div style={{textAlign: 'justify'}}>
+      <div>
         <p>{t('YOUR_THE_OWNER')}</p>
         <p>{t('IN_ORDER_TO_VIEW_INFORMATION_PLEASE_DECRYPT')}</p>
       </div>
@@ -207,7 +214,7 @@ class Index extends Component {
                         <Button
                           onClick={() => onAttributeValidateRequest(attribute)}
                           variant="outlined"
-                          color="secondary"
+                          color="primary"
                           className={classes.editButton}
                         >
                           {t('VALIDATE_ATTRIBUTE')}
@@ -303,6 +310,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getFileAttribute: (hash, passphrase) => dispatch(getFileAttribute(hash, passphrase)),
     deselectFileAttribute: () => dispatch(deselectFileAttribute()),
+    onNotificationErrorInit: (message) => dispatch(onNotificationErrorInit(message)),
   };
 };
 

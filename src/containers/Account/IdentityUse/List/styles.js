@@ -2,7 +2,7 @@
  * Created by vladtomsa on 23/11/2018
  */
 import { IDENTITY_USE_REQUEST_STATUSES } from 'constants/index';
-import { amber, red, green } from '@material-ui/core/colors';
+import { amber, red, teal } from '@material-ui/core/colors';
 
 const styles = (theme) => ({
   avatarContainer: {
@@ -39,7 +39,7 @@ const styles = (theme) => ({
     },
   },
   [IDENTITY_USE_REQUEST_STATUSES.ACTIVE]: {
-    color: green[500],
+    color: teal['A400'],
   },
   [IDENTITY_USE_REQUEST_STATUSES.DECLINED]: {
     color: red[500],

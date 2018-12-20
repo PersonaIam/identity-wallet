@@ -1,7 +1,7 @@
 /**
  * Created by vladtomsa on 12/10/2018
  */
-import { logoWidth, toolbarRadius } from '../Header/styles';
+import { logoWidth, toolbarHeight, toolbarMarginTop, toolbarRadius } from '../Header/styles';
 
 const styles = (theme) => ({
   root: {
@@ -13,6 +13,7 @@ const styles = (theme) => ({
       padding: `${toolbarRadius}px 0`,
       position: 'relative',
       width: logoWidth,
+      maxHeight: `calc(100vh - ${toolbarHeight.md + 2*toolbarMarginTop}px)`,
     },
   },
   listItem: {

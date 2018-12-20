@@ -13,6 +13,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -34,6 +35,14 @@ const validate = (values) => {
   if (!values.username) errors.username = 'USERNAME_REQUIRED';
 
   if (values.contactInfo) {
+    if (!values.contactInfo.firstName) {
+      errors.contactInfo.firstName = 'FIRST_NAME_REQUIRED';
+    }
+
+    if (!values.contactInfo.lastName) {
+      errors.contactInfo.lastName = 'LAST_NAME_REQUIRED';
+    }
+
     if (!values.contactInfo.email) {
       errors.contactInfo.email = 'EMAIL_REQUIRED';
     } else if (
@@ -73,37 +82,72 @@ class AdminProviderForm extends Component {
             </Typography>
           </DialogTitle>
           <DialogContent>
-            <Field
-              name="username"
-              component={ RenderTextField }
-              placeholder={t('USERNAME')}
-              disabled={loading || !!initialValues.username}
-              required
-              startAdornment={
-                <InputAdornment position="start">
-                  <Account />
-                </InputAdornment>
-              }
-            />
+            <Grid container spacing={16}>
+              <Grid item xs={12}>
+                <Field
+                  name="username"
+                  component={ RenderTextField }
+                  placeholder={t('USERNAME')}
+                  disabled={loading || !!initialValues.username}
+                  required
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <Account />
+                    </InputAdornment>
+                  }
+                />
+              </Grid>
+            </Grid>
 
-            <br />
-            <br />
+              <FormSection name="contactInfo">
+                <Grid container spacing={16}>
+                <Grid item xs={12}>
+                  <Field
+                    name="firstName"
+                    component={ RenderTextField }
+                    placeholder={t('FIRST_NAME')}
+                    disabled={loading || !!initialValues.username}
+                    required
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Account />
+                      </InputAdornment>
+                    }
+                  />
+                </Grid>
 
-            <FormSection name="contactInfo">
-              <Field
-                name="email"
-                component={ RenderTextField }
-                type="email"
-                placeholder={t('EMAIL')}
-                disabled={loading || !!(initialValues.contactInfo && initialValues.contactInfo.email)}
-                required
-                startAdornment={
-                  <InputAdornment position="start">
-                    <Email />
-                  </InputAdornment>
-                }
-              />
-            </FormSection>
+                <Grid item xs={12}>
+                  <Field
+                    name="lastName"
+                    component={ RenderTextField }
+                    placeholder={t('LAST_NAME')}
+                    disabled={loading || !!initialValues.username}
+                    required
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Account />
+                      </InputAdornment>
+                    }
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Field
+                    name="email"
+                    component={ RenderTextField }
+                    type="email"
+                    placeholder={t('EMAIL')}
+                    disabled={loading || !!(initialValues.contactInfo && initialValues.contactInfo.email)}
+                    required
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Email />
+                      </InputAdornment>
+                    }
+                  />
+                </Grid>
+                </Grid>
+              </FormSection>
           </DialogContent>
 
           <DialogActions>

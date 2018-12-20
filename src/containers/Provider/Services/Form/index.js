@@ -18,7 +18,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Typography from '@material-ui/core/Typography';
 import { providerConstants } from 'constants/provider';
-import { RenderTextField } from 'components/FormInputs';
+import { RenderTextField, RenderSelectField } from 'components/FormInputs';
 import PassphraseInput from 'components/FormInputs/PassphraseInput';
 import AttributesSelection from './AttributesSelection';
 import styles from './styles';
@@ -29,6 +29,8 @@ const validate = (values) => {
   if (!values.name) errors.name = 'SERVICE_NAME_REQUIRED';
 
   if (!values.description) errors.description = 'SERVICE_DESCRIPTION_REQUIRED';
+
+  if (!values.validations_required) errors.validations_required = 'SERVICE_VALIDATIONS_REQUIRED';
 
   if (!values.passphrase) errors.passphrase = 'PASSPHRASE_REQUIRED';
 
@@ -84,10 +86,46 @@ class ProviderServiceForm extends Component {
                   label="SERVICE_DESCRIPTION"
                   disabled={loading}
                   required
+                  multiline
+                  rows="4"
+                  rowsMax="4"
                 />
               </Grid>
 
               <Grid item xs={12}>
+                <Field
+                  name="validations_required"
+                  component={ RenderSelectField }
+                  options={[
+                    {
+                      name: '1',
+                      value: 1,
+                    },
+                    {
+                      name: '5',
+                      value: 5,
+                    },
+                    {
+                      name: '10',
+                      value: 10,
+                    },
+                    {
+                      name: '25',
+                      value: 25,
+                    },
+                    {
+                      name: '50',
+                      value: 50,
+                    },
+                  ]}
+                  label="VALIDATIONS_REQUIRED"
+                  disabled={loading}
+                  required
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <br />
                 <FieldArray
                   name="attributeTypes"
                   component={AttributesSelection}

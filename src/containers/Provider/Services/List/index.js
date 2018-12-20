@@ -5,13 +5,9 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import CardContent from '@material-ui/core/CardContent';
+import Chip from '@material-ui/core/Chip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
@@ -42,38 +38,25 @@ function ProviderServiceList(props) {
 
             return (
               <Fragment key={status}>
-                <Paper elevation={6}>
-                  <List>
-                    <ListSubheader>{t(`${status}_SERVICES`)}</ListSubheader>
+                <Typography variant="subheading" color="textSecondary" className="flex align-center">
+                  <Circle className={classes[status]}/>&nbsp;{t(`${status}_SERVICES`)}
+                </Typography>
+                <br />
 
-                    {
-                      serviceList.map((service, index) => {
-                        const loading = isLoading === `${providerConstants.ON_INACTIVATE_SERVICE}_${service.id}`;
+                {
+                  serviceList.map((service, index) => {
+                    const loading = isLoading === `${providerConstants.ON_INACTIVATE_SERVICE}_${service.id}`;
+                    const requiredServiceAttributes = JSON.parse(service.attribute_types);
 
-                        return (
-                          <ListItem
-                            button
-                            key={status + index}
-                            divider={index !== serviceList.length - 1}
-                          >
-                            <ListItemIcon>
-                              <Circle className={classes[status]}/>
-                            </ListItemIcon>
-                            <ListItemText
-                              primary={service.name}
-                              secondary={
-                                <Fragment>
-                                  <Typography variant="body1" color="textSecondary" component="span" gutterBottom>
-                                    {service.description}
-                                  </Typography>
+                    return (
+                      <Fragment key={status + index}>
+                        <Paper>
+                          <CardContent>
+                            <div className="flex">
+                              <Typography className="fill-flex" variant="display1" gutterBottom>
+                                {service.name}
+                              </Typography>
 
-                                  <Typography variant="caption" color="textSecondary" component="span">
-                                    {moment(service.timestamp).format(DATE_TIME_FORMAT)}
-                                  </Typography>
-                                </Fragment>
-                              }
-                            />
-                            <ListItemSecondaryAction>
                               <FormControlLabel
                                 control={
                                   loading
@@ -92,15 +75,58 @@ function ProviderServiceList(props) {
                                 label={t("ACTIVE")}
                                 disabled={!isActive || loading}
                               />
-                            </ListItemSecondaryAction>
-                          </ListItem>
-                        );
-                      })
-                    }
-                  </List>
-                </Paper>
-                <br/>
-                <br/>
+                            </div>
+
+                            <Typography variant="body1" color="textSecondary" component="span" gutterBottom>
+                              {service.description}
+                            </Typography>
+
+                            <br />
+
+                            <Typography variant="body2" color="textSecondary" component="span">
+                              <strong>{t('REQUIRED_ATTRIBUTES')}</strong>
+                            </Typography>
+
+                            <span className="flex wrap-content">
+                                    {
+                                      requiredServiceAttributes && requiredServiceAttributes.length
+                                        ? (
+                                          requiredServiceAttributes.map(attribute => {
+                                            return (
+                                              <Chip
+                                                key={attribute}
+                                                className={classes.chip}
+                                                label={t(attribute)}
+                                                component="span"
+                                              />
+                                            )
+                                          })
+                                        )
+                                        : null
+                                    }
+
+                                  </span>
+
+                            <br />
+
+                            <Typography variant="body1" color="textSecondary" component="span">
+                              {t('N_VALIDATIONS_REQUIRED', { value: service.validations_required})}
+                            </Typography>
+
+                            <br />
+
+                            <Typography variant="body1" color="textSecondary" component="span">
+                              {t('CREATED_ON', { value: moment(service.timestamp).format(DATE_TIME_FORMAT)})}
+                            </Typography>
+
+                          </CardContent>
+                        </Paper>
+
+                        <br />
+                      </Fragment>
+                    );
+                  })
+                }
               </Fragment>
             );
           })

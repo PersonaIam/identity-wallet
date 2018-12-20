@@ -5,7 +5,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {push} from "react-router-redux";
 import {translate} from 'react-i18next';
+import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -15,13 +17,18 @@ import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Back from 'mdi-material-ui/ChevronLeft';
+import Circle from 'mdi-material-ui/CircleSlice8';
+import Info from 'mdi-material-ui/Information';
 import Loading from 'components/Loading';
 import {getAttributeTypes} from 'actions/attributes';
 import {
   getIdentityUseRequests,
   resetIdentityUseRequests,
 } from 'actions/identityUse';
-import AttrobuteValue from './AttributeValue';
+import { PROVIDER_SERVICE_STATUSES } from 'constants/index';
+import AttributeValue from './AttributeValue';
+import IdentityUseActions from '../IdentityUseActions';
+import styles from './styles';
 
 class ProviderIdentityUseDetail extends Component {
   state = {
@@ -53,13 +60,15 @@ class ProviderIdentityUseDetail extends Component {
   }
 
   render() {
-    const {attributeTypes, goToList, identityUseRequestInfo, t} = this.props;
+    const {attributeTypes, classes, goToList, identityUseRequestInfo, t} = this.props;
     const {selectedAttribute} = this.state;
 
 
     if (!identityUseRequestInfo) return <Loading/>;
 
     const identityRequestAttributes = JSON.parse(identityUseRequestInfo.attributes);
+
+    const isServiceActive = identityUseRequestInfo.service_status === PROVIDER_SERVICE_STATUSES.ACTIVE;
 
     // ToDo add requeast actions / aprove / decline ...
 
@@ -73,23 +82,52 @@ class ProviderIdentityUseDetail extends Component {
             </Button>
           </Tooltip>
           &nbsp;&nbsp;
-          <div>
-            <Typography variant='display1' style={{wordBreak: 'break-all'}}>
-              {identityUseRequestInfo.name}
-            </Typography>
+          <Tooltip title={t(identityUseRequestInfo.status)}>
+            <Circle className={classes[identityUseRequestInfo.status]}/>
+          </Tooltip>
+          &nbsp;&nbsp;
+          <div className="fill-flex">
+            <div className="flex align-center wrap-content">
+              <Typography variant='display1' style={{wordBreak: 'break-all'}}>
+                {identityUseRequestInfo.name}
+              </Typography>
+              &nbsp;&nbsp;
+              {
+                isServiceActive
+                  ? null
+                  : (
+                    <Chip
+                      icon={<Info/>}
+                      className={classes.inactive}
+                      label={t('SERVICE_IS_INACTIVE')}
 
-            <Typography variant='subheading' style={{wordBreak: 'break-all'}}>
-              {identityUseRequestInfo.owner}
-            </Typography>
-
-            <Typography variant='subheading' style={{wordBreak: 'break-all'}}>
-              {t(identityUseRequestInfo.status)}
+                    />
+                  )
+              }
+            </div>
+            <Typography variant="caption">
+              {identityUseRequestInfo.description}
             </Typography>
           </div>
+
+          <div>
+            <IdentityUseActions
+              t={t}
+              identityUseRequest={identityUseRequestInfo}
+              disabled={!isServiceActive}
+            />
+          </div>
         </div>
-        <br/>
+        <br />
+
         <Divider/>
-        <br/>
+        <br />
+
+        <Typography variant='subheading' color="textSecondary" style={{wordBreak: 'break-all'}} gutterBottom>
+          <strong>{t('OWNER')}</strong>: {identityUseRequestInfo.owner}
+        </Typography>
+
+        <br />
 
         <Paper>
           <List
@@ -117,7 +155,7 @@ class ProviderIdentityUseDetail extends Component {
         {
           selectedAttribute
             ? (
-              <AttrobuteValue
+              <AttributeValue
                 attribute={selectedAttribute}
                 attributeTypes={attributeTypes}
                 onClose={() => this.toggleSelectedAttribute(null)}
@@ -152,4 +190,6 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps)(ProviderIdentit
 
 const withTranslate = translate('common')(withConnect);
 
-export default withTranslate;
+const withStyle = withStyles(styles)(withTranslate);
+
+export default withStyle;

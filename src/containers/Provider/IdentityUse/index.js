@@ -124,6 +124,8 @@ class IdentityUse extends Component {
           t={t}
         />
 
+        <br />
+
         {
           providerServiceInfoList && providerServiceInfoList.length
             ? (
@@ -148,7 +150,15 @@ class IdentityUse extends Component {
                       })}
                     >
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                        <Typography variant="headline">{service.name}</Typography>
+                        <div>
+                          <Typography variant="headline" gutterBottom color="textPrimary">
+                            {service.name}
+                          </Typography>
+
+                          <Typography variant="caption">
+                            { service.description }
+                          </Typography>
+                        </div>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <Grid container spacing={8}>

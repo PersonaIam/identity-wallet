@@ -3,7 +3,7 @@
  */
 const styles = {
   root: {
-    width: 400,
+    width: 600,
     maxWidth: '90%',
   },
 };

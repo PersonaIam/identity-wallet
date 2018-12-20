@@ -4,22 +4,30 @@
 import React from 'react';
 import Recaptcha from 'react-recaptcha';
 import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import {translate} from 'react-i18next';
-
 
 const RecaptchaField = (props) => {
   const { input: { onChange },  meta: { touched, error }, t } = props;
 
   return (
     <FormControl error={!!(touched && error)} fullWidth >
-      <Recaptcha
-        className="flex justify-center"
-        sitekey="6LcH_nIUAAAAAAAq_jKpp4gJ_3H8G-JrqFWB4zTL"
-        verifyCallback={onChange}
-      />
+      <InputLabel>
+        {t('BOOT_VERIFICATION')}
+      </InputLabel>
 
-      { touched && error ? <FormHelperText>{ t(error) }</FormHelperText> : null }
+      <div style={{ marginTop: 52 }}>
+        <Recaptcha
+          badge="inline"
+          sitekey="6LcH_nIUAAAAAAAq_jKpp4gJ_3H8G-JrqFWB4zTL"
+          // size="compact"
+          // theme="dark"
+          verifyCallback={onChange}
+        />
+      </div>
+
+      { touched && error ? <FormHelperText style={{ marginLeft: 0 }}>{ t(error) }</FormHelperText> : null }
     </FormControl>
   );
 };

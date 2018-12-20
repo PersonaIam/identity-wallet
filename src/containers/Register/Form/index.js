@@ -9,6 +9,7 @@ import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Paper from '@material-ui/core/Paper';
@@ -76,7 +77,7 @@ const validate = (values) => {
     errors.contactInfo.email = 'EMAIL_REQUIRED';
   }
 
-  // if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
+  if (!values.isCaptchaVerified) errors.isCaptchaVerified = 'CAPTCHA_CONFIRM';
 
   return errors;
 };
@@ -275,12 +276,16 @@ class RegisterForm extends Component {
                         : null
                     }
 
-                    {/*<div className="flex justify-center">*/}
-                      {/*<Field*/}
-                        {/*name="isCaptchaVerified"*/}
-                        {/*component={ RecaptchaField }*/}
-                      {/*/>*/}
-                    {/*</div>*/}
+                    <br />
+                    <br />
+                    <Divider />
+
+                    <div>
+                      <Field
+                        name="isCaptchaVerified"
+                        component={ RecaptchaField }
+                      />
+                    </div>
                   </div>
 
                   <div className="flex justify-center wrap-content">

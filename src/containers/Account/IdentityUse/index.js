@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import {
   getIdentityUseRequests,
   resetIdentityUseRequests,
@@ -87,6 +88,14 @@ class IdentityUse extends Component {
 
     const groupedByProvider = groupBy(displayRequests, 'provider');
 
+    if (!Object.keys(groupedByProvider).length) {
+      return (
+        <div className="text-center">
+          <br />
+          <Typography variant="display1">{ t('NO_REQUESTS_CREATED_YET') }</Typography>
+        </div>
+      );
+    }
 
     return (
       <Fragment>

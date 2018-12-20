@@ -97,7 +97,7 @@ const createInactivateServiceInfo = (serviceData, passphrase, state) => {
 
 const createServiceInfo = (serviceData, passphrase, state) => {
   const {blockchainAccount: {userBlockchainAccount: {address, publicKey}}} = state;
-  const {name, description, attributeTypes} = serviceData;
+  const {name, description, attributeTypes, validations_required} = serviceData;
 
   const serviceInfo = {
     secret: passphrase,
@@ -107,6 +107,7 @@ const createServiceInfo = (serviceData, passphrase, state) => {
         name,
         description,
         attributeTypes,
+        validations_required,
         provider: address,
       }
     }

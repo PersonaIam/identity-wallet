@@ -5,13 +5,8 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import CardContent from '@material-ui/core/CardContent';
 import Chip from '@material-ui/core/Chip';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Circle from 'mdi-material-ui/CircleSlice8';
@@ -37,44 +32,61 @@ function ProviderServiceList(props) {
             const isActive = status === PROVIDER_SERVICE_STATUSES.ACTIVE;
 
             return (
-              <Fragment key={status}>
-                <Paper elevation={6}>
-                  <List>
-                    <ListSubheader>{t(`${status}_SERVICES`)}</ListSubheader>
+              <Fragment>
+                <Typography variant="subheading" color="textSecondary" className="flex align-center">
+                  <Circle className={classes[status]}/>&nbsp;{t(`${status}_SERVICES`)}
+                </Typography>
+                <br />
 
-                    {
-                      serviceList.map((service, index) => {
-                        const requiredServiceAttributes = JSON.parse(service.attribute_types);
+                {
+                  serviceList.map((service, index) => {
+                    const requiredServiceAttributes = JSON.parse(service.attribute_types);
 
-                        return (
-                          <ListItem
-                            button
-                            key={status + index}
-                            divider={index !== serviceList.length - 1}
-                          >
-                            <ListItemIcon>
-                              <Circle className={classes[status]}/>
-                            </ListItemIcon>
-                            <ListItemText
-                              className={classes.listItemText}
-                              primary={service.name}
-                              secondary={
-                                <Fragment>
-                                  <Typography variant="body1" color="textSecondary" component="span" gutterBottom>
-                                    {service.description}
-                                  </Typography>
+                    return (
+                      <Fragment key={index}>
+                        <Paper>
+                          <CardContent>
+                            <div className="flex">
+                              <Typography className="fill-flex" variant="display1" gutterBottom>
+                                {service.name}
+                              </Typography>
 
-                                  <Typography variant="caption" color="textSecondary" component="span">
-                                    {moment(service.timestamp).format(DATE_TIME_FORMAT)}
-                                  </Typography>
+                              {
+                                isActive
+                                  ? (
+                                    service.userIdentityRequest
+                                      ? (
+                                        <Typography variant="body1" color="textSecondary" component="span">
+                                          {t(service.userIdentityRequest.status)}
+                                        </Typography>
+                                      )
+                                      : (
+                                        <div>
+                                          <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={() => onRequestService(service)}
+                                          >
+                                            {t('REQUEST')}
+                                          </Button>
+                                        </div>
+                                      )
+                                  )
+                                  : null
+                              }
+                            </div>
 
-                                  <br />
+                            <Typography variant="body1" color="textSecondary" component="span" gutterBottom>
+                              {service.description}
+                            </Typography>
 
-                                  <Typography variant="caption" color="textSecondary" component="span">
-                                    <strong>{t('REQUIRED_ATTRIBUTES')}</strong>
-                                  </Typography>
+                            <br />
 
-                                  <span className="flex wrap-content">
+                            <Typography variant="body2" color="textSecondary" component="span">
+                              <strong>{t('REQUIRED_ATTRIBUTES')}</strong>
+                            </Typography>
+
+                            <span className="flex wrap-content">
                                     {
                                       requiredServiceAttributes && requiredServiceAttributes.length
                                         ? (
@@ -82,15 +94,22 @@ function ProviderServiceList(props) {
                                             const userAttribute = userAttributes.find(a => a.type === attribute);
                                             const isAttributeAvailable = userAttribute && userAttribute.active;
 
+                                            const chipProps = {};
+
+                                            if (isAttributeAvailable) {
+                                              chipProps.onDelete = () => null;
+                                              chipProps.deleteIcon = <Check />
+                                            }
+
                                             return (
                                               <Chip
                                                 key={attribute}
                                                 className={classes.chip}
                                                 label={t(attribute)}
+                                                component="span"
                                                 color={isAttributeAvailable ? 'primary' : 'default'}
                                                 disabled={!!isAttributeAvailable}
-                                                onDelete={() => null}
-                                                deleteIcon={isAttributeAvailable ? <Check /> : <Close/>}
+                                                {...chipProps}
                                               />
                                             )
                                           })
@@ -99,41 +118,33 @@ function ProviderServiceList(props) {
                                     }
 
                                   </span>
-                                </Fragment>
-                              }
-                            />
-                            {
-                              isActive
-                                ? (
-                                  <ListItemSecondaryAction className={classes.actionButton}>
-                                    {
-                                      service.userIdentityRequest
-                                        ? (
-                                          t(service.userIdentityRequest.status)
-                                        )
-                                        : (
-                                          <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            onClick={() => onRequestService(service)}
-                                          >
-                                            {t('REQUEST')}
-                                          </Button>
-                                        )
-                                    }
 
-                                  </ListItemSecondaryAction>
-                                )
-                                : null
-                            }
-                          </ListItem>
-                        );
-                      })
-                    }
-                  </List>
-                </Paper>
-                <br/>
-                <br/>
+                            <br />
+
+                            <Typography variant="body1" color="textSecondary" component="span">
+                              {t('N_VALIDATIONS_REQUIRED', { value: service.validations_required})}
+                            </Typography>
+
+                            <br />
+
+                            <Typography variant="body1" color="textSecondary" component="span">
+                              {t('CREATED_ON', { value: moment(service.timestamp).format(DATE_TIME_FORMAT)})}
+                            </Typography>
+                          </CardContent>
+                        </Paper>
+
+                        <br />
+                        <br />
+                      </Fragment>
+                    );
+
+                  })
+                }
+
+                <br />
+                <br />
+                <br />
+                <br />
               </Fragment>
             );
           })

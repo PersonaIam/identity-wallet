@@ -23,6 +23,13 @@ const themeOverrides = {
       color: '#FFFFFF',
     },
   },
+  MuiInputAdornment: {
+    root: {
+      '& svg': {
+        color: 'rgba(0, 0, 0, 0.54)'
+      },
+    },
+  },
   MuiSnackbarContent: {
     message: {
       flex: 1,
@@ -33,6 +40,12 @@ const themeOverrides = {
       textTransform: 'none',
     },
   },
+  MuiTooltip: {
+    tooltip: {
+      textAlign: 'justify',
+      fontSize: 14,
+    },
+  }
 };
 
 const theme = {

@@ -72,7 +72,7 @@ class Providers extends Component {
             variant="contained"
             color="secondary"
           >
-            { t('CREATE') }
+            { t('ADD_NEW_PROVIDER') }
           </Button>
         </div>
         <br />
@@ -98,9 +98,11 @@ class Providers extends Component {
                   />
                 )
                 : (
-                  <Typography variant="display1">
-                    { t('NO_PROVIDERS_AVAILABLE') }
-                  </Typography>
+                  <div className="text-center">
+                    <Typography variant="display1">
+                      { t('NO_PROVIDERS_AVAILABLE') }
+                    </Typography>
+                  </div>
                 )
             )
         }

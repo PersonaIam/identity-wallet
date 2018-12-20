@@ -63,9 +63,11 @@ class Providers extends Component {
                   />
                 )
                 : (
-                  <Typography variant='display1'>
-                    { t('NO_PROVIDERS_AVAILABLE') }
-                  </Typography>
+                  <div className="text-center">
+                    <Typography variant='display1'>
+                      { t('NO_PROVIDERS_AVAILABLE') }
+                    </Typography>
+                  </div>
                 )
             )
         }

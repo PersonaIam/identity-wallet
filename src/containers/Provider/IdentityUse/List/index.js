@@ -16,7 +16,7 @@ import { personaStampToDate } from 'helpers/personaService';
 import { DATE_TIME_FORMAT } from 'constants/index';
 import moment from 'moment';
 
-import IdentityUseActions from './IdentityUseActions/index';
+import IdentityUseActions from '../IdentityUseActions/index';
 
 const NotarizationRequestsList = ({onIdentityUseRequestSelect, t, title, identityUseRequestInfoList}) => {
   return (

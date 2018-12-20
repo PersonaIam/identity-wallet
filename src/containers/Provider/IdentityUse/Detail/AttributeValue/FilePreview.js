@@ -11,14 +11,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Zoom from '@material-ui/core/Zoom';
-import Close from 'mdi-material-ui/Close';
 // import Download from 'mdi-material-ui/Download';
-import Edit from 'mdi-material-ui/Pencil';
 import Left from 'mdi-material-ui/ChevronLeft';
 import Right from 'mdi-material-ui/ChevronRight';
 import { Document, Page } from 'react-pdf';
 import { withStyles } from '@material-ui/core/styles';
-// import { saveFile } from 'helpers/fileService';
 import { ACCEPTED_FILE_TYPES } from 'constants/index';
 
 const styles = (theme) => {
@@ -58,9 +55,6 @@ const styles = (theme) => {
   };
 };
 
-
-
-
 class FilePreview extends Component {
 
   state = {
@@ -76,7 +70,7 @@ class FilePreview extends Component {
   };
 
   getPreiview = () => {
-    const { classes, attribute, onClose, t } = this.props;
+    const { classes, attribute, t } = this.props;
     const { currentPage, totalPages } = this.state;
     let content;
 

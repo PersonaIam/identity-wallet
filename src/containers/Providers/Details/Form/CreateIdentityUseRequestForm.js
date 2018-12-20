@@ -14,9 +14,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
-
 import Typography from '@material-ui/core/Typography';
+import AlertCircle from 'mdi-material-ui/AlertCircle';
+
 import { identityUseConstants } from 'constants/identityUse';
 import PassphraseInput from 'components/FormInputs/PassphraseInput';
 
@@ -86,51 +86,52 @@ class CreateIdentityUseRequestForm extends Component {
               missingAttributes && missingAttributes.length
                 ? (
                   <Fragment>
-                    <Typography variant="display1" color="secondary" gutterBottom>
-                      {t('CANNOT_REQUEST_SERVICE')}
+                    <Typography variant="headline" color="secondary" className="flex align-center" gutterBottom>
+                      <AlertCircle />&nbsp;{t('CANNOT_REQUEST_SERVICE')}
                     </Typography>
 
-                    <Typography variant="subheading" color="secondary" gutterBottom>
+                    <Typography variant="subheading" color="textSecondary" gutterBottom>
                       {t('SERVICE_REQUIRES_SOME_ATTRIBUTES_THAT_ARE_INACTIVE')}:
                     </Typography>
 
 
 
-                    <Typography variant="subheading" color="secondary" gutterBottom>
+                    <Typography variant="subheading" color="textSecondary" gutterBottom>
                       {
                         missingAttributes.map((attribute, index) => {
-                          return (<span key={index}>
+                          return (<strong key={index}>
                             {t(attribute.attributeType)} {index !== missingAttributes.length -1 ? ', ': null}
-                          </span>)
+                          </strong>)
                         })
                       }
                     </Typography>
                     <br />
                   </Fragment>
                 )
-                : null
+                : (
+                  <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                      <FieldArray
+                        name="attributes"
+                        component={AttributesSelection}
+                        attributes={userAttributes}
+                        requiredAttributes={requiredAttributes}
+                        t={t}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        name="passphrase"
+                        label="PASSPHRASE"
+                        type="password"
+                        autoComplete="new-password"
+                        component={PassphraseInput}
+                        required
+                      />
+                    </Grid>
+                  </Grid>
+                )
             }
-            <Grid container spacing={16}>
-              <Grid item xs={12}>
-                <FieldArray
-                  name="attributes"
-                  component={AttributesSelection}
-                  attributes={userAttributes}
-                  requiredAttributes={requiredAttributes}
-                  t={t}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Field
-                  name="passphrase"
-                  label="PASSPHRASE"
-                  type="password"
-                  autoComplete="new-password"
-                  component={PassphraseInput}
-                  required
-                />
-              </Grid>
-            </Grid>
           </DialogContent>
 
           <DialogActions>

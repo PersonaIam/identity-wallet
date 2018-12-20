@@ -10,6 +10,8 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Info from 'mdi-material-ui/Information';
 
 const AttributesSelection = (props) => {
   const {attributeTypes, fields, meta, t} = props;
@@ -32,16 +34,13 @@ const AttributesSelection = (props) => {
 
   return (
     <FormControl component="fieldset" required error={!!(error && submitFailed)} variant="outlined">
-      <FormLabel component="legend">{ t('REQUIRED_ATTRIBUTES') }</FormLabel>
-
-      {/*<br />*/}
-
-      {/*<Typography variant="caption" className="flex align-center">*/}
-        {/*<Info />&nbsp;*/}
-        {/*<span>{ t('INCLUDES_ATTRIBUTES_DESCRIPTION') }</span>*/}
-      {/*</Typography>*/}
+      <Typography variant="body1" className="flex align-center">
+        <span>{ t('SPECIFY_REQUIRED_ATTRIBUTES') }</span>
+      </Typography>
 
       <br />
+
+      <FormLabel component="legend">{ t('REQUIRED_ATTRIBUTES') }</FormLabel>
 
       <FormGroup>
         <Grid container spacing={8}>

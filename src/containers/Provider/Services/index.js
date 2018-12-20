@@ -66,13 +66,14 @@ class ProviderServices extends Component {
   };
 
   onSaveProviderService = (values) => {
-    const {name, description, attributeTypes, passphrase} = values;
+    const {name, description, attributeTypes, validations_required, passphrase} = values;
 
     this.props.saveProviderService(
       {
         name,
         description,
         attributeTypes,
+        validations_required,
       },
       passphrase,
     );
@@ -102,7 +103,7 @@ class ProviderServices extends Component {
             variant="contained"
             color="secondary"
           >
-            {t('CREATE')}
+            {t('ADD_A_NEW_SERVICE')}
           </Button>
         </div>
         <br/>

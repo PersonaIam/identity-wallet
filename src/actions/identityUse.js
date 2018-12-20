@@ -8,8 +8,6 @@ import {getPublicKey, encryptValue, decryptValue} from "../helpers/personaServic
 import {getProviderByAddress} from "./providers";
 import {IDENTITY_USE_REQUEST_ACTION} from "../constants";
 
-import personajs from 'personajs';
-
 const timeout = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
@@ -82,7 +80,6 @@ export const createIdentityUseRequest = (attributes, passphrase) => async (dispa
     }
   }
   catch (e) {
-    debugger;
     dispatch(onNotificationErrorInit(e));
     dispatch(createIdentityUseRequestFailure());
   }
@@ -109,8 +106,6 @@ const createIdentityUseInfo = async (attributes, passphrase, state) => {
     let encryptedValue;
     const {type, value} = attribute;
     const attributeTypeInfo = attribute_types.find(a => a.name === type);
-
-    debugger;
 
     if (attributeTypeInfo.data_type === 'file') {
       const { fileData } = await blockchain.get(`/ipfs/fileByHash?hash=${value}`);

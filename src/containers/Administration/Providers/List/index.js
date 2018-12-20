@@ -50,19 +50,25 @@ class ProvidersList extends Component {
               ? (
                 <ListItem className={classes.root} divider>
                   <Grid container spacing={16} alignItems="flex-end">
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                       <Typography variant="caption" style={{ marginLeft: 32 }}>
                         { t('USERNAME') }
                       </Typography>
                     </Grid>
 
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
+                      <Typography variant="caption">
+                        { t('NAME') }
+                      </Typography>
+                    </Grid>
+
+                    <Grid item xs={3}>
                       <Typography variant="caption">
                         { t('PERSONA_ADDRESS') }
                       </Typography>
                     </Grid>
 
-                    <Grid item xs={4}>
+                    <Grid item xs={3}>
                       <Typography variant="caption">
                         { t('EMAIL') }
                       </Typography>
@@ -86,7 +92,7 @@ class ProvidersList extends Component {
                   style={{ width: '100%' }}
                 >
                   <Grid container spacing={16}>
-                    <Grid item xs={12} md={4} className={classes.item}>
+                    <Grid item xs={12} md={3} className={classes.item}>
                       <Typography variant="body1" className="flex align-center">
                         <Tooltip title={t(!!provider.isActive ? 'ACTIVE' : 'INACTIVE')}>
                           {
@@ -101,11 +107,15 @@ class ProvidersList extends Component {
                       </Typography>
                     </Grid>
 
-                    <Grid item xs={12} md={4} className={classes.item}>
+                    <Grid item xs={12} md={3} className={classes.item}>
+                      { `${provider.contactInfo.firstName} ${provider.contactInfo.lastName}`}
+                    </Grid>
+
+                    <Grid item xs={12} md={3} className={classes.item}>
                       { provider.personaAddress }
                     </Grid>
 
-                    <Grid item xs={12} md={4} className={classes.item}>
+                    <Grid item xs={12} md={3} className={classes.item}>
                       { provider.contactInfo.email }
                     </Grid>
                   </Grid>
@@ -121,7 +131,7 @@ class ProvidersList extends Component {
               component="div"
               count={count}
               rowsPerPage={pageSize}
-              labelRowsPerPage={t('ROWS_PER_PAGE')}
+              labelRowsPerPage={t('PROVIDERS_PER_PAGE')}
               page={pageNumber}
               onChangePage={this.handlePageChange}
               onChangeRowsPerPage={this.handleChangePageSize}
