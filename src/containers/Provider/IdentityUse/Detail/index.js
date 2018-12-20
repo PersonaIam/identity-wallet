@@ -13,12 +13,14 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Back from 'mdi-material-ui/ChevronLeft';
 import Circle from 'mdi-material-ui/CircleSlice8';
 import Info from 'mdi-material-ui/Information';
+import Incognito from 'mdi-material-ui/Incognito';
 import Loading from 'components/Loading';
 import {getAttributeTypes} from 'actions/attributes';
 import {
@@ -27,15 +29,22 @@ import {
 } from 'actions/identityUse';
 import { PROVIDER_SERVICE_STATUSES } from 'constants/index';
 import AttributeValue from './AttributeValue';
+import AttributeValidations from './AttributeValidations';
 import IdentityUseActions from '../IdentityUseActions';
 import styles from './styles';
+
+const AVAILABLE_ACTIONS = {
+  VIEW_VALUE: 1,
+  VIEW_VALIDATIONS: 2,
+};
 
 class ProviderIdentityUseDetail extends Component {
   state = {
     selectedAttribute: null,
+    action: null,
   };
 
-  toggleSelectedAttribute = (attribute) => this.setState({selectedAttribute: attribute});
+  toggleSelectedAttribute = (attribute, action) => this.setState({selectedAttribute: attribute, action});
 
   UNSAFE_componentWillMount() {
     this.props.resetIdentityUseRequests();
@@ -60,17 +69,19 @@ class ProviderIdentityUseDetail extends Component {
   }
 
   render() {
-    const {attributeTypes, classes, goToList, identityUseRequestInfo, t} = this.props;
-    const {selectedAttribute} = this.state;
+    const {
+      attributeTypes,
+      classes, goToList,
+      identityUseRequestInfo,
+      t,
+      match: {params: {serviceId, owner}} ,
+    } = this.props;
 
+    const {action, selectedAttribute} = this.state;
 
     if (!identityUseRequestInfo) return <Loading/>;
 
-    const identityRequestAttributes = JSON.parse(identityUseRequestInfo.attributes);
-
     const isServiceActive = identityUseRequestInfo.service_status === PROVIDER_SERVICE_STATUSES.ACTIVE;
-
-    // ToDo add requeast actions / aprove / decline ...
 
     return (
       <div>
@@ -115,6 +126,10 @@ class ProviderIdentityUseDetail extends Component {
               t={t}
               identityUseRequest={identityUseRequestInfo}
               disabled={!isServiceActive}
+              params={{
+                serviceId,
+                owner,
+              }}
             />
           </div>
         </div>
@@ -134,17 +149,25 @@ class ProviderIdentityUseDetail extends Component {
             subheader={<ListSubheader component="div">{t('ATTRIBUTES')}</ListSubheader>}
           >
             {
-              identityRequestAttributes.map((attribute, index) => {
+              identityUseRequestInfo.attributes.map((attribute, index) => {
                 return (
                   <ListItem
                     button
-                    divider={index !== identityRequestAttributes.length - 1}
+                    divider={index !== identityUseRequestInfo.attributes.length - 1}
                     key={attribute.type}
-                    onClick={() => this.toggleSelectedAttribute(attribute)}
+                    onClick={() => this.toggleSelectedAttribute(attribute, AVAILABLE_ACTIONS.VIEW_VALUE)}
                   >
                     <ListItemText
                       primary={t(attribute.type)}
                     />
+                    <ListItemSecondaryAction>
+                      <Button onClick={() => this.toggleSelectedAttribute(attribute, AVAILABLE_ACTIONS.VIEW_VALIDATIONS)}>
+                        <span className="flex align-center">
+                          <Incognito/>&nbsp;
+                          {t('N_VALIDATIONS', {value: attribute.validations ? attribute.validations.length : 0})}
+                        </span>
+                      </Button>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 )
               })
@@ -153,12 +176,24 @@ class ProviderIdentityUseDetail extends Component {
         </Paper>
 
         {
-          selectedAttribute
+          selectedAttribute && action === AVAILABLE_ACTIONS.VIEW_VALUE
             ? (
               <AttributeValue
                 attribute={selectedAttribute}
                 attributeTypes={attributeTypes}
-                onClose={() => this.toggleSelectedAttribute(null)}
+                onClose={() => this.toggleSelectedAttribute(null, null)}
+                t={t}
+              />
+            )
+            : null
+        }
+
+        {
+          selectedAttribute && action === AVAILABLE_ACTIONS.VIEW_VALIDATIONS
+            ? (
+              <AttributeValidations
+                attribute={selectedAttribute}
+                onClose={() => this.toggleSelectedAttribute(null, null)}
                 t={t}
               />
             )

@@ -11,7 +11,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Info from 'mdi-material-ui/Information';
 
 const AttributesSelection = (props) => {
   const {attributeTypes, fields, meta, t} = props;

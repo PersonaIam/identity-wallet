@@ -22,7 +22,7 @@ import moment from 'moment';
 import styles from './styles';
 import IdentityUseActions from './IdentityUseActions';
 
-const IdentityUseRequestsList = ({classes, t, title, providerIdentityUseRequests}) => {
+const IdentityUseRequestsList = ({classes, t, title, params, providerIdentityUseRequests}) => {
   const providerInfo = providerIdentityUseRequests[0].providerInfo;
   let providerName;
 
@@ -49,9 +49,9 @@ const IdentityUseRequestsList = ({classes, t, title, providerIdentityUseRequests
                 {providerName}
               </Typography>
 
-              <Typography variant="subheading" gutterBottom>
-                {providerInfo.personaAddress}
-              </Typography>
+              {/*<Typography variant="subheading" gutterBottom>*/}
+                {/*{providerInfo.personaAddress}*/}
+              {/*</Typography>*/}
             </CardContent>
 
             <Divider/>
@@ -87,6 +87,7 @@ const IdentityUseRequestsList = ({classes, t, title, providerIdentityUseRequests
                       />
                       <ListItemSecondaryAction>
                         <IdentityUseActions
+                          params={params}
                           identityUseRequest={serviceRequest}
                           t={t}
                         />
@@ -105,6 +106,7 @@ const IdentityUseRequestsList = ({classes, t, title, providerIdentityUseRequests
 
 IdentityUseRequestsList.propTypes = {
   classes: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
   providerIdentityUseRequests: PropTypes.array.isRequired,
   t: PropTypes.func.isRequired,
 };

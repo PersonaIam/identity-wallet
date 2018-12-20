@@ -2,13 +2,13 @@
  * Created by vladtomsa on 17/12/2018
  */
 import amber from '@material-ui/core/colors/amber';
-import teal from '@material-ui/core/colors/teal';
+import lightGreen from '@material-ui/core/colors/lightGreen';
 import { IDENTITY_USE_REQUEST_STATUSES } from 'constants/index';
 
 const styles = (theme) => {
   return {
     [IDENTITY_USE_REQUEST_STATUSES.ACTIVE]: {
-      color: teal['A400'],
+      color: lightGreen['A400'],
     },
     [IDENTITY_USE_REQUEST_STATUSES.INACTIVE]: {
       color: amber[500],

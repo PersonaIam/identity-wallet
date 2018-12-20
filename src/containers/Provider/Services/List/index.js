@@ -53,7 +53,7 @@ function ProviderServiceList(props) {
                         <Paper>
                           <CardContent>
                             <div className="flex">
-                              <Typography className="fill-flex" variant="display1" gutterBottom>
+                              <Typography className="fill-flex" variant="display1" color="secondary" gutterBottom>
                                 {service.name}
                               </Typography>
 
@@ -110,7 +110,7 @@ function ProviderServiceList(props) {
                             <br />
 
                             <Typography variant="body1" color="textSecondary" component="span">
-                              {t('N_VALIDATIONS_REQUIRED', { value: service.validations_required})}
+                              <strong>{t('N_VALIDATIONS_REQUIRED', { value: service.validations_required})}</strong>
                             </Typography>
 
                             <br />

@@ -23,6 +23,19 @@ const themeOverrides = {
       color: '#FFFFFF',
     },
   },
+  MuiDialog: {
+    paper: {
+      minWidth: 460,
+      maxWidth: '94%',
+    },
+  },
+  MuiDialogTitle: {
+    root: {
+      '& *': {
+        fontWeight: 300,
+      },
+    },
+  },
   MuiInputAdornment: {
     root: {
       '& svg': {
@@ -45,7 +58,12 @@ const themeOverrides = {
       textAlign: 'justify',
       fontSize: 14,
     },
-  }
+  },
+  MuiTypography: {
+    caption: {
+      fontSize: '0.9rem',
+    },
+  },
 };
 
 const theme = {
@@ -56,8 +74,8 @@ const theme = {
     },
     secondary: {
       light: '#B3E5FC',
-      main: '#09D0FF',
-      dark: '#01A9EE',
+      main: '#0cabff',
+      dark: '#1085ee',
     },
     error: { main: error[500] },
     background: { default: '#F7F7F7' },

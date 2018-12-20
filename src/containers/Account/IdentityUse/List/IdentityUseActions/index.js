@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
-import teal from '@material-ui/core/colors/teal';
+import lightGreen from '@material-ui/core/colors/lightGreen';
 import amber from '@material-ui/core/colors/amber';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -39,7 +39,7 @@ const styles = (theme) => {
     },
     success: {
       '& svg': {
-        color: teal['A400'],
+        color: lightGreen['A400'],
       },
     },
     error: {
@@ -68,9 +68,14 @@ class IdentityUseActions extends Component {
 
   onValidationSubmit = (values) => {
     const { actionType } = this.state;
-    const { handleIdentityUseRequest } = this.props;
+    const { handleIdentityUseRequest, params } = this.props;
 
-    handleIdentityUseRequest(values, actionType);
+    handleIdentityUseRequest(values, actionType, params)
+      .then((result) => {
+        if (result) {
+          this.setState({ actionType: null })
+        }
+      });
   };
 
   getInitialFormValues = () => {
@@ -194,7 +199,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleIdentityUseRequest: (data, actionType) => dispatch(handleIdentityUseRequest(data, actionType)),
+    handleIdentityUseRequest: (data, actionType, params) => dispatch(handleIdentityUseRequest(data, actionType, params)),
   };
 };
 
@@ -203,6 +208,7 @@ IdentityUseActions.propTypes = {
   handleIdentityUseRequest: PropTypes.func.isRequired,
   isLoading: PropTypes.any,
   identityUseRequest: PropTypes.object.isRequired,
+  params: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
 };
 

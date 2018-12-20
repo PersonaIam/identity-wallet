@@ -2,7 +2,7 @@
  * Created by vladtomsa on 16/11/2018
  */
 import amber from '@material-ui/core/colors/amber';
-import teal from '@material-ui/core/colors/teal';
+import lightGreen from '@material-ui/core/colors/lightGreen';
 import grey from '@material-ui/core/colors/grey';
 import {ATTRIBUTE_EXPIRATIONS_STATES} from "constants/index";
 
@@ -35,7 +35,7 @@ const styles = (theme) => {
       marginRight: 4,
     },
     active: {
-      color: teal['A400'],
+      color: lightGreen['A400'],
     },
     inactive: {
       color: amber[500],

@@ -18,7 +18,7 @@ import moment from 'moment';
 
 import IdentityUseActions from '../IdentityUseActions/index';
 
-const NotarizationRequestsList = ({onIdentityUseRequestSelect, t, title, identityUseRequestInfoList}) => {
+const NotarizationRequestsList = ({onIdentityUseRequestSelect, t, title, identityUseRequestInfoList, params}) => {
   return (
     <div>
       <Typography variant='body1' gutterBottom>
@@ -85,7 +85,7 @@ const NotarizationRequestsList = ({onIdentityUseRequestSelect, t, title, identit
                             transform: 'none',
                           }}
                         >
-                          <IdentityUseActions t={t} identityUseRequest={request}/>
+                          <IdentityUseActions t={t} identityUseRequest={request} params={params}/>
                         </ListItemSecondaryActions>
                       </ListItem>
                     );
@@ -105,6 +105,7 @@ NotarizationRequestsList.propTypes = {
   onIdentityUseRequestSelect: PropTypes.func.isRequired,
   title: PropTypes.string,
   t: PropTypes.func.isRequired,
+  params: PropTypes.object.isRequired,
 };
 
 export default NotarizationRequestsList;

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
-import teal from '@material-ui/core/colors/teal';
+import lightGreen from '@material-ui/core/colors/lightGreen';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -40,7 +40,7 @@ const styles = (theme) => {
         padding: 4,
       },
       '& svg': {
-        color: teal['A400'],
+        color: lightGreen['A400'],
       },
     },
     error: {

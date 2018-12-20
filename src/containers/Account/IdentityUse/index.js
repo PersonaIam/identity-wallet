@@ -78,7 +78,7 @@ class IdentityUse extends Component {
   };
 
   render() {
-    const { isLoading, t } = this.props;
+    const { isLoading, t, userInfo: { personaAddress }} = this.props;
 
     if (isLoading) return <Loading/>;
 
@@ -107,6 +107,7 @@ class IdentityUse extends Component {
               return (
                 <Fragment key={provider}>
                   <IdentityUseRequestList
+                    params={{ owner: personaAddress }}
                     providerIdentityUseRequests={providerIdentityUseRequests || []}
                     t={t}
                   />

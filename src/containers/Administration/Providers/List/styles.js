@@ -2,7 +2,7 @@
  * Created by vladtomsa on 23/11/2018
  */
 import amber from '@material-ui/core/colors/amber';
-import teal from '@material-ui/core/colors/teal';
+import lightGreen from '@material-ui/core/colors/lightGreen';
 
 const styles = {
   root: {
@@ -13,7 +13,7 @@ const styles = {
     textOverflow: 'ellipsis',
   },
   active: {
-    color: teal['A400'],
+    color: lightGreen['A400'],
     marginRight: 12,
   },
   inactive: {

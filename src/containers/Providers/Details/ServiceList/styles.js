@@ -2,7 +2,7 @@
  * Created by vladtomsa on 29/11/2018
  */
 import amber from '@material-ui/core/colors/amber';
-import teal from '@material-ui/core/colors/teal';
+import lightGreen from '@material-ui/core/colors/lightGreen';
 import { PROVIDER_SERVICE_STATUSES } from 'constants/index';
 
 const styles = (theme) => {
@@ -15,7 +15,7 @@ const styles = (theme) => {
       marginTop: 4.
     },
     [PROVIDER_SERVICE_STATUSES.ACTIVE]: {
-      color: teal['A400'],
+      color: lightGreen['A400'],
     },
     [PROVIDER_SERVICE_STATUSES.INACTIVE]: {
       color: amber[500],

@@ -11,7 +11,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Circle from 'mdi-material-ui/CircleSlice8';
 import Check from 'mdi-material-ui/Check';
-import Close from 'mdi-material-ui/Close';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 import {DATE_TIME_FORMAT, PROVIDER_SERVICE_STATUSES} from 'constants/index';
@@ -32,7 +31,7 @@ function ProviderServiceList(props) {
             const isActive = status === PROVIDER_SERVICE_STATUSES.ACTIVE;
 
             return (
-              <Fragment>
+              <Fragment key={status}>
                 <Typography variant="subheading" color="textSecondary" className="flex align-center">
                   <Circle className={classes[status]}/>&nbsp;{t(`${status}_SERVICES`)}
                 </Typography>
@@ -47,7 +46,7 @@ function ProviderServiceList(props) {
                         <Paper>
                           <CardContent>
                             <div className="flex">
-                              <Typography className="fill-flex" variant="display1" gutterBottom>
+                              <Typography className="fill-flex" variant="display1" color="secondary" gutterBottom>
                                 {service.name}
                               </Typography>
 
@@ -122,7 +121,7 @@ function ProviderServiceList(props) {
                             <br />
 
                             <Typography variant="body1" color="textSecondary" component="span">
-                              {t('N_VALIDATIONS_REQUIRED', { value: service.validations_required})}
+                              <strong>{t('N_VALIDATIONS_REQUIRED', { value: service.validations_required})}</strong>
                             </Typography>
 
                             <br />

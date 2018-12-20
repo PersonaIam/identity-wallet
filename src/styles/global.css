@@ -42,6 +42,10 @@ body {
   justify-content: flex-end;
 }
 
+.layout-padding {
+  padding: 16px;
+}
+
 .space-between {
   justify-content: space-between;
 }

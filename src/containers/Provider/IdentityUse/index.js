@@ -103,7 +103,7 @@ class IdentityUse extends Component {
   };
 
   render() {
-    const {classes, isLoading, providerServiceInfoList, t} = this.props;
+    const {classes, isLoading, providerServiceInfoList, t, userInfo: { personaAddress }} = this.props;
     const {filterFormValue, hiddenDetails} = this.state;
 
     if (isLoading === identityUseConstants.GET_IDENTITY_USE_REQUEST_INIT) return <Loading/>;
@@ -170,6 +170,7 @@ class IdentityUse extends Component {
                                     title={key}
                                     identityUseRequestInfoList={groupedRequestsInfo[key] || []}
                                     onIdentityUseRequestSelect={(identityReq) => this.onIdentityUseRequestSelect(service, identityReq)}
+                                    params={{ serviceProvider: personaAddress }}
                                     t={t}
                                   />
                                 </Grid>

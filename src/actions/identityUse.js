@@ -16,12 +16,15 @@ export const getIdentityUseRequests = (params) => async (dispatch) => {
   try {
     dispatch(getIdentityUseRequestsInit());
 
-    const {identity_use_requests} = await blockchain.get('/identity-use', {params});
+    const {identity_use_requests, validation_requests} = await blockchain.get('/identity-use', {params});
 
     const providers = [];
 
     for (let i = 0; i < identity_use_requests.length; i++) {
       const request = identity_use_requests[i];
+
+      request.attributes = JSON.parse(request.attributes);
+
       const providerAddress = request.provider;
 
       const providerInfo = providers.find(p => p.personaAddress === providerAddress);
@@ -40,6 +43,14 @@ export const getIdentityUseRequests = (params) => async (dispatch) => {
 
         request.providerInfo = userInfoList[0];
         providers.push(userInfoList[0]);
+      }
+
+      if (validation_requests) {
+        request.attributes.forEach(attribute => {
+          const attributeValidations = validation_requests.filter(request => request.type === attribute.type);
+
+          attribute.validations = attributeValidations;
+        })
       }
     }
 
@@ -147,12 +158,11 @@ const createIdentityUseInfo = async (attributes, passphrase, state) => {
 };
 
 
-export const handleIdentityUseRequest = (data, actionType) => async (dispatch, getState) => {
+export const handleIdentityUseRequest = (data, actionType, params) => async (dispatch) => {
   try {
     dispatch(identityUseUpdateInit());
 
     let url;
-    const {auth: {userInfo: {personaAddress}}} = getState();
 
     /* eslint-disable default-case */
     switch (actionType) {
@@ -178,7 +188,7 @@ export const handleIdentityUseRequest = (data, actionType) => async (dispatch, g
 
     await timeout(10 * 1000); // await forging block
 
-    dispatch(getIdentityUseRequests({serviceProvider: personaAddress}));
+    dispatch(getIdentityUseRequests(params));
     dispatch(onNotificationSuccessInit('REQUEST_UPDATED_SUCCESSFULLY'));
     dispatch(identityUseUpdateDone());
 
