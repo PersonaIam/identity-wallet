@@ -126,12 +126,12 @@ class ValidationActions extends Component {
       case IN_PROGRESS:
         return (
           <Fragment>
-            <Tooltip title={t('APPROVE_NOTARISATION')}>
+            <Tooltip title={t('COMPLETE_NOTARISATION')}>
               <IconButton className={classes.success} onClick={() => this.onAction(VALIDATION_REQUEST_ACTION.NOTARIZE)} disableRipple>
                 <AccountCheck />
               </IconButton>
             </Tooltip>
-            <Tooltip title={t('REJECT')}>
+            <Tooltip title={t('REJECT_NOTARISATION')}>
               <IconButton className={classes.error} onClick={() => this.onAction(VALIDATION_REQUEST_ACTION.REJECT)}>
                 <AccountRemove />
               </IconButton>

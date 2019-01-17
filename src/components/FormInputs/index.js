@@ -10,6 +10,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Switch from '@material-ui/core/Switch';
 import CalendarIcon from 'mdi-material-ui/Calendar';
 // import ClockIcon from 'mdi-material-ui/Clock';
 import LeftIcon from 'mdi-material-ui/ChevronLeft';
@@ -118,7 +119,22 @@ export const RenderCheckbox = translate('common')(({ input, label, disabled, t, 
           checked={input.value}
           onChange={input.onChange}
           disabled={!!disabled}
-          color="secondary"
+          { ...custom }
+        />
+      }
+      label={t(label)}
+    />
+  );
+});
+
+export const RenderSwitch = translate('common')(({ input, label, disabled, t, tReady, ...custom}) => {
+  return (
+    <FormControlLabel
+      control={
+        <Switch
+          checked={input.value}
+          onChange={input.onChange}
+          disabled={!!disabled}
           { ...custom }
         />
       }

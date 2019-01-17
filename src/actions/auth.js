@@ -4,6 +4,7 @@
 import { http } from 'config/http';
 import { Base64 } from 'js-base64';
 import { push } from 'react-router-redux';
+import { reset } from 'redux-form';
 import { getUserAttributes, getValidatorValidationRequests } from './attributes';
 import { getBlockchainAccount } from './blockchainAccount';
 // import { registerUserToChat } from './chat';
@@ -24,6 +25,7 @@ export const createAccount = (data) => async (dispatch) => {
     await http.post('/users', data);
 
     dispatch(createAccountSuccess());
+    dispatch(reset('RegisterForm'));
     dispatch(onNotificationSuccessInit('Success! In order to complete your account an email was sent containing final registration link'));
   }
   catch (error) {

@@ -5,16 +5,26 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
+import Typography from '@material-ui/core/Typography';
+import ArrowRight from 'mdi-material-ui/ArrowRight';
 import { updateAccount } from 'actions/auth';
 import ProfileForm from './Form';
+import ConfirmationDialog from 'components/ConfirmationDialog';
+import {USER_ROLES} from 'constants/index';
 
 class Profile extends Component {
+  state = {
+    valuesToUpdate: null,
+  };
+
+  toggleValuesToUpdate = (value) => {
+    this.setState({ valuesToUpdate: value })
+  };
 
   onUpdateAccount = (values) => {
     /*
     * Allowed editable values
     * */
-
     const contactInfo = {};
 
     for (let key in values.contactInfo) {
@@ -31,17 +41,89 @@ class Profile extends Component {
       username: values.username,
     };
 
-    this.props.updateAccount(userInfo);
+    this.toggleValuesToUpdate(userInfo);
+  };
+
+  getValueChanges = () => {
+    const { countries, userInfo } = this.props;
+    const { valuesToUpdate } = this.state;
+    const changes = [];
+
+    if (valuesToUpdate) {
+      if (valuesToUpdate.userRoleId !== userInfo.userRoleId) {
+        changes.push({
+          name: 'USER_ROLE',
+          oldValue: Object.keys(USER_ROLES).find(key => USER_ROLES[key] === userInfo.userRoleId),
+          newValue: Object.keys(USER_ROLES).find(key => USER_ROLES[key] === valuesToUpdate.userRoleId),
+        });
+      }
+
+      Object.keys(valuesToUpdate.contactInfo)
+        .forEach((key) => {
+          if (valuesToUpdate.contactInfo[key] !== userInfo.contactInfo[key]) {
+            if (key === 'countryId') {
+              changes.push({
+                name: key,
+                oldValue: userInfo.contactInfo[key] ? countries.find(c => c.id === userInfo.contactInfo[key]).name: '-',
+                newValue: valuesToUpdate.contactInfo[key] ? countries.find(c => c.id === valuesToUpdate.contactInfo[key]).name: '-',
+              });
+            }
+            else {
+              changes.push({
+                name: key,
+                oldValue: userInfo.contactInfo[key] ? userInfo.contactInfo[key] : '-',
+                newValue: valuesToUpdate.contactInfo[key] ? valuesToUpdate.contactInfo[key] : '-',
+              });
+            }
+          }
+        })
+    }
+
+    return changes;
   };
 
   render() {
-    const { userInfo } = this.props;
+    const { userInfo, updateAccount, t } = this.props;
+    const { valuesToUpdate } = this.state;
+    const changes = this.getValueChanges();
 
     return (
       <div>
         <ProfileForm
           initialValues={userInfo}
           onSubmit={this.onUpdateAccount}
+        />
+
+        <ConfirmationDialog
+          open={!!valuesToUpdate}
+          message={
+            <div>
+              <Typography variant="subheading" gutterBottom>
+                { t(changes.length ? 'PLEASE_CONFIRM_THE_FALLOWING_CHANGES': 'NO_CHANGES_WERE_MADE') }
+              </Typography>
+
+              {
+                changes.map((change) => {
+                  return (
+                    <Typography key={change.name} color="textSecondary" className="flex" gutterBottom>
+                      <strong>{t(change.name)}: </strong>&nbsp;
+                      {t(change.oldValue)}
+                      <ArrowRight/>
+                      {t(change.newValue)}
+                    </Typography>
+                  );
+                })
+              }
+            </div>
+          }
+          onClose={() => this.toggleValuesToUpdate(null)}
+          onSubmit={() => {
+            updateAccount({...valuesToUpdate});
+            this.toggleValuesToUpdate(null);
+          }}
+          disabled={!changes.length}
+          t={t}
+          title={'CHANGE_PROFILE_CONFIRMATION'}
         />
       </div>
     );
@@ -65,6 +147,7 @@ const mapStateToProps = (state) => {
 
   return {
     userInfo: userInfo,
+    countries: state.global.countries,
   }
 };
 

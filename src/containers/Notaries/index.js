@@ -7,13 +7,20 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Map from 'components/Map';
 import NotariesSearchForm from 'components/Notaries/SearchForm';
 import NotaryList from 'components/Notaries/List';
-
 import { getNotariesByLocation } from 'actions/notaries';
+import { createAttributeValidationRequest } from 'actions/attributes';
+import AttributeValidationCreate from './AttributeValidationCreate';
 
 class Notaries extends Component {
+  state = {
+    selectedNotary: null,
+  };
+
+  toggleSelectedNotary = (value) => {
+    this.setState({ selectedNotary: value });
+  };
 
   getNotaries = (params = {}) => {
     const {getNotariesByLocation, pageNumber, pageSize} = this.props;
@@ -28,7 +35,7 @@ class Notaries extends Component {
   onSearchSubmit = (values) => {
     const location = values.location;
 
-    if (location.lat && location.lng) {
+    if (location && location.lat && location.lng) {
       const getNotariesParams = {
         lat: location.lat,
         lng: location.lng,
@@ -38,8 +45,18 @@ class Notaries extends Component {
     }
   };
 
+  onAttributeValidateRequestSubmit = (values) => {
+    this.props.createAttributeValidationRequest(values)
+      .then((value) => {
+        if (value) {
+          this.toggleSelectedNotary(null);
+        }
+      });
+  };
+
   render() {
     const { notaryInfoList, t } = this.props;
+    const { selectedNotary } = this.state;
 
     return (
       <Fragment>
@@ -66,16 +83,25 @@ class Notaries extends Component {
             notaryInfoList && notaryInfoList.length
               ? (
                 <div>
-                  <Map
+                  <NotaryList
+                    notaryInfoList={notaryInfoList}
+                    onSelect={this.toggleSelectedNotary}
                     t={t}
-                    markers={notaryInfoList.map(notary => ({
-                      ...notary.contactInfo,
-                      label: `${notary.contactInfo.firstName} ${notary.contactInfo.lastName}`
-                    }))}
                   />
-
-                  <NotaryList notaryInfoList={notaryInfoList} t={t}/>
                 </div>
+              )
+              : null
+          }
+
+          {
+            selectedNotary
+              ? (
+                <AttributeValidationCreate
+                  notaryInfo={selectedNotary}
+                  onSubmit={this.onAttributeValidateRequestSubmit}
+                  onClose={() => this.toggleSelectedNotary(null)}
+                  t={t}
+                />
               )
               : null
           }
@@ -97,11 +123,13 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getNotariesByLocation: (params) => dispatch(getNotariesByLocation(params)),
+    createAttributeValidationRequest: (data) => dispatch(createAttributeValidationRequest(data)),
   }
 };
 
 Notaries.propTypes = {
   getNotariesByLocation: PropTypes.func.isRequired,
+  createAttributeValidationRequest: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 };
 

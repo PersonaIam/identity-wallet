@@ -124,6 +124,7 @@
       "API_URL": true,
       "PERSONA_URL": true,
       "PERSONA_ENV": true,
+      "RECAPTCHA_KEY": true,
       "process.env": true
     }
   },
@@ -132,6 +133,7 @@
       "API_URL": true,
       "PERSONA_URL": true,
       "PERSONA_ENV": true,
+      "RECAPTCHA_KEY": true,
       "process.env": true
     },
     "collectCoverageFrom": [

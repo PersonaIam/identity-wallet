@@ -22,6 +22,9 @@ const themeOverrides = {
     raisedSecondary: {
       color: '#FFFFFF',
     },
+    disabled: {
+      background: 'rgba(0, 0, 0, 0.12) !important'
+    }
   },
   MuiDialog: {
     paper: {

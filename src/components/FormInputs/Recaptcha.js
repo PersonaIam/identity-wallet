@@ -20,7 +20,7 @@ const RecaptchaField = (props) => {
       <div style={{ marginTop: 52 }}>
         <Recaptcha
           badge="inline"
-          sitekey="6LcH_nIUAAAAAAAq_jKpp4gJ_3H8G-JrqFWB4zTL"
+          sitekey={RECAPTCHA_KEY}
           // size="compact"
           // theme="dark"
           verifyCallback={onChange}

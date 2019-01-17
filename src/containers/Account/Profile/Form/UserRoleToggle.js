@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { USER_ROLES } from 'constants/index';
-import Checkbox from '@material-ui/core/Checkbox';
+import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 export const UserRoleToggle = ({ input, label, disabled, t, ...custom}) => {
@@ -18,7 +18,7 @@ export const UserRoleToggle = ({ input, label, disabled, t, ...custom}) => {
   return (
     <FormControlLabel
       control={
-        <Checkbox
+        <Switch
           checked={isChecked}
           onChange={onChange}
           disabled={!!disabled}

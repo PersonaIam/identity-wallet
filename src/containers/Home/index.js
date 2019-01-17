@@ -13,7 +13,7 @@ import { subscriptionConstants } from 'constants/subscriptions';
 import { createSubscription } from 'actions/subscriptions';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
-import Form from './form';
+// import Form from './form';
 import Bounce from 'react-reveal/Bounce';
 
 const Home = ({ classes, isLoading, createSubscription, readPrivacyPolicy,  t }) => {
@@ -57,20 +57,20 @@ const Home = ({ classes, isLoading, createSubscription, readPrivacyPolicy,  t })
                   : null
               }
 
-              <Grid item xs={12} className={classes.form}>
-                <br />
-                <Typography variant="display1" className="text-center">
-                  { t('HOME_3') }
-                </Typography>
-                <br />
-                <br />
-                <Form
-                  t={t}
-                  onSubmit={createSubscription}
-                  isLoading={loading}
-                  readPrivacyPolicy={readPrivacyPolicy}
-                />
-              </Grid>
+              {/*<Grid item xs={12} className={classes.form}>*/}
+                {/*<br />*/}
+                {/*<Typography variant="display1" className="text-center">*/}
+                  {/*{ t('HOME_3') }*/}
+                {/*</Typography>*/}
+                {/*<br />*/}
+                {/*<br />*/}
+                {/*<Form*/}
+                  {/*t={t}*/}
+                  {/*onSubmit={createSubscription}*/}
+                  {/*isLoading={loading}*/}
+                  {/*readPrivacyPolicy={readPrivacyPolicy}*/}
+                {/*/>*/}
+              {/*</Grid>*/}
             </Paper>
           </Grid>
         </Grid>

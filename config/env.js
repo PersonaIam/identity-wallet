@@ -1,21 +1,9 @@
 'use strict';
-
-// identity-service endpoint
-const API_URLS = {
-  //localnet: 'http://192.168.1.216:8000',
-  localnet: 'http://localhost:8000',
-  testnet: 'http://localhost:8000',
-  persona: 'http://localhost:8000',
-};
-
-// Persona blockchain endpoint
-const PERSONA_URLS = {
-  // localnet: 'http://192.168.1.216:4100',
-  localnet: 'http://localhost:4100',
-  testnet: 'http://localhost:4100',
-  persona: 'http://localhost:4100',
-};
-
+const {
+  API_URLS,
+  PERSONA_URLS,
+  RECAPTCHA_KEYS,
+} = require('../env');
 const fs = require('fs');
 const path = require('path');
 const paths = require('./paths');
@@ -82,6 +70,7 @@ const REACT_APP = /^REACT_APP_/i;
 function getClientEnvironment(publicUrl) {
   const API_URL = API_URLS[API_ENV];
   const PERSONA_URL = PERSONA_URLS[PERSONA_ENV];
+  const RECAPTCHA_KEY = RECAPTCHA_KEYS[PERSONA_ENV];
 
   const raw = Object.keys(process.env)
     .filter(key => REACT_APP.test(key))
@@ -101,6 +90,7 @@ function getClientEnvironment(publicUrl) {
         PUBLIC_URL: publicUrl,
         API_URL,
         PERSONA_URL,
+        RECAPTCHA_KEY,
         PERSONA_ENV,
       }
     );
@@ -108,6 +98,7 @@ function getClientEnvironment(publicUrl) {
   const stringified = {
     'API_URL': JSON.stringify(API_URL),
     'PERSONA_URL': JSON.stringify(PERSONA_URL),
+    'RECAPTCHA_KEY': JSON.stringify(RECAPTCHA_KEY),
     'PERSONA_ENV': JSON.stringify(PERSONA_ENV),
     'process.env': Object.keys(raw).reduce((env, key) => {
       env[key] = JSON.stringify(raw[key]);
