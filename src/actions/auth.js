@@ -6,6 +6,7 @@ import { Base64 } from 'js-base64';
 import { push } from 'react-router-redux';
 import { getUserAttributes, getValidatorValidationRequests } from './attributes';
 import { getBlockchainAccount } from './blockchainAccount';
+// import { registerUserToChat } from './chat';
 import { onNotificationSuccessInit, onNotificationErrorInit } from './notifications';
 import {
   authConstants,
@@ -134,6 +135,7 @@ const loginSuccess = (data) => async (dispatch) => {
   const personaAddress = data.personaAddress;
 
   if (personaAddress) {
+    // dispatch(registerUserToChat(data));
     dispatch(getUserAttributes(personaAddress));
     dispatch(getBlockchainAccount(personaAddress));
 

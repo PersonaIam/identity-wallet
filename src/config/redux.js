@@ -10,6 +10,7 @@ import administrationReducer from 'reducers/administration';
 import attributesReducer from 'reducers/attributes';
 import authReducer from 'reducers/auth';
 import blockchainAccountReducer from 'reducers/blockchainAccount';
+import chatReducer from 'reducers/chat';
 import globalReducer from 'reducers/global';
 import identityUseReducer from 'reducers/identityUse';
 import notariesReducer from 'reducers/notaries';
@@ -27,6 +28,7 @@ export const rootReducer = combineReducers({
   attributes: attributesReducer,
   auth: authReducer,
   blockchainAccount: blockchainAccountReducer,
+  chat: chatReducer,
   global: globalReducer,
   identityUse: identityUseReducer,
   notaries: notariesReducer,
