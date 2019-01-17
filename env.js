@@ -5,15 +5,14 @@
 const API_URLS = {
   localnet: 'http://localhost:8000',
   testnet: 'http://localhost:8000',
-  persona: 'https://enrollment.test.persona.im/',
+  persona: 'https://enrollment.test.persona.im',
 };
 
 // Persona blockchain endpoint
 const PERSONA_URLS = {
-  // localnet: 'http://192.168.1.216:4100',
   localnet: 'http://localhost:4100',
   testnet: 'http://localhost:4100',
-  persona: 'http://localhost:4100',
+  persona: 'https://enrollment.test.persona.im:4100',
 };
 
 // Recaptcha site key

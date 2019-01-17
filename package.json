@@ -5,10 +5,10 @@
   "scripts": {
     "start": "PERSONA_ENV=localnet API_ENV=localnet node scripts/start.js",
     "build": "PERSONA_ENV=localnet API_ENV=localnet node scripts/build.js",
-    "start:testnet": "PERSONA_ENV=testnet API_ENV=localnet node scripts/start.js",
-    "build:testnet": "PERSONA_ENV=testnet API_ENV=localnet node scripts/build.js",
-    "start:mainnet": "PERSONA_ENV=persona API_ENV=localnet node scripts/start.js",
-    "build:mainnet": "PERSONA_ENV=persona API_ENV=localnet node scripts/build.js",
+    "start:testnet": "PERSONA_ENV=testnet API_ENV=testnet node scripts/start.js",
+    "build:testnet": "PERSONA_ENV=testnet API_ENV=testnet node scripts/build.js",
+    "start:mainnet": "PERSONA_ENV=persona API_ENV=persona node scripts/start.js",
+    "build:mainnet": "PERSONA_ENV=persona API_ENV=persona node scripts/build.js",
     "test": "PERSONA_ENV=localnet API_ENV=localnet node $NODE_DEBUG_OPTION scripts/test.js",
     "analyze": "source-map-explorer build/static/js/main.*"
   },
