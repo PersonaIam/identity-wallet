@@ -7,18 +7,17 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 import lightGreen from '@material-ui/core/colors/lightGreen';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+
+import CloseCircle from 'mdi-material-ui/CloseCircle';
 import {
   VALIDATION_REQUEST_ACTION,
   VALIDATION_REQUESTS_STATUSES,
 } from 'constants/index';
 import { attributesConstants } from 'constants/attributes';
-import CloseCircle from 'mdi-material-ui/CloseCircle';
-import MessageText from 'mdi-material-ui/MessageText';
+import ValidationReason from 'components/ValidationReason';
 
 import { handleAttributeRequest } from 'actions/attributes';
 
@@ -26,15 +25,6 @@ import ValidationActionsForm from './Form/index';
 
 const styles = (theme) => {
   return {
-    dialogContent: {
-      position: 'relative',
-    },
-    closeButton: {
-      position: 'absolute',
-      padding: 4,
-      top: 0,
-      right: 0,
-    },
     success: {
       [theme.breakpoints.up('md')]: {
         padding: 4,
@@ -51,19 +41,13 @@ const styles = (theme) => {
         color: red[500],
       },
     },
-    reason: {
-      [theme.breakpoints.up('md')]: {
-        padding: 4,
-      },
-    }
-  }
+  };
 };
 
 class ValidationActions extends Component {
 
   state = {
     actionType: null,
-    displayReasonMessage: null,
   };
 
   onAction = (actionType) => {
@@ -121,11 +105,7 @@ class ValidationActions extends Component {
             {
               reason
                 ? (
-                  <Tooltip title={t('REASON') + reason}>
-                    <IconButton className={classes.reason} onClick={() => this.setState({ displayReasonMessage: reason })} disableRipple>
-                      <MessageText />
-                    </IconButton>
-                  </Tooltip>
+                  <ValidationReason reason={reason} t={t} />
                 )
                 : null
             }
@@ -138,8 +118,8 @@ class ValidationActions extends Component {
 
 
   render() {
-    const { classes, isLoading, t } = this.props;
-    const { actionType, displayReasonMessage } = this.state;
+    const { isLoading, t } = this.props;
+    const { actionType } = this.state;
 
     return (
       <div>
@@ -159,23 +139,6 @@ class ValidationActions extends Component {
             )
             : null
         }
-
-        <Dialog
-          open={!!displayReasonMessage}
-          onClose={() => this.setState({ displayReasonMessage: null })}
-        >
-          <DialogContent className={classes.dialogContent}>
-            <IconButton
-              className={classes.closeButton}
-              onClick={() => this.setState({ displayReasonMessage: null })}
-            >
-              <CloseCircle />
-            </IconButton>
-            <DialogContentText>
-              { displayReasonMessage }
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
       </div>
     )
   }

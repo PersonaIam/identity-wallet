@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import NotariesSearchForm from 'components/Notaries/SearchForm';
 import NotaryList from 'components/Notaries/List';
-import { getNotariesByLocation } from 'actions/notaries';
+import { getNotariesByLocation, resetNotaries } from 'actions/notaries';
 import { createAttributeValidationRequest } from 'actions/attributes';
 import AttributeValidationCreate from './AttributeValidationCreate';
 
@@ -109,6 +109,10 @@ class Notaries extends Component {
       </Fragment>
     );
   }
+
+  componentWillUnmount() {
+    this.props.resetNotaries();
+  }
 }
 
 const mapStateToProps = (state) => {
@@ -122,14 +126,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getNotariesByLocation: (params) => dispatch(getNotariesByLocation(params)),
     createAttributeValidationRequest: (data) => dispatch(createAttributeValidationRequest(data)),
+    getNotariesByLocation: (params) => dispatch(getNotariesByLocation(params)),
+    resetNotaries: () => dispatch(resetNotaries()),
   }
 };
 
 Notaries.propTypes = {
-  getNotariesByLocation: PropTypes.func.isRequired,
   createAttributeValidationRequest: PropTypes.func.isRequired,
+  getNotariesByLocation: PropTypes.func.isRequired,
+  resetNotaries: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 };
 

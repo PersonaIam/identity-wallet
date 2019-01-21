@@ -15,14 +15,6 @@ const ChatForm = ({
       <Grid container spacing={16}>
         <Grid item xs={12}>
           <Field
-            name="recipient"
-            component={RenderTextField}
-            label="To"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Field
             name="message"
             component={RenderTextField}
             label="message"

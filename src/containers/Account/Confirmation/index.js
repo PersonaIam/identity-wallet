@@ -96,7 +96,7 @@ class AccountCreate extends Component {
                 <div className={classes.header}>
                   <div>
                     <div style={{ padding: 16 }}>
-                      <Typography component="h4">{ t('CONFIRM_ACCOUNT') }</Typography>
+                      <Typography component="h4">{ t(steps[activeStep].label) }</Typography>
                     </div>
 
                     {

@@ -4,10 +4,17 @@
 export const chatConstants = {
   ON_SET_SOCKET: '@ON_SET_SOCKET',
   ON_SET_CHAT_USER: '@ON_SET_CHAT_USER',
+  ON_SELECT_CONVERSATION: '@ON_SELECT_CONVERSATION',
+  ON_SET_CONVERSATIONS: '@ON_SET_CONVERSATIONS',
 };
 
 export const socketEvents = {
-  OPEN_CONVERSATION: 'open-conversation',
+  GET_CONVERSATION: 'get-conversation',
+  GET_USERS_CONVERSATIONS: 'get-users-conversation',
+  CREATE_CONVERSATION: 'create-conversation',
+  CONVERSATION_CREATED: 'conversation-created',
+  SEND_MESSAGE: 'send-message',
+  MESSAGE_SENT: 'message-sent',
   RECONNECT: 'reconnect',
   REGISTER: 'register',
 };

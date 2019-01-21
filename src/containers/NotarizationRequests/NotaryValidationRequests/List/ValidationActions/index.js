@@ -7,9 +7,6 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 import lightGreen from '@material-ui/core/colors/lightGreen';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import {
@@ -21,23 +18,15 @@ import CheckCircle from 'mdi-material-ui/CheckCircle';
 import CloseCircle from 'mdi-material-ui/CloseCircle';
 import AccountCheck from 'mdi-material-ui/AccountCheck';
 import AccountRemove from 'mdi-material-ui/AccountRemove';
-import MessageText from 'mdi-material-ui/MessageText';
+// import MessageText from 'mdi-material-ui/MessageText';
 
 import { handleAttributeRequest } from 'actions/attributes';
-
+import { openConversation } from 'actions/chat';
+import ValidationReason from 'components/ValidationReason';
 import ValidationActionsForm from './Form/index';
 
 const styles = (theme) => {
   return {
-    dialogContent: {
-      position: 'relative',
-    },
-    closeButton: {
-      position: 'absolute',
-      padding: 4,
-      top: 0,
-      right: 0,
-    },
     success: {
       [theme.breakpoints.up('md')]: {
         padding: 4,
@@ -54,11 +43,6 @@ const styles = (theme) => {
         color: red[500],
       },
     },
-    reason: {
-      [theme.breakpoints.up('md')]: {
-        padding: 4,
-      },
-    }
   }
 };
 
@@ -66,7 +50,6 @@ class ValidationActions extends Component {
 
   state = {
     actionType: null,
-    displayReasonMessage: null,
   };
 
   onAction = (actionType) => {
@@ -145,11 +128,7 @@ class ValidationActions extends Component {
             {
               reason
                 ? (
-                  <Tooltip title={t('REASON') + reason}>
-                    <IconButton className={classes.reason} onClick={() => this.setState({ displayReasonMessage: reason })} disableRipple>
-                      <MessageText />
-                    </IconButton>
-                  </Tooltip>
+                  <ValidationReason reason={reason} t={t}/>
                 )
                 : null
             }
@@ -160,13 +139,36 @@ class ValidationActions extends Component {
     }
   };
 
+  openConversation = () => {
+    const { openConversation, validationRequest: { owner } } = this.props;
+    const conversationMembers = [ owner ];
+
+    openConversation(conversationMembers);
+  };
 
   render() {
-    const { classes, isLoading, t } = this.props;
-    const { actionType, displayReasonMessage } = this.state;
+    const { isLoading, t } = this.props;
+    const { actionType } = this.state;
 
     return (
-      <div>
+      <Fragment>
+        {/*<div className="flex space-between full-width">*/}
+          {/*<Tooltip title={t('OPEN_CONVERSATION')}>*/}
+            {/*<IconButton*/}
+              {/*className={classes.conversation}*/}
+              {/*color="secondary"*/}
+              {/*onClick={this.openConversation}*/}
+              {/*disableRipple*/}
+            {/*>*/}
+              {/*<MessageText />*/}
+            {/*</IconButton>*/}
+          {/*</Tooltip>*/}
+
+          {/*<div>*/}
+            {/*{ this.getValidationActions() }*/}
+          {/*</div>*/}
+        {/*</div>*/}
+
         { this.getValidationActions() }
 
         {
@@ -183,24 +185,7 @@ class ValidationActions extends Component {
             )
             : null
         }
-
-        <Dialog
-          open={!!displayReasonMessage}
-          onClose={() => this.setState({ displayReasonMessage: null })}
-        >
-          <DialogContent className={classes.dialogContent}>
-            <IconButton
-              className={classes.closeButton}
-              onClick={() => this.setState({ displayReasonMessage: null })}
-            >
-              <CloseCircle />
-            </IconButton>
-            <DialogContentText>
-              { displayReasonMessage }
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
-      </div>
+      </Fragment>
     )
   }
 }
@@ -214,6 +199,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     handleAttributeRequest: (data, actionType) => dispatch(handleAttributeRequest(data, actionType)),
+    openConversation: (members) => dispatch(openConversation(members)),
   };
 };
 
@@ -221,6 +207,7 @@ ValidationActions.propTypes = {
   classes: PropTypes.object.isRequired,
   handleAttributeRequest: PropTypes.func.isRequired,
   isLoading: PropTypes.any,
+  openConversation: PropTypes.func.isRequired,
   validationRequest: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
 };

@@ -4,10 +4,11 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import { isLoggedIn, logout } from 'actions/auth';
-// import { createChatConnection, openConversation } from 'actions/chat';
+// import { createChatConnection } from 'actions/chat';
 import { openSidenav, closeSidenav, getCountries } from 'actions/global';
 import { getBlockchainAccount } from 'actions/blockchainAccount';
 import * as notificationActions from 'actions/notifications';
+// import Chat from 'components/Chat';
 import Layout from 'components/Layout';
 import Notification from 'components/Notification';
 import ConnectedSwitch from 'components/ConnectedSwitch';
@@ -64,7 +65,11 @@ class App extends Component {
             : null
         }
 
-        {/*<button onClick={this.props.openConversation} style={{ padding: 10, background: 'black', color: 'white', }}>Open Conversation</button>*/}
+        {/*{*/}
+          {/*userInfo*/}
+            {/*? <Chat />*/}
+            {/*: null*/}
+        {/*}*/}
 
         <Layout
           pathname={pathname}
@@ -116,7 +121,6 @@ const mapDispatchToProps = (dispatch) => ({
   reloadAccount: (address) => dispatch(getBlockchainAccount(address)),
   getCountries: () => dispatch(getCountries()),
   // createChatConnection: () => dispatch(createChatConnection()),
-  // openConversation: () => dispatch(openConversation(['LSR5MhsEJMYgaBTdNcYGT1or8NWBKsGc24'])),
 });
 
 const withRedux = connect(mapStateToProps, mapDispatchToProps)(App);

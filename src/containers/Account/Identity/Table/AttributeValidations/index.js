@@ -12,6 +12,7 @@ import lightGreen from '@material-ui/core/colors/lightGreen';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -22,8 +23,9 @@ import CloseCircle from 'mdi-material-ui/CloseCircle';
 import Progress from 'mdi-material-ui/ProgressClock';
 import { personaStampToDate } from 'helpers/personaService';
 import groupBy from 'lodash/groupBy';
-import moment from "moment/moment";
-import {DATE_TIME_FORMAT, VALIDATION_REQUESTS_STATUSES} from "../../../../../constants";
+import moment from 'moment/moment';
+import ValidationReason from 'components/ValidationReason';
+import {DATE_TIME_FORMAT, VALIDATION_REQUESTS_STATUSES} from 'constants/index';
 
 const styles = theme => ({
   root: {
@@ -103,7 +105,7 @@ class AttributeValidations extends Component {
           className={classes.pannelSummary}
           expandIcon={<ExpandMoreIcon />}
         >
-          <Typography variant="subheading" color="textSecondary">{ t('N_VALIDATIONS', { value: userAttributeValidations.length }) }</Typography>
+          <Typography variant='subheading' color='textSecondary'>{ t('N_VALIDATIONS', { value: userAttributeValidations.length }) }</Typography>
         </ExpansionPanelSummary>
 
         <ExpansionPanelDetails className={classes.pannelDetails}>
@@ -114,7 +116,7 @@ class AttributeValidations extends Component {
                   .map(section => (
                     <li key={`section-${section}`} className={classes.listSection}>
                       <ul className={classes.ul}>
-                        <ListSubheader className="flex align-center">
+                        <ListSubheader className='flex align-center'>
                           { getSectionIcon(section) } { t(section) }
                         </ListSubheader>
                         {groupedValidations[section].map(item => (
@@ -126,10 +128,10 @@ class AttributeValidations extends Component {
                             <ListItemText
                               primary={
                                 <Typography
-                                  component="span"
-                                  className="flex"
-                                  variant="body1"
-                                  color="textPrimary"
+                                  component='span'
+                                  className='flex'
+                                  variant='body1'
+                                  color='textPrimary'
                                   style={{ wordBreak: 'break-all' }}
                                 >
                                   {t('BY') + ': ' + item.validator}
@@ -137,9 +139,9 @@ class AttributeValidations extends Component {
                               }
                               secondary={
                                 <Typography
-                                  variant="caption"
-                                  component="span"
-                                  className="flex"
+                                  variant='caption'
+                                  component='span'
+                                  className='flex'
                                   style={{ wordBreak: 'break-all' }}
                                 >
                                   <Calendar style={{ fontSize: '14px', marginRight: 2 }}/>
@@ -150,6 +152,15 @@ class AttributeValidations extends Component {
                                 </Typography>
                               }
                             />
+                            {
+                              item && item.reason
+                                ? (
+                                  <ListItemSecondaryAction>
+                                    <ValidationReason reason={item.reason} t={t}/>
+                                  </ListItemSecondaryAction>
+                                )
+                                : null
+                            }
                           </ListItem>
                         ))}
                       </ul>

@@ -116,9 +116,6 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                         <div className="flex justify-end">
                           <ValidationActions t={t} validationRequest={request}/>
                         </div>
-                        {/*<ListItemSecondaryAction>*/}
-                        {/**/}
-                        {/*</ListItemSecondaryAction>*/}
                       </ListItem>
                     );
                   })
@@ -132,17 +129,6 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
   );
 };
 
-
-/*
-*
-* "id": 1,
-      "attribute_id": 1,
-      "validator": "Lcx2msUxVr4Baf63LqohZoKg8X4fDVpHgb",
-      "status": "PENDING_APPROVAL",
-      "validation_type": null,
-      "timestamp": 52087571,
-      "expire_timestamp": null
-* */
 NotarizationRequestsList.propTypes = {
   notarizationRequestInfoList: PropTypes.array.isRequired,
   title: PropTypes.string,
