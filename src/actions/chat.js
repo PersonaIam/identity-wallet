@@ -2,21 +2,33 @@
  * Created by vladtomsa on 16/01/2019
  */
 import io from 'socket.io-client';
+import { reset } from 'redux-form';
 import { chatConstants, socketEvents } from 'constants/chat';
+import { onNotificationErrorInit } from './notifications';
+
+
+const getNewConversationData = (members) => {
+  return {
+    conversationMembers: [
+      ...members.map(m => ({ personaAddress: m })),
+    ],
+    conversationMessages: [],
+    name: members.join('-'),
+  };
+};
 
 const extractUserConversation = (conversation , personaAddress) => {
-  const { id, name, conversationMembers, updatedAt } = conversation;
+  const { id, name, conversationMembers, notifications, updatedAt } = conversation;
 
   const conversationName = name
     .replace(personaAddress, '')
     .replace('-', '');
 
-  console.log(conversation);
   return {
     id,
     name: conversationName,
     members: conversationMembers.map(m => m.personaAddress),
-    notifications: 0,
+    notifications,
     updatedAt,
   };
 };
@@ -46,20 +58,11 @@ export const createChatConnection = () => (dispatch, getState) => {
         chat: { selectedConversation, conversations },
       } = getState();
 
-      const userConversationInfo = extractUserConversation(conversation, personaAddress);
-
-      if (
-        selectedConversation
-        && selectedConversation.id
-        && selectedConversation.id !== conversation.id
-      ) {
-        userConversationInfo.notifications = 1;
-      }
-      else {
-        dispatch(toggleSelectedConversation(userConversationInfo));
+      if (selectedConversation && !selectedConversation.id) {
+        dispatch(toggleSelectedConversation(socket, conversation));
       }
 
-      dispatch(setConversations([...conversations, userConversationInfo]));
+      dispatch(setConversations([...conversations, extractUserConversation(conversation, personaAddress)]));
     },
   );
 
@@ -81,7 +84,7 @@ export const createChatConnection = () => (dispatch, getState) => {
           ],
         };
 
-        dispatch(toggleSelectedConversation(newConversation));
+        dispatch(toggleSelectedConversation(socket, newConversation));
       }
       else {
         const newConversations = conversations.map(c => {
@@ -96,6 +99,11 @@ export const createChatConnection = () => (dispatch, getState) => {
         dispatch(setConversations(newConversations));
       }
     },
+  );
+
+  socket.on(
+    socketEvents.ERROR,
+    (message) => dispatch(onNotificationErrorInit(message)),
   );
 
   dispatch(setSocket(socket));
@@ -114,12 +122,28 @@ export const registerUserToChat = (userInfo) => (dispatch, getState) => {
       socketEvents.REGISTER,
       userInfo,
       (userChatInfo) => {
-        dispatch(setChatUserInfo(userChatInfo));
+        if (userChatInfo && userChatInfo.personaAddress) {
+          dispatch(setChatUserInfo(userChatInfo));
 
-        getUsersConversations(userChatInfo.personaAddress)(dispatch, getState);
+          getUsersConversations(userChatInfo.personaAddress)(dispatch, getState);
+        }
       },
     );
   }
+};
+
+export const leaveChat = () => (dispatch, getState) => {
+  const {
+    chat: { socket },
+  } = getState();
+
+  if (socket) {
+    socket.emit(
+      socketEvents.LOGOUT,
+    );
+  }
+
+  dispatch(resetChat());
 };
 
 /**
@@ -137,14 +161,9 @@ export const openConversation = (members) => (dispatch, getState) => {
       socketEvents.GET_CONVERSATION,
       [...members],
       (conversationInfo) => {
-        const selectedConversationInfo = conversationInfo || {
-          conversationMembers: [
-            ...members.map(m => ({ personaAddress: m })),
-          ],
-          conversationMessages: [],
-        };
+        const selectedConversationInfo = conversationInfo || getNewConversationData(members);
 
-        dispatch(toggleSelectedConversation(selectedConversationInfo));
+        dispatch(toggleSelectedConversation(socket, selectedConversationInfo));
       },
     );
   }
@@ -158,10 +177,8 @@ export const getUsersConversations = (personaAddress) => (dispatch, getState) =>
   if (socket) {
     socket.emit(
       socketEvents.GET_USERS_CONVERSATIONS,
-      (userConversations) => {
-        const conversations = userConversations.map(c => extractUserConversation(c, personaAddress));
-
-        dispatch(setConversations(conversations));
+      (conversations) => {
+        dispatch(setConversations(conversations ? conversations.map(c => extractUserConversation(c, personaAddress)) : []));
       },
     );
   }
@@ -175,26 +192,47 @@ export const sendMessage = (data) => async (dispatch, getState) => {
   const { conversationId, members, message } = data;
 
   if (!conversationId) {
-    socket.emit(
-      socketEvents.CREATE_CONVERSATION,
-      { members, message },
-    );
+    createConversation(socket, members, message);
   }
   else {
-    socket.emit(
-      socketEvents.SEND_MESSAGE,
-      {
-        conversationId,
-        message,
-      }
-    )
+    sendMessageToConversation(socket, conversationId, message);
   }
+
+  dispatch(reset('ChatForm'));
 };
 
-export const toggleSelectedConversation = (selectedConversation) => ({ type: chatConstants.ON_SELECT_CONVERSATION, payload: selectedConversation });
+export const toggleSelectedConversation = (socket, selectedConversation) => {
+  if (selectedConversation && selectedConversation.id) {
+    socket.emit(
+      socketEvents.UPDATE_LAST_SEEN_ON,
+      selectedConversation.id,
+    );
+  }
+
+  return { type: chatConstants.ON_SELECT_CONVERSATION, payload: selectedConversation };
+};
 
 const setSocket = (socket) => ({ type: chatConstants.ON_SET_SOCKET, payload: socket });
 
 const setChatUserInfo = (user) => ({ type: chatConstants.ON_SET_CHAT_USER, payload: user });
 
 const setConversations = (conversations) => ({ type: chatConstants.ON_SET_CONVERSATIONS, payload: conversations });
+
+const createConversation = (socket, members, message) => {
+  socket.emit(
+    socketEvents.CREATE_CONVERSATION,
+    { members, message },
+  );
+};
+
+const sendMessageToConversation = (socket, conversationId, message) => {
+  socket.emit(
+    socketEvents.SEND_MESSAGE,
+    {
+      conversationId,
+      message,
+    }
+  );
+};
+
+const resetChat = () => ({ type: chatConstants.ON_RESET_CHAT });

@@ -6,7 +6,7 @@ import {
   PERSONA_MAINNET_NAME,
   DAYS_BEFORE_EXPIRATION_NOTIFICATION,
   ATTRIBUTE_EXPIRATIONS_STATES,
-} from 'constants';
+} from 'constants/index';
 import personajs from 'personajs';
 import bip39 from 'bip39';
 import moment from "moment/moment";

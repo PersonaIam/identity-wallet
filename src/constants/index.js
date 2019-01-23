@@ -29,6 +29,8 @@ export const AVAILABLE_LANGUAGES = [
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
+export const DATE_HOUR_MINUTE_FORMAT = 'HH:mm';
+
 export const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
 
 export const DAYS_BEFORE_EXPIRATION_NOTIFICATION = 30;

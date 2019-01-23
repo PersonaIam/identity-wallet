@@ -6,8 +6,15 @@ export default (theme) => {
     chat: {
       position: 'fixed',
       bottom: 24,
-      width: '100%',
+      right: 30,
       zIndex: 1000,
+    },
+    badge: {
+      color: '#FFF !important',
+      background: `linear-gradient(60deg,#f5700c,#ff9800)`,
+      width: 28,
+      height: 28,
+      boxShadow: theme.shadows[6],
     }
   }
 }

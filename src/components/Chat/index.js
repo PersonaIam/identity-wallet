@@ -1,21 +1,33 @@
 /**
  * Created by vladtomsa on 18/01/2019
  */
-import React from 'react';
+import React, {Component} from 'react';
 import compose from 'lodash/fp/compose';
 import {connect} from 'react-redux';
-import { openConversation, sendMessage } from 'actions/chat';
+import {translate} from 'react-i18next';
+import {openConversation, sendMessage, toggleSelectedConversation} from 'actions/chat';
 import {withStyles} from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Bounce from 'react-reveal/Bounce';
+import Slide from 'react-reveal/Slide';
 import MessageText from 'mdi-material-ui/MessageText';
-import ChatForm from './Form';
+import ConversationDetails from './ConversationDetails';
 import ConversationsList from './ConversationList';
 import styles from './styles';
 
-const Chat = ({classes, conversations, selectedConversation, sendMessage, userInfo, openConversation}) => {
-  const onMessageSubmit = ({message}) => {
+class Chat extends Component {
+  state = {
+    showConversations: false,
+  };
+
+  toggleShowConversations = (value) => {
+    this.setState({showConversations: value});
+  };
+
+  onMessageSubmit = ({message}) => {
+    const {selectedConversation, sendMessage} = this.props;
     const conversationId = selectedConversation.id;
     const members = selectedConversation.conversationMembers.map(m => m.personaAddress);
     const conversationMessage = {
@@ -27,38 +39,82 @@ const Chat = ({classes, conversations, selectedConversation, sendMessage, userIn
     sendMessage(conversationMessage);
   };
 
-  return (
-    <div className={classes.chat}>
-      <Grid container justify="center">
-        <Grid item xs={12} md={11} lg={11} xl={9}>
-          <div className="flex justify-end">
-            <Paper>
-              <ConversationsList conversations={conversations} openConversation={openConversation} userInfo={userInfo}/>
-            </Paper>
+  render() {
+    const {classes, closeConversation, conversations, selectedConversation, openConversation, t, userInfo} = this.props;
+    const {showConversations} = this.state;
+
+    if (!conversations.length && !selectedConversation) return null;
+
+    const notifications = conversations.filter(c => c.notifications);
+
+    return (
+      <div className={classes.chat}>
+        {
+          showConversations && !selectedConversation
+            ? (
+              <Slide right>
+                <Paper>
+                  <ConversationsList
+                    conversations={conversations}
+                    onClose={() => this.toggleShowConversations(null)}
+                    openConversation={openConversation}
+                    t={t}
+                    userInfo={userInfo}
+                  />
+                </Paper>
+              </Slide>
+            )
+            : null
+        }
+
+        <Slide right>
+          <div>
             {
               selectedConversation
                 ? (
-                  <div>
-                    <Paper>
-                      <pre>{ JSON.stringify(selectedConversation.conversationMessages, null, 2) }</pre>
-                    </Paper>
 
-                    <ChatForm
-                      onSubmit={onMessageSubmit}
-                    />
-                  </div>
+                  <ConversationDetails
+                    conversationInfo={selectedConversation}
+                    onClose={closeConversation}
+                    sendMessage={this.onMessageSubmit}
+                    userInfo={userInfo}
+                  />
+
                 )
                 : null
             }
-            <Button variant="fab" color="secondary">
-              <MessageText/>
-            </Button>
           </div>
-        </Grid>
-      </Grid>
-    </div>
-  );
-};
+        </Slide>
+
+        <br/>
+
+        <div className="flex justify-end">
+          <Bounce>
+            {
+              notifications.length
+                ? (
+                  <Badge
+                    color="secondary"
+                    badgeContent={notifications.length}
+                    classes={{badge: notifications.length ? classes.badge : ''}}
+                  >
+                    <Button variant="fab" color="secondary" onClick={() => this.toggleShowConversations(true)}>
+                      <MessageText/>
+                    </Button>
+                  </Badge>
+                )
+                : (
+                  <Button variant="fab" color="secondary" onClick={() => this.toggleShowConversations(true)}>
+                    <MessageText/>
+                  </Button>
+                )
+            }
+          </Bounce>
+        </div>
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = (state) => {
   return {
@@ -72,11 +128,13 @@ const mapDispatchToProps = (dispatch) => {
   return {
     openConversation: (members) => dispatch(openConversation(members)),
     sendMessage: (data) => dispatch(sendMessage(data)),
+    closeConversation: () => dispatch(toggleSelectedConversation(null)),
   }
 };
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withStyles(styles),
+  translate('common')
 )(Chat);
 

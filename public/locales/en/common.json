@@ -106,6 +106,7 @@
   "END": "End",
   "REQUESTED_SERVICES": "Requested services",
   "CREATE_IDENTITY": "Confirm account",
+  "CONVERSATIONS": "Conversations",
   "PROVIDERS_PER_PAGE": "Providers/Page",
   "OPEN_CONVERSATION": "Open conversation",
   "IN_ORDER_TO_VIEW_INFORMATION_PLEASE_DECRYPT": "In order to view your attribute you need to provide your passphrase",

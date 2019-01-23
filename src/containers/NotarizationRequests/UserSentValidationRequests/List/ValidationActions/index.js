@@ -12,15 +12,17 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import CloseCircle from 'mdi-material-ui/CloseCircle';
+import MessageText from 'mdi-material-ui/MessageText';
+
+import { handleAttributeRequest } from 'actions/attributes';
+import { openConversation } from 'actions/chat';
+
 import {
   VALIDATION_REQUEST_ACTION,
   VALIDATION_REQUESTS_STATUSES,
 } from 'constants/index';
 import { attributesConstants } from 'constants/attributes';
 import ValidationReason from 'components/ValidationReason';
-
-import { handleAttributeRequest } from 'actions/attributes';
-
 import ValidationActionsForm from './Form/index';
 
 const styles = (theme) => {
@@ -39,6 +41,11 @@ const styles = (theme) => {
       },
       '& svg': {
         color: red[500],
+      },
+    },
+    conversation: {
+      [theme.breakpoints.up('md')]: {
+        padding: 4,
       },
     },
   };
@@ -116,14 +123,35 @@ class ValidationActions extends Component {
     }
   };
 
+  openConversation = () => {
+    const { openConversation, validationRequest: { validator } } = this.props;
+    const conversationMembers = [ validator ];
+
+    openConversation(conversationMembers);
+  };
 
   render() {
-    const { isLoading, t } = this.props;
+    const { classes, isLoading, t } = this.props;
     const { actionType } = this.state;
 
     return (
-      <div>
-        { this.getValidationActions() }
+      <Fragment>
+        <div className="flex space-between full-width">
+          <Tooltip title={t('OPEN_CONVERSATION')}>
+            <IconButton
+              className={classes.conversation}
+              color="secondary"
+              onClick={this.openConversation}
+              disableRipple
+            >
+              <MessageText />
+            </IconButton>
+          </Tooltip>
+
+          <div>
+            { this.getValidationActions() }
+          </div>
+        </div>
 
         {
           actionType || actionType === 0
@@ -139,7 +167,7 @@ class ValidationActions extends Component {
             )
             : null
         }
-      </div>
+      </Fragment>
     )
   }
 }
@@ -153,6 +181,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     handleAttributeRequest: (data, actionType) => dispatch(handleAttributeRequest(data, actionType)),
+    openConversation: (members) => dispatch(openConversation(members)),
   };
 };
 
@@ -160,6 +189,7 @@ ValidationActions.propTypes = {
   classes: PropTypes.object.isRequired,
   handleAttributeRequest: PropTypes.func.isRequired,
   isLoading: PropTypes.any,
+  openConversation: PropTypes.func.isRequired,
   validationRequest: PropTypes.object.isRequired,
   t: PropTypes.func.isRequired,
 };

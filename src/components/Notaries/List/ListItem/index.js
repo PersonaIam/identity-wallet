@@ -3,6 +3,8 @@
  */
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
+import compose from 'lodash/fp/compose';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
@@ -15,12 +17,15 @@ import MapMarker from 'mdi-material-ui/MapMarker';
 // import Email from 'mdi-material-ui/At';
 // import Phone from 'mdi-material-ui/Phone';
 import Fade from 'react-reveal/Fade';
+import { openConversation } from 'actions/chat';
 import styles from './styles';
 
-const NotariesListItem = ({ classes, notaryInfo, onSelect, t }) => {
+const NotariesListItem = ({ classes, notaryInfo, onSelect, openConversation, t, userInfo }) => {
   const contactInfo = notaryInfo.contactInfo;
 
   const displayAddress = [];
+
+  const disabled = notaryInfo.personaAddress === userInfo.personaAddress;
 
   // displayAddress.push(contactInfo.address);
   displayAddress.push(contactInfo.city);
@@ -74,6 +79,7 @@ const NotariesListItem = ({ classes, notaryInfo, onSelect, t }) => {
                               color="primary"
                               variant="contained"
                               onClick={() => onSelect(notaryInfo)}
+                              disabled={disabled}
                             >
                               {t('REQUEST_VALIDATION')}&nbsp;<AccountCheck/>
                             </Button>
@@ -87,8 +93,8 @@ const NotariesListItem = ({ classes, notaryInfo, onSelect, t }) => {
                     <Button
                       color="secondary"
                       variant="contained"
-                      onClick={console.log}
-                      disabled
+                      onClick={() => openConversation([notaryInfo.personaAddress])}
+                      disabled={disabled}
                     >
                       {t('MESSAGE_NOTARY')}&nbsp;<MessageText />
                     </Button>
@@ -103,14 +109,28 @@ const NotariesListItem = ({ classes, notaryInfo, onSelect, t }) => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return {
+    userInfo: state.auth.userInfo,
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openConversation: (members) => dispatch(openConversation(members)),
+  };
+};
+
 NotariesListItem.propTypes = {
   classes: PropTypes.object.isRequired,
   notaryInfo: PropTypes.object.isRequired,
   onSelect: PropTypes.func,
+  openConversation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 };
 
-const withStyle = withStyles(styles)(NotariesListItem);
-
-export default withStyle;
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, mapDispatchToProps),
+)(NotariesListItem);
 

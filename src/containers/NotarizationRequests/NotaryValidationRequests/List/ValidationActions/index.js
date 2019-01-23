@@ -18,7 +18,7 @@ import CheckCircle from 'mdi-material-ui/CheckCircle';
 import CloseCircle from 'mdi-material-ui/CloseCircle';
 import AccountCheck from 'mdi-material-ui/AccountCheck';
 import AccountRemove from 'mdi-material-ui/AccountRemove';
-// import MessageText from 'mdi-material-ui/MessageText';
+import MessageText from 'mdi-material-ui/MessageText';
 
 import { handleAttributeRequest } from 'actions/attributes';
 import { openConversation } from 'actions/chat';
@@ -41,6 +41,11 @@ const styles = (theme) => {
       },
       '& svg': {
         color: red[500],
+      },
+    },
+    conversation: {
+      [theme.breakpoints.up('md')]: {
+        padding: 4,
       },
     },
   }
@@ -147,29 +152,27 @@ class ValidationActions extends Component {
   };
 
   render() {
-    const { isLoading, t } = this.props;
+    const { classes, isLoading, t } = this.props;
     const { actionType } = this.state;
 
     return (
       <Fragment>
-        {/*<div className="flex space-between full-width">*/}
-          {/*<Tooltip title={t('OPEN_CONVERSATION')}>*/}
-            {/*<IconButton*/}
-              {/*className={classes.conversation}*/}
-              {/*color="secondary"*/}
-              {/*onClick={this.openConversation}*/}
-              {/*disableRipple*/}
-            {/*>*/}
-              {/*<MessageText />*/}
-            {/*</IconButton>*/}
-          {/*</Tooltip>*/}
+        <div className="flex space-between full-width">
+          <Tooltip title={t('OPEN_CONVERSATION')}>
+            <IconButton
+              className={classes.conversation}
+              color="secondary"
+              onClick={this.openConversation}
+              disableRipple
+            >
+              <MessageText />
+            </IconButton>
+          </Tooltip>
 
-          {/*<div>*/}
-            {/*{ this.getValidationActions() }*/}
-          {/*</div>*/}
-        {/*</div>*/}
-
-        { this.getValidationActions() }
+          <div>
+            { this.getValidationActions() }
+          </div>
+        </div>
 
         {
           actionType || actionType === 0

@@ -19,10 +19,25 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, chatUser: payload };
 
     case (chatConstants.ON_SELECT_CONVERSATION):
-      return { ...state, selectedConversation: payload };
+      const updatedNotificationsConversations = state.conversations.map(conversation => {
+        if (payload && payload.id && conversation.id === payload.id) {
+          conversation.notifications = false;
+        }
+
+        return conversation;
+      });
+      return { ...state, selectedConversation: payload, conversations: updatedNotificationsConversations };
 
     case (chatConstants.ON_SET_CONVERSATIONS):
       return { ...state, conversations: payload };
+
+    case (chatConstants.ON_RESET_CHAT):
+      return {
+        ...state,
+        chatUser: null,
+        conversations: [],
+        selectedConversation: null,
+      };
 
     default:
       return state;
