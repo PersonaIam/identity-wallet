@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const http = axios.create({
-  baseURL: `${API_URL}/api`,
+  baseURL: `${API_URL}/identity-api`,
 });
 
 export const blockchain = axios.create({
