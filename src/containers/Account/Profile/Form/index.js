@@ -306,5 +306,9 @@ const withStyle = withStyles(styles)(withTranslate);
 
 export default reduxForm({
   form: 'AccountProfileForm',
+  enableReinitialize: true,
+  updateUnregisteredFields: true,
+  keepDirtyOnReinitialize: true,
+  destroyOnUnmount: false,
   validate,
 })(withStyle);

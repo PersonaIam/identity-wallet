@@ -130,6 +130,7 @@
   "PROVIDE_LOCATION_TO_FIEND_BEST_NOTARIES": "In order to view the nearest Persona Notaries, please provide your location",
   "LOCATION_SEARCH": "Location search",
   "SEARCH_FOR_NOTARIES": "Search for notaries",
+  "NO_SERVICES_CREATED_YET": "No services created yet",
   "SELECT_NOTARY": "Select notary",
   "SUBMIT_NOTARIZATION": "Submit notarization",
   "KM_FROM_YOU": "{{ value }} km from you",

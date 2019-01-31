@@ -90,7 +90,7 @@ class Profile extends Component {
     return (
       <div>
         <ProfileForm
-          initialValues={userInfo}
+          initialValues={{ ...userInfo }}
           onSubmit={this.onUpdateAccount}
         />
 

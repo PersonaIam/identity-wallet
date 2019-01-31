@@ -18,6 +18,10 @@ import {
 
 import { USER_ROLES } from 'constants/index';
 
+const getCurrentStorage = () => {
+  return localStorage.getItem(REMEMBER_ME_STORAGE_KEY) ? localStorage : sessionStorage;
+};
+
 export const createAccount = (data) => async (dispatch) => {
   try {
     dispatch(createAccountInit());
@@ -82,9 +86,8 @@ export const login = ({ username, password, rememberMe }) => async (dispatch) =>
 
     const storage = rememberMe ? localStorage : sessionStorage;
 
-    storage.setItem(USER_INFO_STORAGE_KEY, JSON.stringify(userInfo));
-    storage.setItem(USER_LOGIN_TOKEN_STORAGE_KEY, loginToken);
     storage.setItem(REMEMBER_ME_STORAGE_KEY, true);
+    storage.setItem(USER_LOGIN_TOKEN_STORAGE_KEY, loginToken);
 
     dispatch(loginSuccess(userInfo));
     dispatch(onNotificationSuccessInit({ message: `Welcome ${userInfo.username}` }));
@@ -97,7 +100,7 @@ export const login = ({ username, password, rememberMe }) => async (dispatch) =>
 };
 
 export const logout = () => (dispatch) => {
-  const storage = localStorage.getItem(REMEMBER_ME_STORAGE_KEY) ? localStorage : sessionStorage;
+  const storage = getCurrentStorage();
 
   storage.removeItem(USER_INFO_STORAGE_KEY);
   storage.removeItem(REMEMBER_ME_STORAGE_KEY);
@@ -135,6 +138,10 @@ const updateAccountFailure = () => ({ type: authConstants.ON_UPDATE_ACCOUNT_FAIL
 
 const loginInit = () => ({ type: authConstants.ON_LOGIN_INIT });
 const loginSuccess = (data) => async (dispatch) => {
+  const storage = getCurrentStorage();
+
+  storage.setItem(USER_INFO_STORAGE_KEY, JSON.stringify(data));
+
   const personaAddress = data.personaAddress;
 
   if (personaAddress) {

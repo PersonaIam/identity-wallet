@@ -257,29 +257,31 @@ class AccountIdentity extends Component {
 
                   <div className="text-center">
                     <Fade spy={isUserAttributesLoading}>
-                      {
-                        isUserAttributesLoading
-                          ? (
-                            <Fragment>
-                              <CircularProgress color="secondary" size={32}/>
-                            </Fragment>
-                          )
-                          : (
-                            <div className="flex">
-                              <div>
-                                <Typography component="p" variant="caption">{t('COMPLETED')}</Typography>
+                      <Fragment>
+                        {
+                          isUserAttributesLoading
+                            ? (
+                              <Fragment>
+                                <CircularProgress color="secondary" size={32}/>
+                              </Fragment>
+                            )
+                            : null
+                        }
 
-                                <Typography component="p" color="textPrimary">{attributeProgress}%</Typography>
-                              </div>
+                        <div className="flex">
+                          <div>
+                            <Typography component="p" variant="caption">{t('COMPLETED')}</Typography>
 
-                              <Tooltip title={t('RELOAD')}>
-                                <IconButton color="secondary" onClick={() => getUserAttributes(userInfo.personaAddress)}>
-                                  <Reload />
-                                </IconButton>
-                              </Tooltip>
-                            </div>
-                          )
-                      }
+                            <Typography component="p" color="textPrimary">{attributeProgress}%</Typography>
+                          </div>
+
+                          <Tooltip title={t('RELOAD')}>
+                            <IconButton color="secondary" onClick={() => getUserAttributes(userInfo.personaAddress)}>
+                              <Reload />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
+                      </Fragment>
                     </Fade>
                   </div>
                 </div>
@@ -305,17 +307,12 @@ class AccountIdentity extends Component {
           </CardHeader>
 
           <CardContent>
-            {
-              isUserAttributesLoading
-                ? null
-                : (
-                  <Table
-                    attributes={createdAttributes}
-                    onAttributeSelect={this.onAttributeSelect}
-                    onAttributeValidateRequest={this.onAttributeValidateRequest}
-                  />
-                )
-            }
+            <Table
+              attributes={createdAttributes}
+              onAttributeSelect={this.onAttributeSelect}
+              onAttributeValidateRequest={this.onAttributeValidateRequest}
+              isLoading={isLoading}
+            />
           </CardContent>
         </div>
 

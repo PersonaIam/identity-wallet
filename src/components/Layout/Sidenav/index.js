@@ -28,6 +28,17 @@ class Sidenav extends Component {
     this.setState({ routes });
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const userInfo = this.props.userInfo;
+    const newUserInfo = nextProps.userInfo;
+
+    if (userInfo.userRoleId !== newUserInfo.userRoleId) {
+      const routes = getMenuRoutes(newUserInfo);
+
+      this.setState({ routes });
+    }
+  }
+
   render() {
     const { classes, isOpen, onClose, t, width } = this.props;
     const { routes } = this.state;

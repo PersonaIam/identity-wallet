@@ -120,7 +120,6 @@ export const createAttributeValidationRequest = (data) => async (dispatch, getSt
     dispatch(createValidationRequestSuccess(postData));
     dispatch(onNotificationSuccessInit('Validation request created successfully'));
 
-
     return true;
   }
   catch (error) {
@@ -206,6 +205,7 @@ export const handleAttributeRequest = (data, actionType) => async (dispatch, get
 
     dispatch(getValidatorValidationRequests({ validator: personaAddress }));
     dispatch(validationUpdateDone());
+    dispatch(onNotificationSuccessInit('Validation request updated successfully'));
 
     return true;
   }

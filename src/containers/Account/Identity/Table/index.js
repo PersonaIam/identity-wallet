@@ -19,6 +19,7 @@ import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import {DATE_FORMAT, ATTRIBUTE_EXPIRATIONS_STATES} from 'constants/index';
+import Loading from 'components/Loading';
 import {personaStampToDate, getAttributeExpirationStatusAndRemainingDays} from 'helpers/personaService';
 import moment from 'moment';
 import AttributeValue from './AttributeValue';
@@ -97,7 +98,7 @@ class IdentityTable extends Component {
   };
 
   render() {
-    const {attributes, classes, onAttributeSelect, onAttributeValidateRequest, t, width} = this.props;
+    const {attributes, classes, isLoading, onAttributeSelect, onAttributeValidateRequest, t, width} = this.props;
     const {selectedAttribute} = this.state;
     const hideList = !!selectedAttribute && (width === 'xs' || width === 'sm');
 
@@ -196,9 +197,13 @@ class IdentityTable extends Component {
                         </Paper>
                       )
                       : (
-                        <div className="text-center">
-                          <Typography variant="display1">{ t('NO_ATTRIBUTES_CREATED_YET') }</Typography>
-                        </div>
+                        isLoading
+                          ? <Loading />
+                          : (
+                            <div className="text-center">
+                              <Typography variant="display1">{ t('NO_ATTRIBUTES_CREATED_YET') }</Typography>
+                            </div>
+                          )
                       )
                   }
 
@@ -299,6 +304,7 @@ class IdentityTable extends Component {
 IdentityTable.propTypes = {
   attributes: PropTypes.array.isRequired,
   classes: PropTypes.object.isRequired,
+  isLoading: PropTypes.any,
   onAttributeSelect: PropTypes.func.isRequired,
   onAttributeValidateRequest: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

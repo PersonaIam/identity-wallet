@@ -27,6 +27,14 @@ function ProviderServiceList(props) {
     onInactivateService(service)
   };
 
+  if (!providerServiceInfoList.length) {
+    return (
+      <div className="text-center">
+        <Typography variant="display1">{ t('NO_SERVICES_CREATED_YET') }</Typography>
+      </div>
+    );
+  }
+
   return (
     <Fragment>
       {
