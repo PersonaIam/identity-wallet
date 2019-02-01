@@ -242,7 +242,7 @@ class IdentityTable extends Component {
                                       <span>
                                   {
                                     t('CREATED_ON', {
-                                      value: moment(personaStampToDate(expire_timestamp)).format(DATE_FORMAT)
+                                      value: moment(personaStampToDate(selectedAttribute.userAttribute.timestamp)).format(DATE_FORMAT)
                                     })
                                   }
                                 </span>
