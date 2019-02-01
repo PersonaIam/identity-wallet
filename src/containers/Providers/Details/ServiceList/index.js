@@ -14,6 +14,7 @@ import Check from 'mdi-material-ui/Check';
 import groupBy from 'lodash/groupBy';
 import moment from 'moment';
 import {DATE_TIME_FORMAT, PROVIDER_SERVICE_STATUSES} from 'constants/index';
+import {personaStampToDate} from 'helpers/personaService';
 import styles from './styles';
 
 function ProviderServiceList(props) {
@@ -127,7 +128,7 @@ function ProviderServiceList(props) {
                             <br />
 
                             <Typography variant="body1" color="textSecondary" component="span">
-                              {t('CREATED_ON', { value: moment(service.timestamp).format(DATE_TIME_FORMAT)})}
+                              {t('CREATED_ON', { value: moment(personaStampToDate(service.timestamp)).format(DATE_TIME_FORMAT)})}
                             </Typography>
                           </CardContent>
                         </Paper>

@@ -42,7 +42,7 @@ export const getAttributeExpirationStatusAndRemainingDays = (time) => {
   const remainingDays = expireDate.diff(moment(), 'days') + 1;
   let expirationStatus = ATTRIBUTE_EXPIRATIONS_STATES.AVAILABLE;
 
-  if (remainingDays < 0) {
+  if (remainingDays <= 0) {
     expirationStatus = ATTRIBUTE_EXPIRATIONS_STATES.EXPIRED
   }
   else if (remainingDays < DAYS_BEFORE_EXPIRATION_NOTIFICATION) {

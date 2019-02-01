@@ -47,9 +47,7 @@ export const getIdentityUseRequests = (params) => async (dispatch) => {
 
       if (validation_requests) {
         request.attributes.forEach(attribute => {
-          const attributeValidations = validation_requests.filter(request => request.type === attribute.type);
-
-          attribute.validations = attributeValidations;
+          attribute.validations = validation_requests.filter(request => request.type === attribute.type);
         })
       }
     }
@@ -118,28 +116,31 @@ const createIdentityUseInfo = async (attributes, passphrase, state) => {
     const {type, value} = attribute;
     const attributeTypeInfo = attribute_types.find(a => a.name === type);
 
-    if (attributeTypeInfo.data_type === 'file') {
-      const { fileData } = await blockchain.get(`/ipfs/fileByHash?hash=${value}`);
+    try {
+      if (attributeTypeInfo.data_type === 'file') {
+        const { fileData } = await blockchain.get(`/ipfs/fileByHash?hash=${value}`);
 
-      // ToDo replace with helpers decrypt value
-      const plainTextValue = decryptValue(fileData, passphrase);
+        const plainTextValue = decryptValue(fileData, passphrase);
 
-      encryptedValue = encryptValue(plainTextValue, providerPublicKey);
+        encryptedValue = encryptValue(plainTextValue, providerPublicKey);
+      }
+      else {
+        const plainTextValue = decryptValue(value, passphrase);
+
+        encryptedValue = encryptValue(plainTextValue, providerPublicKey);
+      }
+
+      mappedAttributes.push({
+        type,
+        value: encryptedValue,
+      });
     }
-    else {
-      // ToDo replace with helpers decrypt value
-      const plainTextValue = decryptValue(value, passphrase);
-
-      encryptedValue = encryptValue(plainTextValue, providerPublicKey);
+    catch (e) {
+      throw new Error('FAILED_TO_DECRYPT_VALUE');
     }
-
-    mappedAttributes.push({
-      type,
-      value: encryptedValue,
-    });
   }
 
-  const identityUseInfo = {
+  return {
     secret: passphrase,
     publicKey: publicKey || getPublicKey(passphrase),
     asset: {
@@ -153,8 +154,6 @@ const createIdentityUseInfo = async (attributes, passphrase, state) => {
       ],
     },
   };
-
-  return identityUseInfo;
 };
 
 
