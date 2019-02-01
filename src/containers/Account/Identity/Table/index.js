@@ -155,15 +155,6 @@ class IdentityTable extends Component {
 
                                           { t(attribute.name) }
                                         </Typography>
-
-                                        {
-                                          attribute.userAttribute.expire_timestamp
-                                            ? (
-                                              <p>{moment(personaStampToDate(attribute.userAttribute.expire_timestamp)).format('YYYY-MM-DD HH:mm')}</p>
-                                            )
-                                            : null
-                                        }
-
                                       </Grid>
 
                                       <Grid item xs>
