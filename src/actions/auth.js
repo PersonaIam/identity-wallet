@@ -121,7 +121,11 @@ export const isLoggedIn = () => (dispatch) => {
 
     http.defaults.headers.common['Authorization'] = `Basic ${loginToken}`;
 
-    dispatch(loginSuccess(JSON.parse(userInfo)));
+    // dispatch(loginSuccess(JSON.parse(userInfo)));
+
+    const [username, password] = Base64.decode(loginToken).split(':');
+
+    dispatch(login({ username, password }));
   }
 };
 

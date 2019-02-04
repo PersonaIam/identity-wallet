@@ -24,6 +24,25 @@ const styles = () => {
         color: '#FFFFFF',
       },
     },
+    invitationContainer: {
+      background: 'linear-gradient(45deg, #252d43, #33394d)',
+      borderRadius: '0 0 10px 10px',
+      '& > h3': {
+        color: 'rgba(255,255,255,0.9)'
+      },
+      '& > div': {
+        position: 'relative',
+        '& div': {
+          margin: '0 28px 20px',
+          padding: 16,
+        },
+        '& button': {
+          position: 'absolute',
+          right: 0,
+          top: 10,
+        }
+      },
+    },
   };
 };
 
