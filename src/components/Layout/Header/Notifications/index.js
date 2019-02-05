@@ -66,7 +66,7 @@ class Notifications extends Component {
       <Fragment>
         <IconButton
           key="notifications"
-          className={classes.userMenuToggle}
+          className={classes.root}
           onClick={(ev) => this.togglePopover(ev.currentTarget)}
         >
           <Badge

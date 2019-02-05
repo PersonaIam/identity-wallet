@@ -42,6 +42,11 @@ const IdentityUse = Loadable({
   loading: Loading,
 });
 
+const Invite = Loadable({
+  loader: () => import('containers/Invite'),
+  loading: Loading,
+});
+
 const Login = Loadable({
   loader: () => import('containers/Login'),
   loading: Loading,
@@ -159,6 +164,12 @@ const routes =  [
     showInMenu: true,
     icon: AccountDetailsIcon,
     parent: MENU_GROUPS.IDENTITY,
+  },
+  {
+    path: '/invite/:referralCode',
+    exact: true,
+    component: Invite,
+    isAvailable: () => true,
   },
   {
     path: '/notaries',

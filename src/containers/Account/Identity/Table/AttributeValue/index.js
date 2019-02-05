@@ -63,7 +63,6 @@ class Index extends Component {
       this.toggleDecryptedValue(decryptedValue)
     }
     catch (e) {
-      console.log(e);
       this.props.onNotificationErrorInit('FAILED_TO_DECRYPT_VALUE');
     }
   };

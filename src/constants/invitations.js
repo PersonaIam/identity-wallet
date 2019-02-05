@@ -1,0 +1,9 @@
+/**
+ * Created by vladtomsa on 2019-02-05
+ */
+export const invitationsConstants = {
+  GET_INVITATIONS_INIT: '@GET_INVITATIONS_INIT',
+  GET_INVITATIONS_SUCCESS: '@GET_INVITATIONS_SUCCESS',
+  GET_INVITATIONS_FAILURE: '@GET_INVITATIONS_FAILURE',
+};
+

@@ -8,6 +8,7 @@ import { reset } from 'redux-form';
 import { getUserAttributes, getValidatorValidationRequests } from './attributes';
 import { getBlockchainAccount } from './blockchainAccount';
 import { registerUserToChat, leaveChat } from './chat';
+import { getInvitations } from './invitations';
 import { onNotificationSuccessInit, onNotificationErrorInit } from './notifications';
 import {
   authConstants,
@@ -72,8 +73,6 @@ export const updateAccount = (data) => async (dispatch) => {
     dispatch(onNotificationErrorInit(error));
   }
 };
-
-
 
 export const login = ({ username, password, rememberMe }) => async (dispatch) => {
   try {
@@ -156,6 +155,11 @@ const loginSuccess = (data) => async (dispatch) => {
     // if logged in user is a notary, fetch his validation requests
     if (data && data.userRoleId === USER_ROLES.NOTARY) {
       dispatch(getValidatorValidationRequests({ validator: personaAddress }));
+    }
+
+    // getUserInvitations
+    if (data && data.referralInfo) {
+      dispatch(getInvitations(data.referralInfo.referralCode));
     }
 
     dispatch({ type: authConstants.ON_LOGIN_SUCCESS, payload: data });

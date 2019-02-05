@@ -8,6 +8,11 @@
 
 const styles = theme => {
   return {
+    root: {
+      [theme.breakpoints.down('xs')]: {
+        color: '#FFFFFF !important',
+      },
+    },
     badge: {
       color: '#FFF !important',
       background: `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
