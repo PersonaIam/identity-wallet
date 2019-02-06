@@ -46,8 +46,9 @@ class AccountIdentity extends Component {
   getAttributesProgress = () => {
     const { userAttributesInfo } = this.props;
     const completedAttributes = userAttributesInfo.filter((att) => att.value);
+    const progress = completedAttributes.length /  userAttributesInfo.length;
 
-    return Math.trunc((completedAttributes.length /  userAttributesInfo.length) * 100);
+    return Math.trunc((isNaN(progress) ? 0 : progress) * 100);
   };
 
   onAttributeSelect = (attribute) => {
@@ -176,8 +177,11 @@ class AccountIdentity extends Component {
         (attribute) => {
           return {
             value: attribute.name,
-            name: attribute.name,
+            name: t(attribute.name),
             disabled: attribute.data_type === AVAILABLE_DATA_TYPES.FILE && isAnyRemainingAttributesNotFile,
+            tooltip: attribute.data_type === AVAILABLE_DATA_TYPES.FILE && isAnyRemainingAttributesNotFile
+              ? t('PLEASE_ADD_ALL_ATTRIBUTES_IN_ORDER_TO_UPLOAD', { attribute: t(attribute.name) })
+              : null
           };
         }
       ),
@@ -192,7 +196,10 @@ class AccountIdentity extends Component {
                 </Tooltip>
                 { t(attribute.name) }
               </span>
-            )
+            ),
+            tooltip: attribute.data_type === AVAILABLE_DATA_TYPES.FILE && isAnyRemainingAttributesNotFile
+              ? t('PLEASE_ADD_ALL_ATTRIBUTES_IN_ORDER_TO_UPLOAD', { attribute: t(attribute.name) })
+              : null
           }
         }
       ),

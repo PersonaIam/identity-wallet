@@ -8,6 +8,7 @@ export default (theme) => {
       bottom: 24,
       right: 30,
       zIndex: 1000,
+      maxWidth: '90vw',
     },
     badge: {
       color: '#FFF !important',

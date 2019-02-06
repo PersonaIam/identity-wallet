@@ -9,10 +9,12 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import CalendarIcon from 'mdi-material-ui/Calendar';
 // import ClockIcon from 'mdi-material-ui/Clock';
+import Info from 'mdi-material-ui/InformationVariant';
 import LeftIcon from 'mdi-material-ui/ChevronLeft';
 import RightIcon from 'mdi-material-ui/ChevronRight';
 
@@ -96,8 +98,39 @@ export const RenderSelectField = withStyles(styles)(translate('common')(class ex
               {
                 options
                   .map((option, index) => (
-                    <MenuItem key={index} value={option.value} disabled={!!option.disabled}>
-                      {typeof option.name === 'string' ? t(option.name) : option.name}
+                    <MenuItem
+                      key={index}
+                      value={option.value}
+                      disabled={!!option.disabled}
+                      divider={index !== options.length -1}
+                      style={
+                        option.tooltip
+                          ? {
+                            whiteSpace: 'pre-wrap',
+                            height: 'auto',
+                          }
+                          : null
+                      }
+                    >
+                      <div>
+                        {typeof option.name === 'string' ? t(option.name) : option.name}
+
+                        {
+                          option.tooltip
+                            ? (
+                              <Typography
+                                variant="caption"
+                                style={{ maxWidth: 210, marginBottom: 8 }}
+                                className="flex"
+                                component="p"
+                              >
+                                <Info />{option.tooltip}
+                              </Typography>
+                            )
+                            : null
+                        }
+
+                      </div>
                     </MenuItem>
                     )
                   )

@@ -1,9 +1,9 @@
 /**
  * Created by vladtomsa on 08/10/2018
  */
-const headerBoxPadding = 15;
-const headerIconSize = 56;
-const headerIconOffset = 20;
+const headerBoxPadding = 12;
+const headerIconSize = 36;
+const headerIconOffset = 10;
 
 const styles = (theme) => {
   return {
@@ -27,7 +27,10 @@ const styles = (theme) => {
     cardHeaderContent: {
       marginLeft: headerIconOffset + 2 * headerBoxPadding + headerIconSize,
       minHeight: 2 * headerBoxPadding + headerIconSize,
-      paddingRight: headerIconOffset,
+      maxWidth: '100vw',
+      [theme.breakpoints.up('sm')]: {
+        paddingRight: headerIconOffset,
+      },
     },
   };
 };

@@ -15,7 +15,6 @@ import FilterForm from './FilterForm';
 import NotarizationRequestList from './List';
 import groupBy from 'lodash/groupBy';
 
-
 const styles = (theme) => {
   return {
     gridItem: {

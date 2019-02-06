@@ -10,8 +10,10 @@ import { getBlockchainAccount } from 'actions/blockchainAccount';
 import * as notificationActions from 'actions/notifications';
 import Chat from 'components/Chat';
 import Layout from 'components/Layout';
+import Loading from 'components/Loading';
 import Notification from 'components/Notification';
 import ConnectedSwitch from 'components/ConnectedSwitch';
+import { authConstants } from 'constants/auth';
 import { getApplicationRoutes } from 'config/routes';
 
 const styles = {
@@ -35,7 +37,8 @@ class App extends Component {
 
   render() {
     const {
-      notification, onLogout, onNotificationClose, openSidenav, closeSidenav, sidenavOpened, userInfo, location: { pathname }
+      isLoginLoading, notification, onLogout, onNotificationClose, openSidenav, closeSidenav, sidenavOpened, userInfo,
+      location: { pathname }
     } = this.props;
 
     const routes = getApplicationRoutes(userInfo);
@@ -48,7 +51,17 @@ class App extends Component {
           ))
         }
 
-        <Route render={() => (<div>Not existing</div>)} />
+        <Route
+          render={() => (
+            <div>
+              {
+                isLoginLoading
+                  ? <Loading />
+                  : 'Unavailable'
+              }
+            </div>
+          )}
+        />
       </ConnectedSwitch>
     );
 
@@ -108,6 +121,7 @@ const mapStateToProps = (state) => {
   return {
     notification: state.notification.notification,
     sidenavOpened: state.global.sidenavOpened,
+    isLoginLoading: state.auth.isLoading === authConstants.ON_LOGIN_INIT,
     userInfo: userInfo,
   }
 };

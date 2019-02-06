@@ -17,7 +17,9 @@ const styles = (theme) => {
       },
     },
     accountDetails: {
-      marginLeft: 16,
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: 16,
+      },
     },
     accountButton: {
       '& *': {
@@ -35,6 +37,9 @@ const styles = (theme) => {
         '& .link-container': {
           margin: '0 28px 20px',
           padding: 16,
+          '& h3': {
+            wordBreak: 'break-all',
+          },
         },
         '& button': {
           position: 'absolute',

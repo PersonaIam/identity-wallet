@@ -81,7 +81,7 @@ class AccountDetailsHeader extends Component {
                       <Check className={classes.check}/>
                     </Avatar>
                     <ListItemText
-                      primary={invitation.personaAddress}
+                      primary={<span className="persona-address">{ invitation.personaAddress }</span>}
                       secondary={moment(invitation.updatedAt).format(DATE_TIME_FORMAT)}
                     />
                   </ListItem>
@@ -148,7 +148,7 @@ class AccountDetailsHeader extends Component {
         <Paper className={classes.root}>
           <CardContent>
             <div className={width === 'xs' ? '' : 'flex'}>
-              <div className="flex align-center fill-flex">
+              <div className={ width !== 'xs' ? 'flex align-center fill-flex' : null}>
                 <QRCode size={94} value={accountInfo.address || ''}/>
 
                 <div className={classes.accountDetails}>

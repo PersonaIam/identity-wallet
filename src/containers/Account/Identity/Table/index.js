@@ -45,9 +45,9 @@ class IdentityTable extends Component {
   };
 
   getAttributeExpireTimestampInfo = (attribute) => {
-    const {classes, t} = this.props;
+    const {classes, t, width} = this.props;
     const userAttribute = attribute.userAttribute;
-
+    const isSmallDevice = width === 'xs';
     let attributeWarning = (
       <Typography variant="caption" color="textSecondary">
         &nbsp;
@@ -64,8 +64,8 @@ class IdentityTable extends Component {
         case (ATTRIBUTE_EXPIRATIONS_STATES.WILL_EXPIRE):
           attributeWarning = (
             <Chip
-              avatar={<Avatar className={classes.avatar}><AlertCircle/></Avatar>}
-              label={t('ATTRIBUTE_ABOUT_TO_EXPIRE', {attribute: t(attribute.name), days: remainingDays})}
+              avatar={isSmallDevice ? null : <Avatar className={classes.avatar}><AlertCircle/></Avatar>}
+              label={t('ATTRIBUTE_ABOUT_TO_EXPIRE', {attribute: isSmallDevice ? '' : t(attribute.name), days: remainingDays})}
               className={classes[expirationStatus]}
             />
           );
@@ -75,8 +75,8 @@ class IdentityTable extends Component {
 
           attributeWarning = (
             <Chip
-              avatar={<Avatar className={classes.avatar}><AlertDanger/></Avatar>}
-              label={t('ATTRIBUTE_EXPIRED', {attribute: t(attribute.name), date: expirationDate.format(DATE_FORMAT)})}
+              avatar={isSmallDevice ? null : <Avatar className={classes.avatar}><AlertDanger/></Avatar>}
+              label={t('ATTRIBUTE_EXPIRED', {attribute: isSmallDevice ? '' : t(attribute.name), date: expirationDate.format(DATE_FORMAT)})}
               className={classes[expirationStatus]}
             />
           );

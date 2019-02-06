@@ -8,9 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import red from '@material-ui/core/colors/red';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 import amber from '@material-ui/core/colors/amber';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import {
@@ -20,10 +17,9 @@ import {
 import { identityUseConstants } from 'constants/identityUse';
 import CheckCircle from 'mdi-material-ui/CheckCircle';
 import CloseCircle from 'mdi-material-ui/CloseCircle';
-import MessageText from 'mdi-material-ui/MessageText';
 
 import { handleIdentityUseRequest } from 'actions/identityUse';
-
+import ValidationReason from 'components/ValidationReason';
 import IdentityUseActionsForm from './Form/index';
 
 const styles = (theme) => {
@@ -124,6 +120,7 @@ class IdentityUseActions extends Component {
     const {
       PENDING_APPROVAL,
       DECLINED,
+      ENDED,
     } = IDENTITY_USE_REQUEST_STATUSES;
 
 
@@ -157,20 +154,13 @@ class IdentityUseActions extends Component {
         );
 
       case DECLINED:
+      case ENDED:
         return (
           <Fragment>
             {
               reason
                 ? (
-                  <Tooltip title={t('REASON') + reason}>
-                    <IconButton
-                      className={classes.reason}
-                      onClick={() => this.setState({ displayReasonMessage: reason })}
-                      disableRipple
-                    >
-                      <MessageText />
-                    </IconButton>
-                  </Tooltip>
+                  <ValidationReason reason={reason} t={t}/>
                 )
                 : null
             }
@@ -183,8 +173,8 @@ class IdentityUseActions extends Component {
 
 
   render() {
-    const { classes, isLoading, t } = this.props;
-    const { actionType, displayReasonMessage } = this.state;
+    const { isLoading, t } = this.props;
+    const { actionType } = this.state;
 
     return (
       <div>
@@ -204,23 +194,6 @@ class IdentityUseActions extends Component {
             )
             : null
         }
-
-        <Dialog
-          open={!!displayReasonMessage}
-          onClose={() => this.setState({ displayReasonMessage: null })}
-        >
-          <DialogContent className={classes.dialogContent}>
-            <IconButton
-              className={classes.closeButton}
-              onClick={() => this.setState({ displayReasonMessage: null })}
-            >
-              <CloseCircle />
-            </IconButton>
-            <DialogContentText>
-              { displayReasonMessage }
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
       </div>
     )
   }

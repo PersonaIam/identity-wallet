@@ -43,7 +43,7 @@ const NotariesListItem = ({ classes, notaryInfo, onSelect, openConversation, t, 
                 { notaryInfo.contactInfo.lastName }&nbsp;
               </Typography>
 
-              <Typography gutterBottom variant="caption">
+              <Typography gutterBottom variant="caption" className="persona-address">
                 { notaryInfo.personaAddress }&nbsp;
               </Typography>
 

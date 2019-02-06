@@ -74,7 +74,7 @@ export const updateAccount = (data) => async (dispatch) => {
   }
 };
 
-export const login = ({ username, password, rememberMe }) => async (dispatch) => {
+export const login = ({ username, password, rememberMe }) => async (dispatch, getState) => {
   try {
     dispatch(loginInit());
 
@@ -89,8 +89,13 @@ export const login = ({ username, password, rememberMe }) => async (dispatch) =>
     storage.setItem(USER_LOGIN_TOKEN_STORAGE_KEY, loginToken);
 
     dispatch(loginSuccess(userInfo));
-    dispatch(onNotificationSuccessInit({ message: `Welcome ${userInfo.username}` }));
-    dispatch(push('/dashboard'));
+
+    const { router: { location: { pathname } } } = getState();
+
+    if (pathname === '/login') {
+      dispatch(onNotificationSuccessInit({ message: `Welcome ${userInfo.username}` }));
+      dispatch(push('/dashboard'));
+    }
   }
   catch (error) {
     dispatch(loginFailure());

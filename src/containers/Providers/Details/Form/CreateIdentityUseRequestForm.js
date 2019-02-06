@@ -69,6 +69,7 @@ class CreateIdentityUseRequestForm extends Component {
         open={true}
         onClose={onClose}
         classes={{ paper: classes.root }}
+        maxWidth="xs"
       >
         <form onSubmit={handleSubmit} noValidate>
           {

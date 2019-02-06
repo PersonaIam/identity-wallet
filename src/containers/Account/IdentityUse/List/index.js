@@ -5,6 +5,7 @@ import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
+import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
@@ -66,7 +67,7 @@ const IdentityUseRequestsList = ({classes, t, title, params, providerIdentityUse
                       button
                       key={index}
                       style={{ opacity: serviceRequest.status === IDENTITY_USE_REQUEST_STATUSES.CANCELED ? 0.4 : 1 }}
-                      // divider={index !== providerIdentityUseRequests.length - 1}
+                      divider={index !== providerIdentityUseRequests.length - 1}
                     >
                       <ListItemIcon>
                         <Circle className={classes[serviceRequest.status]}/>
@@ -82,6 +83,24 @@ const IdentityUseRequestsList = ({classes, t, title, params, providerIdentityUse
                             <Typography variant="caption" color="textSecondary" component="span">
                               {t(serviceRequest.status)}
                             </Typography>
+
+                            <br />
+
+                            <Typography variant="caption" color="textSecondary" component="span">
+                              {t('REQUIRED_ATTRIBUTES')}
+                            </Typography>
+
+                            <div className="flex wrap-content">
+                              {
+                                JSON.parse(serviceRequest.attribute_types)
+                                  .map((attribute, index) => (
+                                    <Chip
+                                      key={attribute + index}
+                                      label={t(attribute)}
+                                    />
+                                  ))
+                              }
+                            </div>
                           </Fragment>
                         }
                       />

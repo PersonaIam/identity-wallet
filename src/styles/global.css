@@ -27,6 +27,10 @@ body {
   align-items: flex-start;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .fill-flex {
   flex: 1;
 }
@@ -51,6 +55,10 @@ body {
   padding: 16px;
 }
 
+.persona-address {
+  word-break: break-all;
+}
+
 .space-between {
   justify-content: space-between;
 }
@@ -65,9 +73,5 @@ body {
 
 .wrap-content {
   flex-wrap: wrap;
-}
-
-.clickable {
-  cursor: pointer;
 }
 

@@ -20,7 +20,7 @@ import { IDENTITY_USE_REQUEST_ACTION } from 'constants/index';
 
 const validate = (values, { actionType }) => {
   const {
-    DECLINE,
+    END,
   } = IDENTITY_USE_REQUEST_ACTION;
 
   const errors = {
@@ -31,7 +31,7 @@ const validate = (values, { actionType }) => {
     errors.passphrase = 'PASSPHRASE_REQUIRED';
   }
 
-  if (actionType === DECLINE) {
+  if (actionType === END) {
     const assetValidationErrors = [];
 
     values.asset.identityuse.forEach((validation, index) => {
@@ -63,7 +63,7 @@ const renderValidationFieldArray = ({ fields, actionType, disabled }) => {
           return (
             <Fragment key={index}>
               {
-                actionType === IDENTITY_USE_REQUEST_ACTION.DECLINE
+                actionType === IDENTITY_USE_REQUEST_ACTION.END
                   ? (
                     <Field
                       name={`${member}.reason`}
@@ -72,6 +72,7 @@ const renderValidationFieldArray = ({ fields, actionType, disabled }) => {
                       component={RenderTextField}
                       rows={2}
                       maxLength={1024}
+                      required={true}
                     />
                   )
                   : null
@@ -108,7 +109,7 @@ class IdentityUseActionForm extends Component {
         <DialogContent style={{width: 500, maxWidth: '100%'}}>
           <Grid container spacing={16}>
             {
-              actionType === IDENTITY_USE_REQUEST_ACTION.DECLINE
+              actionType === IDENTITY_USE_REQUEST_ACTION.END
                 ? (
                   <Grid item xs={12}>
                     <FormSection name="asset">
@@ -123,6 +124,7 @@ class IdentityUseActionForm extends Component {
                 )
                 : null
             }
+
             <Grid item xs={12}>
               <Field
                 name="secret"

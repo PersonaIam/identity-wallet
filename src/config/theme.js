@@ -26,9 +26,15 @@ const themeOverrides = {
       background: 'rgba(0, 0, 0, 0.12) !important'
     }
   },
+  MuiChip: {
+    root: {
+      marginRight: 6,
+      marginTop: 4,
+    },
+  },
   MuiDialog: {
     paper: {
-      minWidth: 460,
+      minWidth: '40vh',
       maxWidth: '94%',
     },
   },

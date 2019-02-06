@@ -122,6 +122,10 @@ class ProviderServiceForm extends Component {
                   disabled={loading}
                   required
                 />
+
+                <Typography variant="body1" className="flex align-center">
+                  <span>{ t('ATTRIBUTES_COUNT_RECCOMANDATION') }</span>
+                </Typography>
               </Grid>
 
               <Grid item xs={12}>
