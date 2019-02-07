@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { push } from 'react-router-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -55,6 +56,7 @@ class AccountCreate extends Component {
 
     if (loginInfo) {
       this.props.login(loginInfo);
+      this.props.goToDashboard();
     }
   };
 
@@ -159,6 +161,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   confirmAccount: (data) => dispatch(confirmAccount(data)),
   login: (data) => dispatch(login(data)),
+  goToDashboard: () => dispatch(push('/dashboard')),
 });
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)(AccountCreate);

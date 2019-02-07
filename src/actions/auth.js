@@ -92,10 +92,7 @@ export const login = ({ username, password, rememberMe }) => async (dispatch, ge
 
     const { router: { location: { pathname } } } = getState();
 
-    if (
-      pathname === '/login'
-      || pathname.includes('/account/confirmation')
-    ) {
+    if (pathname === '/login') {
       dispatch(onNotificationSuccessInit({ message: `Welcome ${userInfo.username}` }));
       dispatch(push('/dashboard'));
     }
