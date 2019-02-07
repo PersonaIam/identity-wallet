@@ -103,7 +103,11 @@ export const createChatConnection = () => (dispatch, getState) => {
 
   socket.on(
     socketEvents.ERROR,
-    (message) => dispatch(onNotificationErrorInit(message)),
+    (message) => {
+      if (message !== 'FAILED_TO_LOG_OUT_OF_CHAT') {
+        dispatch(onNotificationErrorInit(message));
+      }
+    },
   );
 
   dispatch(setSocket(socket));
