@@ -103,38 +103,37 @@ export const login = ({ username, password, rememberMe }) => async (dispatch, ge
   }
 };
 
-export const logout = () => (dispatch, getState) => {
+export const logout = () => (dispatch) => {
   const storage = getCurrentStorage();
 
   storage.removeItem(USER_INFO_STORAGE_KEY);
   storage.removeItem(REMEMBER_ME_STORAGE_KEY);
   storage.removeItem(USER_LOGIN_TOKEN_STORAGE_KEY);
 
-  const { router: { location: { pathname } } } = getState();
-
-  if (!pathname.includes('/account/confirmation')) {
-    dispatch(push('/'));
-  }
-
+  dispatch(push('/'));
   dispatch(leaveChat());
   dispatch(logoutInit());
 };
 
-export const isLoggedIn = () => (dispatch) => {
-  const userInfo = localStorage.getItem(USER_INFO_STORAGE_KEY) ||
-    sessionStorage.getItem(USER_INFO_STORAGE_KEY);
+export const isLoggedIn = () => (dispatch, getState) => {
+  const { router: { location: { pathname } } } = getState();
 
-  if (userInfo) {
-    const loginToken = localStorage.getItem(USER_LOGIN_TOKEN_STORAGE_KEY) ||
-      sessionStorage.getItem(USER_LOGIN_TOKEN_STORAGE_KEY);
+  if (!pathname.includes('/account/confirmation')) {
+    const userInfo = localStorage.getItem(USER_INFO_STORAGE_KEY) ||
+      sessionStorage.getItem(USER_INFO_STORAGE_KEY);
 
-    http.defaults.headers.common['Authorization'] = `Basic ${loginToken}`;
+    if (userInfo) {
+      const loginToken = localStorage.getItem(USER_LOGIN_TOKEN_STORAGE_KEY) ||
+        sessionStorage.getItem(USER_LOGIN_TOKEN_STORAGE_KEY);
 
-    // dispatch(loginSuccess(JSON.parse(userInfo)));
+      http.defaults.headers.common['Authorization'] = `Basic ${loginToken}`;
 
-    const [username, password] = Base64.decode(loginToken).split(':');
+      // dispatch(loginSuccess(JSON.parse(userInfo)));
 
-    dispatch(login({ username, password }));
+      const [username, password] = Base64.decode(loginToken).split(':');
+
+      dispatch(login({ username, password }));
+    }
   }
 };
 
