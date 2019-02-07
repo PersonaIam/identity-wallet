@@ -103,14 +103,19 @@ export const login = ({ username, password, rememberMe }) => async (dispatch, ge
   }
 };
 
-export const logout = () => (dispatch) => {
+export const logout = () => (dispatch, getState) => {
   const storage = getCurrentStorage();
 
   storage.removeItem(USER_INFO_STORAGE_KEY);
   storage.removeItem(REMEMBER_ME_STORAGE_KEY);
   storage.removeItem(USER_LOGIN_TOKEN_STORAGE_KEY);
 
-  dispatch(push('/'));
+  const { router: { location: { pathname } } } = getState();
+
+  if (!pathname.includes('/account/confirmation')) {
+    dispatch(push('/'));
+  }
+
   dispatch(leaveChat());
   dispatch(logoutInit());
 };

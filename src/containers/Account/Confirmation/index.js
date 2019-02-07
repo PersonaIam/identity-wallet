@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
-import { confirmAccount, login } from 'actions/auth';
+import { confirmAccount, login, logout } from 'actions/auth';
 import { authConstants } from 'constants/auth';
 import { connect } from 'react-redux';
 import Fade from 'react-reveal/Fade';
@@ -29,6 +29,10 @@ class AccountCreate extends Component {
     address: null,
     loginInfo: null,
   };
+
+  UNSAFE_componentWillMount() {
+    this.props.logout();
+  }
 
   onSubmit = ({ password }) => {
     const passphrase = generatePassphrase();
@@ -161,6 +165,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   confirmAccount: (data) => dispatch(confirmAccount(data)),
   login: (data) => dispatch(login(data)),
+  logout: () => dispatch(logout()),
   goToDashboard: () => dispatch(push('/dashboard')),
 });
 
