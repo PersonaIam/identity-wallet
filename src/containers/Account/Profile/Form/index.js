@@ -93,12 +93,19 @@ class AccountProfileForm extends Component {
                 <div className="content">
                   <Typography component="h4">{t('ACCOUNT_DETAILS')}</Typography>
 
-                  <Field
-                    name="userRoleId"
-                    component={UserRoleToggle}
-                    label="BECOME_PERSONA_NOTARY"
-                    t={t}
-                  />
+                  {
+                    userRoleId === USER_ROLES.IDENTITY_USER
+                    || userRoleId === USER_ROLES.NOTARY
+                      ? (
+                        <Field
+                          name="userRoleId"
+                          component={UserRoleToggle}
+                          label="BECOME_PERSONA_NOTARY"
+                          t={t}
+                        />
+                      )
+                      : null
+                  }
                 </div>
               </Paper>
 
@@ -266,7 +273,7 @@ class AccountProfileForm extends Component {
               </div>
 
               <div className="flex justify-center wrap-content">
-                <Button variant="raised" color="primary" type="submit"
+                <Button variant="contained" color="primary" type="submit"
                         className={`flex align-center ${classes.submitButton}`}>
                   {t('UPDATE_PROFILE')}
                 </Button>

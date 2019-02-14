@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import Add from 'mdi-material-ui/Plus';
 import {Field, reduxForm} from 'redux-form';
@@ -48,15 +48,14 @@ class SelectAttributeForCreation extends Component {
             <span>&nbsp;</span>
             <div>
               <Tooltip title={t('ADD')}>
-                <Button
+                <Fab
                   className={classes.addButton}
                   type="submit"
                   color="secondary"
-                  variant="fab"
-                  mini
+                  size="small"
                 >
                   <Add />
-                </Button>
+                </Fab>
               </Tooltip>
             </div>
           </div>

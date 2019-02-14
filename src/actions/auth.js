@@ -9,6 +9,7 @@ import { getUserAttributes, getValidatorValidationRequests } from './attributes'
 import { getBlockchainAccount } from './blockchainAccount';
 import { registerUserToChat, leaveChat } from './chat';
 import { getInvitations } from './invitations';
+import { getFavoriteNotaries } from './notaries';
 import { onNotificationSuccessInit, onNotificationErrorInit } from './notifications';
 import {
   authConstants,
@@ -160,6 +161,7 @@ const loginSuccess = (data) => async (dispatch) => {
     dispatch(registerUserToChat(data));
     dispatch(getUserAttributes(personaAddress));
     dispatch(getBlockchainAccount(personaAddress));
+    dispatch(getFavoriteNotaries());
 
     // if logged in user is a notary, fetch his validation requests
     if (data && data.userRoleId === USER_ROLES.NOTARY) {

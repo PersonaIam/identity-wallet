@@ -35,7 +35,7 @@ class AttributeValidationCreate extends Component {
   }
 
   getCurrentStep = () => {
-    const { notaryInfoList, onClose, onSubmit, selectedAttribute,  t } = this.props;
+    const { notaryInfoList, favoriteNotaries, onClose, onSubmit, selectedAttribute,  t } = this.props;
     const { activeStep, notaryInfo } = this.state;
 
     switch (activeStep) {
@@ -45,7 +45,12 @@ class AttributeValidationCreate extends Component {
         );
       case 1:
         return (
-          <NotaryList notaryInfoList={notaryInfoList} onSelect={this.onNotarySelect} t={t}/>
+          <NotaryList
+            notaryInfoList={notaryInfoList}
+            favoriteNotaries={favoriteNotaries}
+            onSelect={this.onNotarySelect}
+            t={t}
+          />
         );
 
       default:
@@ -153,6 +158,7 @@ const mapStateToProps = (state) => {
   return {
     isLoading: state.notaries.isLoading,
     notaryInfoList: state.notaries.notaryInfoList,
+    favoriteNotaries: state.notaries.favoriteNotaries,
     pageNumber: state.notaries.pageNumber,
     pageSize: state.notaries.pageSize,
   }

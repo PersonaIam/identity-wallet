@@ -8,7 +8,7 @@ import {translate} from 'react-i18next';
 import {openConversation, sendMessage, toggleSelectedConversation} from 'actions/chat';
 import {withStyles} from '@material-ui/core/styles';
 import Badge from '@material-ui/core/Badge';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import Bounce from 'react-reveal/Bounce';
 import Slide from 'react-reveal/Slide';
@@ -98,15 +98,21 @@ class Chat extends Component {
                     badgeContent={notifications.length}
                     classes={{badge: notifications.length ? classes.badge : ''}}
                   >
-                    <Button variant="fab" color="secondary" onClick={() => this.toggleShowConversations(true)}>
+                    <Fab
+                      color="secondary"
+                      onClick={() => this.toggleShowConversations(true)}
+                    >
                       <MessageText/>
-                    </Button>
+                    </Fab>
                   </Badge>
                 )
                 : (
-                  <Button variant="fab" color="secondary" onClick={() => this.toggleShowConversations(true)}>
+                  <Fab
+                    color="secondary"
+                    onClick={() => this.toggleShowConversations(true)}
+                  >
                     <MessageText/>
-                  </Button>
+                  </Fab>
                 )
             }
           </Bounce>

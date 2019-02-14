@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import {push} from 'react-router-redux';
 import {withStyles} from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 // import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
 // import Paper from '@material-ui/core/Paper';
@@ -99,9 +99,9 @@ class Providers extends Component {
         <br/>
         <div className='flex align-center'>
           <Tooltip title={t('PROVIDERS')}>
-            <Button variant="fab" color="primary" mini onClick={goToProviders}>
+            <Fab  color="primary" size="small" onClick={goToProviders}>
               <Back/>
-            </Button>
+            </Fab>
           </Tooltip>
           &nbsp;&nbsp;
           <div>

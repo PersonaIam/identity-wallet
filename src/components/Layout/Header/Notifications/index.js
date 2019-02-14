@@ -105,24 +105,17 @@ class Notifications extends Component {
                   notifications && notifications.length
                     ? (
                       notifications.map((notification, index) => (
-                        <Fragment key={notification}>
-                          <MenuItem
-                            key={notification}
-                            component={Link}
-                            to="/identity"
-                          >
-                            <ListItemText
-                              onClick={() => this.togglePopover(null)}
-                              primary={notification}
-                            />
-                          </MenuItem>
-
-                          {
-                            index < notifications.length - 1
-                              ? <Divider />
-                              : null
-                          }
-                        </Fragment>
+                        <MenuItem
+                          divider={index !== notifications.length - 1}
+                          key={notification}
+                          component={Link}
+                          to="/identity"
+                        >
+                          <ListItemText
+                            onClick={() => this.togglePopover(null)}
+                            primary={notification}
+                          />
+                        </MenuItem>
                       ))
                     )
                     : (

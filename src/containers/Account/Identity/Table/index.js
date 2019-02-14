@@ -8,7 +8,7 @@ import {withStyles} from '@material-ui/core/styles';
 import withWidth from '@material-ui/core/withWidth';
 import Avatar from '@material-ui/core/Avatar';
 import Badge from '@material-ui/core/Badge';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Divider from '@material-ui/core/Divider';
 import Fade from 'react-reveal/Fade';
 import Chip from '@material-ui/core/Chip';
@@ -252,14 +252,13 @@ class IdentityTable extends Component {
                               }
                             </div>
 
-                            <Button
-                              variant="fab"
-                              mini
+                            <Fab
+                              size="small"
                               onClick={() => this.toggleSelectedAttribute(null)}
                               color="secondary"
                             >
                               <Close/>
-                            </Button>
+                            </Fab>
                           </div>
 
                           <Divider/>

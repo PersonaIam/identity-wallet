@@ -206,7 +206,7 @@ const routes =  [
     path: '/validation-requests',
     exact: true,
     component: NotaryValidationRequests,
-    isAvailable: isNotary,
+    isAvailable: (userInfo) => isNotary(userInfo) || isProvider(userInfo),
     showInMenu: true,
     icon: Animation,
     parent: MENU_GROUPS.NOTARY,

@@ -5,9 +5,11 @@ const styles = (theme) => {
   return {
     notaryListItem: {
       margin: '6px 0',
-      '& button': {
-        margin: '4px',
-        width: '100%',
+      '& .button-container': {
+        '& button': {
+          margin: '4px',
+          width: '100%',
+        },
       },
     },
   };

@@ -9,6 +9,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
+import Fab from '@material-ui/core/Fab';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -88,9 +89,9 @@ class ProviderIdentityUseDetail extends Component {
         <br/>
         <div className='flex align-center'>
           <Tooltip title={t('/provider/identity-use-requests')}>
-            <Button variant="fab" color="primary" mini onClick={goToList}>
+            <Fab color="primary" size="small" onClick={goToList}>
               <Back/>
-            </Button>
+            </Fab>
           </Tooltip>
           &nbsp;&nbsp;
           <Tooltip title={t(identityUseRequestInfo.status)}>

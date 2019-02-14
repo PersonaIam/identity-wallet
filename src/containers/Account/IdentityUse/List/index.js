@@ -90,17 +90,18 @@ const IdentityUseRequestsList = ({classes, t, title, params, providerIdentityUse
                               {t('REQUIRED_ATTRIBUTES')}
                             </Typography>
 
-                            <div className="flex wrap-content">
+                            <span className="flex wrap-content">
                               {
                                 JSON.parse(serviceRequest.attribute_types)
                                   .map((attribute, index) => (
                                     <Chip
+                                      component="span"
                                       key={attribute + index}
                                       label={t(attribute)}
                                     />
                                   ))
                               }
-                            </div>
+                            </span>
                           </Fragment>
                         }
                       />

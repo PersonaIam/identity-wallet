@@ -11,20 +11,26 @@ const themeOverrides = {
       borderRadius: 30,
       letterSpacing: 1.1,
       textTransform: 'none',
+      "&$disabled": {
+        background: 'rgba(0, 0, 0, 0.12) !important',
+      }
     },
-    raisedPrimary: {
+    containedPrimary: {
       color: '#FFFFFF',
       background: `linear-gradient(45deg, #01579B, #323561)`,
       '&:hover': {
         background: `linear-gradient(45deg, #01A9EE, #01579B)`,
-      }
+      },
+      "&$disabled": {
+        background: 'rgba(0, 0, 0, 0.12) !important',
+      },
     },
-    raisedSecondary: {
+    containedSecondary: {
       color: '#FFFFFF',
+      "&$disabled": {
+        background: 'rgba(0, 0, 0, 0.12) !important',
+      },
     },
-    disabled: {
-      background: 'rgba(0, 0, 0, 0.12) !important'
-    }
   },
   MuiChip: {
     root: {
@@ -42,6 +48,13 @@ const themeOverrides = {
     root: {
       '& *': {
         fontWeight: 300,
+      },
+    },
+  },
+  MuiFab: {
+    root: {
+      '& svg': {
+        color: '#FFFFFF',
       },
     },
   },
@@ -88,6 +101,9 @@ const theme = {
     },
     error: { main: error[500] },
     background: { default: '#F7F7F7' },
+  },
+  typography: {
+    useNextVariants: true,
   },
   overrides: themeOverrides,
 };

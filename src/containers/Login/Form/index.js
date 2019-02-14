@@ -110,7 +110,7 @@ class Login extends Component {
             </div>
 
             <div className="flex justify-center wrap-content">
-              <Button variant="raised" color="primary" type="submit" className={`flex align-center ${classes.submitButton}`} disabled={isLoading}>
+              <Button variant="contained" color="primary" type="submit" className={`flex align-center ${classes.submitButton}`} disabled={isLoading}>
                 <div className="flex align-center">
                   { t("LOGIN") }&nbsp;
                   {

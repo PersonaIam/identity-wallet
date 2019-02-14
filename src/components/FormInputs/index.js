@@ -64,18 +64,30 @@ const styles = {
 export const RenderSelectField = withStyles(styles)(translate('common')(class extends Component {
       state = {
         searchTerm: '',
+        isNative: null,
       };
 
-      render() {
+      UNSAFE_componentWillMount() {
+        const { options } = this.props;
+
+        const isNative = options.find(option => (typeof option.name !== 'string' || option.tooltip));
+
+        this.setState({ isNative: !isNative })
+      }
+
+    render() {
         const {input, label, meta, required, options, disabled, displayErrorWhenNotTouched, t, tReady, classes, hideNoneOption, ...custom} = this.props;
         const {touched, error} = meta;
+        const {isNative} = this.state;
 
         return (
           <FormControl disabled={disabled} error={!!((touched || displayErrorWhenNotTouched) && error)} fullWidth>
             <InputLabel required={required}>{t(label)}</InputLabel>
+
             <Select
               {...input}
               {...custom}
+              native={!!isNative}
               MenuProps={{
                 onEnter: () => {
                   setTimeout(() => {
@@ -90,50 +102,70 @@ export const RenderSelectField = withStyles(styles)(translate('common')(class ex
                 hideNoneOption
                   ? null
                   : (
-                    <MenuItem value="">
-                      <em>{t('None')}</em>
-                    </MenuItem>
+                    isNative
+                      ? (
+                        <option value=""></option>
+                      )
+                      : (
+                      <MenuItem value="">
+                        <em>{t('None')}</em>
+                      </MenuItem>
+                      )
                   )
               }
               {
                 options
-                  .map((option, index) => (
-                    <MenuItem
-                      key={index}
-                      value={option.value}
-                      disabled={!!option.disabled}
-                      divider={index !== options.length -1}
-                      style={
-                        option.tooltip
-                          ? {
-                            whiteSpace: 'pre-wrap',
-                            height: 'auto',
+                  .map((option, index) => {
+                    if (isNative) {
+                      return (
+                        <option
+                          key={index}
+                          value={option.value}
+                          disabled={!!option.disabled}
+                        >
+                          { t(option.name) }
+                        </option>
+                      );
+                    }
+                    return (
+                      (
+                        <MenuItem
+                          key={index}
+                          value={option.value}
+                          disabled={!!option.disabled}
+                          divider={index !== options.length -1}
+                          style={
+                            option.tooltip
+                              ? {
+                                whiteSpace: 'pre-wrap',
+                                height: 'auto',
+                              }
+                              : null
                           }
-                          : null
-                      }
-                    >
-                      <div>
-                        {typeof option.name === 'string' ? t(option.name) : option.name}
+                        >
+                          <div>
+                            {typeof option.name === 'string' ? t(option.name) : option.name}
 
-                        {
-                          option.tooltip
-                            ? (
-                              <Typography
-                                variant="caption"
-                                style={{ maxWidth: 210, marginBottom: 8 }}
-                                className="flex"
-                                component="p"
-                              >
-                                <Info />{option.tooltip}
-                              </Typography>
-                            )
-                            : null
-                        }
+                            {
+                              option.tooltip
+                                ? (
+                                  <Typography
+                                    variant="caption"
+                                    style={{ maxWidth: 210, marginBottom: 8 }}
+                                    className="flex"
+                                    component="p"
+                                  >
+                                    <Info />{option.tooltip}
+                                  </Typography>
+                                )
+                                : null
+                            }
 
-                      </div>
-                    </MenuItem>
-                    )
-                  )
+                          </div>
+                        </MenuItem>
+                      )
+                    );
+                  })
               }
             </Select>
 

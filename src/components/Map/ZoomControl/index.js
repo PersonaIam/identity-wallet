@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Plus from 'mdi-material-ui/Plus';
 import Minus from 'mdi-material-ui/Minus';
 
@@ -26,14 +26,14 @@ const ZoomControl = (props) => {
     return (
       <div className={classes.zoomControl}>
         <div>
-          <Button onClick={zoomIn} variant="fab" mini>
+          <Fab onClick={zoomIn} size="small">
             <Plus />
-          </Button>
+          </Fab>
         </div>
         <div style={{ marginTop: 6, }}>
-          <Button onClick={zoomOut} variant="fab" mini>
+          <Fab onClick={zoomOut} size="small">
             <Minus />
-          </Button>
+          </Fab>
         </div>
       </div>
     )

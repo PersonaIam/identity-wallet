@@ -5,7 +5,7 @@ import React from 'react';
 import compose from 'lodash/fp/compose';
 import {Field, reduxForm} from 'redux-form';
 import {RenderTextField} from 'components/FormInputs';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
 import Send from 'mdi-material-ui/Send';
@@ -33,14 +33,13 @@ const ChatForm = ({
             </div>
             &nbsp;
             <div>
-              <Button
+              <Fab
                 color="secondary"
-                variant="fab"
-                mini
+                size="small"
                 type="submit"
               >
                 <Send />
-              </Button>
+              </Fab>
             </div>
           </div>
         </CardContent>

@@ -4,7 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import ToggleIcon from 'material-ui-toggle-icon'
 import Search from 'mdi-material-ui/Magnify';
 import Close from 'mdi-material-ui/Close';
@@ -74,17 +74,16 @@ class LocationSearch extends Component {
             </Fade>
           </div>
           <div>
-            <Button
+            <Fab
               onClick={() => this.setState({ open: !open })}
-              variant="fab"
-              mini
+              size="small"
             >
               <ToggleIcon
                 on={open}
                 onIcon={<Close />}
                 offIcon={<Search />}
               />
-            </Button>
+            </Fab>
           </div>
         </div>
       </div>

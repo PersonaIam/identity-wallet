@@ -58,7 +58,7 @@ const NotariesSerchForm = ({handleSubmit, t}) => {
         <Grid item xs={12}>
           <br />
           <div className="flex justify-end">
-            <Button type="submit" variant="raised" color="primary">{ t('FIND_NOTARIES') }</Button>
+            <Button type="submit" variant="contained" color="primary">{ t('FIND_NOTARIES') }</Button>
           </div>
         </Grid>
       </Grid>

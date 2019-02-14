@@ -28,7 +28,7 @@ const ConfirmationDialog = ({ disabled, message, onClose, onSubmit, open, t, tit
           { t('Cancel') }
         </Button>
         &nbsp;
-        <Button color="primary" variant="raised" onClick={onSubmit} disabled={disabled}>
+        <Button color="primary" variant="contained" onClick={onSubmit} disabled={disabled}>
           { t('Confirm') }
         </Button>
       </DialogActions>

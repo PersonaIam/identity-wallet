@@ -75,7 +75,7 @@ const PersonaIdentity = ({ address, classes, onLogin, passphrase, t }) => {
       <br />
 
       <div className="flex justify-center">
-        <Button onClick={onLogin} variant="raised" color="primary">
+        <Button onClick={onLogin} variant="contained" color="primary">
           {t('ACCESS_APP')}
         </Button>
       </div>
