@@ -4,6 +4,7 @@
 export default (theme) => {
   return {
     identity: {
+      padding: 16,
       '& img': {
         width: '90%',
         maxWidth: 270,

@@ -9,7 +9,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -19,6 +18,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 import AttributeValidationCreateForm from './form';
+import {StepContent} from "@material-ui/core";
 
 const STEPS = [
   { label: 'SELECT_ATTRIBUTE' },
@@ -55,13 +55,14 @@ class AttributeValidationCreate extends Component {
               <Select
                 value={selectedAttribute}
                 onChange={(ev) => this.toggleSelectedAttribute(ev.target.value)}
+                native
               >
-                <MenuItem value="">{t('NONE')}</MenuItem>
+                <option value=""></option>
 
                 {
                   userAttributes.map(attribute => {
                     return (
-                      <MenuItem key={attribute.id} value={attribute.type}>{t(attribute.type)}</MenuItem>
+                      <option key={attribute.id} value={attribute.type}>{t(attribute.type)}</option>
                     );
                   })
                 }
@@ -112,7 +113,7 @@ class AttributeValidationCreate extends Component {
                   firstName: notaryInfo.contactInfo.firstName,
                   lastName: notaryInfo.contactInfo.lastName,
                   address: notaryInfo.personaAddress,
-                  type: t(selectedAttribute),
+                  type: t(selectedAttribute).toLowerCase(),
                 })
               }
             />
@@ -133,19 +134,21 @@ class AttributeValidationCreate extends Component {
         onClose={onClose}
       >
        <DialogContent className={classes.dialogContent}>
-         <Stepper activeStep={activeStep} orientation="horizontal">
+         <Stepper activeStep={activeStep} orientation="vertical">
            {STEPS.map(({ label }, index) => {
              return (
                <Step key={label}>
                  <StepLabel onClick={() => this.toggleStepLabelClick(index)}>{t(label)}</StepLabel>
+
+                 <StepContent>
+                   <CardContent>
+                     { this.getCurrentStep() }
+                   </CardContent>
+                 </StepContent>
                </Step>
              );
            })}
          </Stepper>
-
-         <CardContent>
-           { this.getCurrentStep() }
-         </CardContent>
        </DialogContent>
       </Dialog>
     )

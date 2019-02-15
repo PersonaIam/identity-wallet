@@ -34,6 +34,14 @@ const styles = theme => {
       [theme.breakpoints.up('md')]: {
         minHeight: toolbarHeight.md,
       },
+      '& a': {
+        [theme.breakpoints.down('xs')]: {
+          '& *': {
+            color: '#FFFFFF !important',
+            lineHeight: 1,
+          },
+        },
+      },
     },
     logo: {
       display: 'flex',

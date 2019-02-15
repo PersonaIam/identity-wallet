@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import { withStyles } from '@material-ui/core/styles';
+import withWidth from '@material-ui/core/withWidth';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
@@ -189,6 +190,7 @@ class AccountIdentity extends Component {
         (attribute) => {
           return {
             value: attribute.name,
+            disabled: true,
             name: (
               <span className={classes.createdAttribute}>
                 <Tooltip title={t('EXISTING_ATTRIBUTE', { value: t(attribute.name) })}>
@@ -197,9 +199,6 @@ class AccountIdentity extends Component {
                 { t(attribute.name) }
               </span>
             ),
-            tooltip: attribute.data_type === AVAILABLE_DATA_TYPES.FILE && isAnyRemainingAttributesNotFile
-              ? t('PLEASE_ADD_ALL_ATTRIBUTES_IN_ORDER_TO_UPLOAD', { attribute: t(attribute.name) })
-              : null
           }
         }
       ),
@@ -222,7 +221,7 @@ class AccountIdentity extends Component {
   };
 
   render() {
-    const { attributeTypes, classes, getUserAttributes, isLoading, t, userInfo } = this.props;
+    const { attributeTypes, classes, getUserAttributes, isLoading, t, userInfo, width } = this.props;
     const {
       alertContent,
       selectedAttribute,
@@ -263,59 +262,86 @@ class AccountIdentity extends Component {
               />
 
               <div>
-                <div className={`flex space-between ${classes.cardHeaderContent}`}>
-                  <Typography component="h2" variant="h4" color="textSecondary">{ t('MY_IDENTITY') }</Typography>
+                <div className={`flex align-end space-between ${classes.cardHeaderContent}`}>
+                  <Typography component="h2" variant="h4" color="textSecondary">
+                    { t('MY_IDENTITY') }
+                  </Typography>
 
-                  <div className="text-center">
-                    <Fade spy={isUserAttributesLoading}>
-                      <Fragment>
-                        {
-                          isUserAttributesLoading
-                            ? (
-                              <Fragment>
-                                <CircularProgress color="secondary" size={32}/>
-                              </Fragment>
-                            )
-                            : null
-                        }
+                  <div className={ width === 'xs' || width === 'sm' ? '' : 'flex align-center' }>
+                    {
+                      !isLoading
+                      && !(width === 'xs' || width === 'sm')
+                        ? (
+                          <div style={{ minWidth: 240 }}>
+                            <SelectAttributeForCreation
+                              onSubmit={(values) => {
+                                const attribute = remainingAttributes
+                                  .find((att) => att.name === values.attribute );
 
-                        <div className="flex">
-                          <div>
-                            <Typography component="p" variant="caption">{t('COMPLETED')}</Typography>
-
-                            <Typography component="p" color="textPrimary">{attributeProgress}%</Typography>
+                                this.onAttributeSelect(attribute)
+                              }}
+                              attributes={this.getAttributesForCreate(createdAttributes, remainingAttributes)}
+                              t={t}
+                            />
                           </div>
+                        )
+                        : null
+                    }
+                    <div className="text-center">
+                      <Fade spy={isUserAttributesLoading}>
+                        <Fragment>
+                          {
+                            isUserAttributesLoading
+                              ? (
+                                <Fragment>
+                                  <CircularProgress color="secondary" size={32}/>
+                                </Fragment>
+                              )
+                              : null
+                          }
 
-                          <Tooltip title={t('RELOAD')}>
-                            <IconButton color="secondary" onClick={() => getUserAttributes(userInfo.personaAddress)}>
-                              <Reload />
-                            </IconButton>
-                          </Tooltip>
-                        </div>
-                      </Fragment>
-                    </Fade>
+                          <div className="flex">
+                            <div>
+                              <Typography component="p" variant="caption">{t('COMPLETED')}</Typography>
+
+                              <Typography component="p" color="textPrimary">{attributeProgress}%</Typography>
+                            </div>
+
+                            <Tooltip title={t('RELOAD')}>
+                              <IconButton color="secondary" onClick={() => getUserAttributes(userInfo.personaAddress)}>
+                                <Reload />
+                              </IconButton>
+                            </Tooltip>
+                          </div>
+                        </Fragment>
+                      </Fade>
+                    </div>
                   </div>
                 </div>
-
-                {
-                  isLoading
-                    ? null
-                    : (
-                      <SelectAttributeForCreation
-                        onSubmit={(values) => {
-                          const attribute = remainingAttributes
-                            .find((att) => att.name === values.attribute );
-
-                          this.onAttributeSelect(attribute)
-                        }}
-                        attributes={this.getAttributesForCreate(createdAttributes, remainingAttributes)}
-                        t={t}
-                      />
-                    )
-                }
               </div>
             </div>
           </CardHeader>
+
+          {
+            !isLoading
+            && (width === 'xs' || width === 'sm')
+              ? (
+                <SelectAttributeForCreation
+                  onSubmit={(values) => {
+                    const attribute = remainingAttributes
+                      .find((att) => att.name === values.attribute );
+
+                    this.onAttributeSelect(attribute)
+                  }}
+                  attributes={this.getAttributesForCreate(createdAttributes, remainingAttributes)}
+                  t={t}
+                />
+              )
+              : null
+          }
+
+          <br />
+          <br />
 
           <CardContent>
             <Table
@@ -411,4 +437,6 @@ const withTranslate = translate('common')(withConnect);
 
 const withStyle = withStyles(styles)(withTranslate);
 
-export default withStyle;
+const withW = withWidth()(withStyle);
+
+export default withW;

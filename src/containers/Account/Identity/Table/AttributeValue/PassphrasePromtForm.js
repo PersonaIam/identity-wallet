@@ -34,38 +34,38 @@ class IdentityForm extends Component {
         maxWidth="md"
         open={true}
         onClose={onClose}
+        onSubmit={handleSubmit}
+        PaperComponent="form"
         TransitionComponent={Zoom}
       >
-        <form onSubmit={handleSubmit}>
-          <DialogTitle>{t('PROVIDE_PASSPHRASE')}</DialogTitle>
+        <DialogTitle>{t('PROVIDE_PASSPHRASE')}</DialogTitle>
 
-          <DialogContent style={{width: 500, maxWidth: '100%'}}>
-            <DialogContentText>
-              {t('PROVIDE_PASSPHRASE_TO_DECRYPT')}
-            </DialogContentText>
+        <DialogContent style={{width: 500, maxWidth: '100%'}}>
+          <DialogContentText>
+            {t('PROVIDE_PASSPHRASE_TO_DECRYPT')}
+          </DialogContentText>
 
-            <Grid container spacing={16}>
-              <Grid item xs={12}>
-                <Field
-                  name="passphrase"
-                  label="PASSPHRASE"
-                  type="password"
-                  component={PassphraseInput}
-                  required
-                />
-              </Grid>
+          <Grid container spacing={16}>
+            <Grid item xs={12}>
+              <Field
+                name="passphrase"
+                label="PASSPHRASE"
+                type="password"
+                component={PassphraseInput}
+                required
+              />
             </Grid>
-          </DialogContent>
+          </Grid>
+        </DialogContent>
 
-          <DialogActions>
-            <Button onClick={onClose} color="primary">
-              {t('CANCEL')}
-            </Button>
-            <Button type="submit" color="secondary">
-              {t('SUBMIT')}
-            </Button>
-          </DialogActions>
-        </form>
+        <DialogActions>
+          <Button onClick={onClose} color="primary">
+            {t('CANCEL')}
+          </Button>
+          <Button type="submit" color="primary" variant="outlined">
+            {t('SUBMIT')}
+          </Button>
+        </DialogActions>
       </Dialog>
     );
   }

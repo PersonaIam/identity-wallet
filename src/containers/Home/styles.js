@@ -12,6 +12,11 @@ const styles = (theme) => {
         padding: 20,
       },
     },
+    section1: {
+      [theme.breakpoints.up('md')]: {
+        padding: '16px 90px',
+      },
+    },
     form: {
       background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
       paddingBottom: 30,

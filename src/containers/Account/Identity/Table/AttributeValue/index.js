@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Check from 'mdi-material-ui/AccountCheck';
 import Edit from 'mdi-material-ui/Pencil';
 import Eye from 'mdi-material-ui/Eye';
 import EyeOff from 'mdi-material-ui/EyeOff';
@@ -36,7 +37,7 @@ const styles = (theme) => {
     editButton: {
       '& *': {
         color: `${theme.palette.primary.main} !important`
-      }
+      },
     },
   };
 };
@@ -144,6 +145,12 @@ class Index extends Component {
 
     const showFilePreview = isFile && decryptedValue;
 
+    const isValidationDisabled =
+      attribute.options
+      && attribute.userAttribute
+      && attribute.options.documentRequired
+      && !attribute.userAttribute.attributeAssociations.length;
+
     const DecryptTooltip = () => (
       <div>
         <p>{t('YOUR_THE_OWNER')}</p>
@@ -187,7 +194,7 @@ class Index extends Component {
                         &nbsp;&nbsp;
                         <Button
                           size="small"
-                          color="secondary"
+                          color="primary"
                           variant="outlined"
                           onClick={
                             () => {
@@ -216,14 +223,21 @@ class Index extends Component {
                           </Button>
                         </Tooltip>
                         &nbsp;&nbsp;
-                        <Button
-                          onClick={() => onAttributeValidateRequest(attribute)}
-                          variant="outlined"
-                          color="primary"
-                          className={classes.editButton}
-                        >
-                          {t('VALIDATE_ATTRIBUTE')}
-                        </Button>
+                        <Tooltip title={
+                          isValidationDisabled ? t('ATTRIBUTE_ASSOCIATIONS_REQUIRED') : ''
+                        }>
+                          <div>
+                            <Button
+                              onClick={() => onAttributeValidateRequest(attribute)}
+                              variant="outlined"
+                              color="primary"
+                              className={isValidationDisabled ? '' : classes.editButton}
+                              disabled={isValidationDisabled}
+                            >
+                              <Check/>&nbsp;&nbsp;{t('VALIDATE_ATTRIBUTE')}
+                            </Button>
+                          </div>
+                        </Tooltip>
                       </div>
                     )
                 }
@@ -252,14 +266,21 @@ class Index extends Component {
                   {t('DOWNLOAD_AND_PREVIEW')}
                 </Button>
                 &nbsp;&nbsp;
-                <Button
-                  onClick={() => onAttributeValidateRequest(attribute)}
-                  variant="outlined"
-                  color="secondary"
-                  className={classes.editButton}
-                >
-                  {t('VALIDATE_ATTRIBUTE')}
-                </Button>
+                <Tooltip title={
+                  isValidationDisabled ? t('ATTRIBUTE_ASSOCIATIONS_REQUIRED') : ''
+                }>
+                  <div>
+                    <Button
+                      onClick={() => onAttributeValidateRequest(attribute)}
+                      variant="outlined"
+                      color="primary"
+                      className={isValidationDisabled ? '' : classes.editButton}
+                      disabled={isValidationDisabled}
+                    >
+                      <Check/>&nbsp;&nbsp;{t('VALIDATE_ATTRIBUTE')}
+                    </Button>
+                  </div>
+                </Tooltip>
               </div>
             )
             : null

@@ -43,7 +43,7 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                             <Typography
                               variant="caption"
                               component="span"
-                              className="flex"
+                              className="flex align-center"
                               style={{ wordBreak: 'break-all' }}
                             >
                               <Eye style={{ fontSize: '14px', marginRight: 2 }}/>
@@ -56,7 +56,7 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                             <Typography
                               variant="caption"
                               component="span"
-                              className="flex"
+                              className="flex align-center"
                               style={{ wordBreak: 'break-all' }}
                             >
                               <Remote style={{ fontSize: '14px', marginRight: 2 }}/>
@@ -97,6 +97,8 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                                 {request.validator}
                               </Typography>
 
+                              { renderValidationType()}
+
                               <Typography
                                 variant="caption"
                                 component="span"
@@ -110,8 +112,6 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                                   moment(personaStampToDate(request.timestamp)).format(DATE_TIME_FORMAT)
                                 }
                               </Typography>
-
-                              { renderValidationType()}
                             </span>
                           }
                         />

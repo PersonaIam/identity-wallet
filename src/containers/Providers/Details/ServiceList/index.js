@@ -56,7 +56,7 @@ function ProviderServiceList(props) {
                                   ? (
                                     service.userIdentityRequest
                                       ? (
-                                        <Typography variant="body1" color="textSecondary" component="span">
+                                        <Typography variant="body2" color="textSecondary" component="span">
                                           {t(service.userIdentityRequest.status)}
                                         </Typography>
                                       )
@@ -76,13 +76,13 @@ function ProviderServiceList(props) {
                               }
                             </div>
 
-                            <Typography variant="body1" color="textSecondary" component="span" gutterBottom>
+                            <Typography variant="body2" color="textSecondary" component="span" gutterBottom>
                               {service.description}
                             </Typography>
 
                             <br />
 
-                            <Typography variant="body1" color="textSecondary" component="span">
+                            <Typography variant="body2" color="textSecondary" component="span">
                               <strong>{t('REQUIRED_ATTRIBUTES')}</strong>
                             </Typography>
 
@@ -127,7 +127,7 @@ function ProviderServiceList(props) {
 
                             <br />
 
-                            <Typography variant="body1" color="textSecondary" component="span">
+                            <Typography variant="body2" color="textSecondary" component="span">
                               {t('CREATED_ON', { value: moment(personaStampToDate(service.timestamp)).format(DATE_TIME_FORMAT)})}
                             </Typography>
                           </CardContent>

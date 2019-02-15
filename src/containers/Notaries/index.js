@@ -7,9 +7,11 @@ import { connect } from 'react-redux';
 import { translate } from 'react-i18next';
 import CardContent from '@material-ui/core/CardContent';
 import Divider from '@material-ui/core/Divider';
+import Fab from '@material-ui/core/Fab';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import Back from 'mdi-material-ui/ChevronLeft';
 import NotariesSearchForm from 'components/Notaries/SearchForm';
 import NotaryList from 'components/Notaries/List';
 import { getNotariesByLocation, resetNotaries } from 'actions/notaries';
@@ -24,7 +26,15 @@ const NOTARY_LIST_TABS = [
 class Notaries extends Component {
   state = {
     activeTab: NOTARY_LIST_TABS[0].value,
+    isSearchSubmitted: false,
     selectedNotary: null,
+  };
+
+  toggleIsSearchSubmitted = () => {
+    this.setState((prevState) => ({
+      ...prevState,
+      isSearchSubmitted: !prevState.isSearchSubmitted,
+    }));
   };
 
   handleChangeTab = (event, value) => {
@@ -69,7 +79,7 @@ class Notaries extends Component {
 
   render() {
     const { notaryInfoList, favoriteNotaries, t } = this.props;
-    const { activeTab, selectedNotary } = this.state;
+    const { activeTab, selectedNotary, isSearchSubmitted } = this.state;
 
     const getTabLabel = (index) => {
       switch (index) {
@@ -102,23 +112,47 @@ class Notaries extends Component {
           {
             activeTab === NOTARY_LIST_TABS[0].value
               ? (
-                <Fragment>
-                  <Typography variant="h4">
-                    {t('FIND_NOTARIES')}
-                  </Typography>
+                isSearchSubmitted
+                  ? (
+                    <div
+                      className="flex align-center"
+                      style={{ padding: '4px 0 16px 0' }}
+                    >
+                      <Fab
+                        color="primary"
+                        onClick={this.toggleIsSearchSubmitted}
+                        size="small">
+                        <Back />
+                      </Fab>
+                      &nbsp;
+                      <Typography color="textSecondary">
+                        { t("RESET_SEARCH") }
+                      </Typography>
+                    </div>
+                  )
+                  : (
+                    <Fragment>
+                      <Typography variant="h4">
+                        {t('FIND_NOTARIES')}
+                      </Typography>
 
-                  <Typography variant="body1">
-                    {t("PROVIDE_LOCATION_TO_FIEND_BEST_NOTARIES")}
-                  </Typography>
-                  <br/>
-                  <NotariesSearchForm
-                    countryInfoList={[]}
-                    onSubmit={this.onSearchSubmit}
-                    t={t}
-                  />
+                      <Typography variant="body2" color="textSecondary">
+                        {t("PROVIDE_LOCATION_TO_FIEND_BEST_NOTARIES")}
+                      </Typography>
+                      <br/>
+                      <NotariesSearchForm
+                        onSubmit={
+                          (values) => {
+                            this.onSearchSubmit(values);
+                            this.toggleIsSearchSubmitted();
+                          }
+                        }
+                        t={t}
+                      />
 
-                  <br/>
-                </Fragment>
+                      <br/>
+                    </Fragment>
+                  )
               )
               : null
           }

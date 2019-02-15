@@ -60,9 +60,6 @@ class SelectAttributeForCreation extends Component {
             </div>
           </div>
         </div>
-
-        <br />
-        <br />
       </form>
     );
   }

@@ -41,7 +41,12 @@ class Profile extends Component {
 
     for (let key in editableContactInfoValues) {
       if (values.contactInfo[key]) {
-        contactInfo[key] = values.contactInfo[key];
+        if (key === 'countryId') {
+          contactInfo[key] = parseInt(values.contactInfo[key], 10);
+        }
+        else {
+          contactInfo[key] = values.contactInfo[key];
+        }
       }
     }
 

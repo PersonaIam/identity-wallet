@@ -23,7 +23,18 @@ import ProviderLabel from 'components/ProviderLabel';
 import FavButton from './FavoriteButton';
 import styles from './styles';
 
-const NotariesListItem = ({classes, favoriteNotaries, notaryInfo, onSelect, openConversation, t, userInfo}) => {
+const NotariesListItem = (
+  {
+    classes,
+    favoriteNotaries,
+    notaryInfo,
+    onMessage,
+    onSelect,
+    openConversation,
+    t,
+    userInfo,
+  }
+) => {
   const contactInfo = notaryInfo.contactInfo;
 
   const displayAddress = [];
@@ -115,7 +126,11 @@ const NotariesListItem = ({classes, favoriteNotaries, notaryInfo, onSelect, open
                     <Button
                       color="secondary"
                       //variant="contained"
-                      onClick={() => openConversation([notaryInfo.personaAddress])}
+                      onClick={() => {
+                        openConversation([notaryInfo.personaAddress]);
+
+                        if (onMessage) onMessage();
+                      }}
                       disabled={disabled}
                     >
                       {
@@ -152,6 +167,7 @@ NotariesListItem.propTypes = {
   classes: PropTypes.object.isRequired,
   notaryInfo: PropTypes.object.isRequired,
   favoriteNotaries: PropTypes.object.isRequired,
+  onMessage: PropTypes.func,
   onSelect: PropTypes.func,
   openConversation: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

@@ -36,7 +36,7 @@ const styles = (theme) => {
         position: 'relative',
         '& .link-container': {
           margin: '0 28px 20px',
-          padding: 16,
+          padding: '8px 16px',
           '& h3': {
             wordBreak: 'break-all',
           },
@@ -44,7 +44,7 @@ const styles = (theme) => {
         '& button': {
           position: 'absolute',
           right: 0,
-          top: 10,
+          top: 6,
         },
       },
     },
@@ -58,6 +58,9 @@ const styles = (theme) => {
       '& *': {
         color: '#FFF',
       },
+    },
+    smallTabs: {
+      minHeight: 36,
     },
     avatar: {
       background: 'rgba(0,0,0,0)',

@@ -95,6 +95,8 @@ class IdentityUseActionForm extends Component {
         maxWidth="md"
         open={true}
         onClose={onClose}
+        PaperComponent="form"
+        onSubmit={handleSubmit}
         TransitionComponent={Zoom}
       >
         {
@@ -141,7 +143,7 @@ class IdentityUseActionForm extends Component {
           <Button onClick={onClose} color="primary" disabled={isLoading}>
             {t('CANCEL')}
           </Button>
-          <Button onClick={handleSubmit} color="primary" variant="outlined" disabled={isLoading}>
+          <Button type="submit" color="primary" variant="outlined" disabled={isLoading}>
             {t('SUBMIT')}
             {
               isLoading

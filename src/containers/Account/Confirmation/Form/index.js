@@ -67,7 +67,7 @@ class CreatePasswordForm extends Component {
         </Typography>
 
         <Typography component="p">
-          { t('*_LONG') }
+          { t('N_LONG', { value: 8 }) }
         </Typography>
       </div>
     );

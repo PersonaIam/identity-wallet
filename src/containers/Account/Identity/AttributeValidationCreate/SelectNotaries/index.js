@@ -5,9 +5,13 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CardContent from '@material-ui/core/CardContent';
+import Fab from '@material-ui/core/Fab';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Back from 'mdi-material-ui/ChevronLeft';
+import Fade from 'react-reveal/Fade';
 import NotaryList from 'components/Notaries/List';
 import NotariesSearchForm from 'components/Notaries/SearchForm';
 
@@ -37,6 +41,7 @@ class SelectNotaries extends Component {
     const {
       favoriteNotaries,
       notaryInfoList,
+      onClose,
       onSearchSubmit,
       onSelectNotary,
       t,
@@ -81,18 +86,36 @@ class SelectNotaries extends Component {
             ? (
               isSearchSubmitted
                 ? (
-                  'will need to implement back to search'
+                  <Fade>
+                    <div
+                      className="flex align-center"
+                      style={{ padding: '16px 16px 8px 16px' }}
+                    >
+                      <Fab
+                        color="primary"
+                        onClick={this.toggleIsSearchSubmitted}
+                        size="small">
+                        <Back />
+                      </Fab>
+                      &nbsp;
+                      <Typography color="textSecondary">
+                        { t("RESET_SEARCH") }
+                      </Typography>
+                    </div>
+                  </Fade>
                 )
                 : (
-                  <NotariesSearchForm
-                    onSubmit={
-                      (values) => {
-                        onSearchSubmit(values);
-                        this.toggleIsSearchSubmitted();
+                  <Fade>
+                    <NotariesSearchForm
+                      onSubmit={
+                        (values) => {
+                          onSearchSubmit(values);
+                          this.toggleIsSearchSubmitted();
+                        }
                       }
-                    }
-                    t={t}
-                  />
+                      t={t}
+                    />
+                  </Fade>
                 )
             )
             : null
@@ -101,14 +124,17 @@ class SelectNotaries extends Component {
         {
           displayNotaryList && displayNotaryList.length
             ? (
-              <CardContent>
-                <NotaryList
-                  notaryInfoList={displayNotaryList}
-                  favoriteNotaries={favoriteNotaries}
-                  onSelect={onSelectNotary}
-                  t={t}
-                />
-              </CardContent>
+              <Fade in={displayNotaryList && displayNotaryList.length}>
+                <CardContent>
+                  <NotaryList
+                    notaryInfoList={displayNotaryList}
+                    favoriteNotaries={favoriteNotaries}
+                    onSelect={onSelectNotary}
+                    onMessage={onClose}
+                    t={t}
+                  />
+                </CardContent>
+              </Fade>
             )
             : null
         }
@@ -120,6 +146,7 @@ class SelectNotaries extends Component {
 SelectNotaries.propTypes = {
   favoriteNotaries: PropTypes.object.isRequired,
   notaryInfoList: PropTypes.array,
+  onClose: PropTypes.func.isRequired,
   onSearchSubmit: PropTypes.func.isRequired,
   onSelectNotary: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

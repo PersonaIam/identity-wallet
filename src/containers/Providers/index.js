@@ -37,7 +37,7 @@ class Providers extends Component {
       <div>
         <br />
         <div className='flex space-between'>
-          <Typography variant='h4' gutterBottom>
+          <Typography variant='h4' color="textSecondary" gutterBottom>
             { t('PROVIDERS') }
           </Typography>
         </div>

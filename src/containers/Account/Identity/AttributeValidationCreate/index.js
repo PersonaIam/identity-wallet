@@ -17,7 +17,7 @@ import Close from 'mdi-material-ui/Close';
 import {getNotariesByLocation, resetNotaries} from 'actions/notaries';
 import styles from './styles';
 import SelectNotaries from './SelectNotaries';
-import AttributeValidationCreateForm from './form';
+import AttributeValidationCreateForm from './Form';
 
 const STEPS = [
   {name: 'SELECT_NOTARY', value: 0},
@@ -46,6 +46,7 @@ class AttributeValidationCreate extends Component {
             notaryInfoList={notaryInfoList}
             onSearchSubmit={this.onFindNotaries}
             onSelectNotary={this.onNotarySelect}
+            onClose={onClose}
             t={t}
           />
         );
@@ -70,7 +71,7 @@ class AttributeValidationCreate extends Component {
                   firstName: notaryInfo.contactInfo.firstName,
                   lastName: notaryInfo.contactInfo.lastName,
                   address: notaryInfo.personaAddress,
-                  type: t(selectedAttribute.name),
+                  type: t(selectedAttribute.name).toLowerCase(),
                 })
               }
             />
@@ -136,7 +137,7 @@ class AttributeValidationCreate extends Component {
           <span className="flex align-center">
             <span className="fill-flex">
              {t('CREATE_VALIDATION_REQUEST_FOR', {attribute: t(selectedAttribute.name).toLowerCase()})}
-          </span>
+            </span>
             &nbsp;
             <IconButton onClick={onClose}>
             <Close />

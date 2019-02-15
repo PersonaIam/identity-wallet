@@ -126,13 +126,15 @@ class AccountDetailsHeader extends Component {
         case 1:
           if ( isInvitationsLoading ) {
             return (
-              <Fragment>
+              <span className="flex align-center">
                 <span>
                   { t(INVITATION_TABS[index].name)}
                 </span>
 
-                <CircularProgress />
-              </Fragment>
+                &nbsp;
+
+                <CircularProgress size={16} color="secondary"/>
+              </span>
             );
           }
           else {
@@ -217,10 +219,24 @@ class AccountDetailsHeader extends Component {
               ? (
                 <Fragment>
                   <div className={classes.invitationContainer}>
-                    <Tabs value={invitationTab} onChange={this.handleChangeInvitationTab}>
+                    <Tabs
+                      value={invitationTab}
+                      onChange={this.handleChangeInvitationTab}
+                      classes={{
+                        root: classes.smallTabs,
+                      }}
+                    >
                       {
                         INVITATION_TABS.map((tab, index) => (
-                          <Tab value={tab.value} key={tab.value} label={getTabLabel(index)} className={classes.tab}/>
+                          <Tab
+                            key={tab.value}
+                            className={classes.tab}
+                            classes={{
+                              root: classes.smallTabs,
+                            }}
+                            label={getTabLabel(index)}
+                            value={tab.value}
+                          />
                         ))
                       }
                     </Tabs>
@@ -237,7 +253,7 @@ class AccountDetailsHeader extends Component {
                               </div>
                               <div>
                                 <Paper className="link-container">
-                                  <Typography variant="subtitle1" color="textPrimary">
+                                  <Typography variant="subtitle1" color="textPrimary" className="persona-address">
                                     {INVITATION_LINK(userInfo.referralInfo.referralCode)}
                                   </Typography>
                                 </Paper>
@@ -249,8 +265,11 @@ class AccountDetailsHeader extends Component {
                                   <Button
                                     variant="contained"
                                     color="secondary"
+                                    size="small"
                                   >
+                                    &nbsp;
                                     {t('COPY_LINK')}
+                                    &nbsp;
                                   </Button>
                                 </CopyToClipboard>
                               </div>

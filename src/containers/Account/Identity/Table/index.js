@@ -138,7 +138,7 @@ class IdentityTable extends Component {
                                         md={selectedAttribute ? 12 : 4}
                                         lg={selectedAttribute ? 12 : true}
                                       >
-                                        <Typography variant="body1" color="textPrimary" className="flex align-center">
+                                        <Typography variant="body2" color="textPrimary" className="flex align-center">
                                           {
                                             attribute.userAttribute && attribute.userAttribute.active
                                               ? (
@@ -152,7 +152,7 @@ class IdentityTable extends Component {
                                                 </Tooltip>
                                               )
                                           }
-
+                                          &nbsp;
                                           { t(attribute.name) }
                                         </Typography>
                                       </Grid>
@@ -236,6 +236,7 @@ class IdentityTable extends Component {
                                     <Typography
                                       variant="caption"
                                       className="flex align-center"
+                                      color="textSecondary"
                                       component="p"
                                     >
                                       <CalendarCheck style={{fontSize: 16, marginRight: 4}}/>

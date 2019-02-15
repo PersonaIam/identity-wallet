@@ -144,6 +144,8 @@ class ValidationActionForm extends Component {
         open={true}
         onClose={onClose}
         TransitionComponent={Zoom}
+        PaperComponent="form"
+        onSubmit={handleSubmit}
       >
         {
           isLoading
@@ -192,7 +194,7 @@ class ValidationActionForm extends Component {
           <Button onClick={onClose} color="primary" disabled={isLoading}>
             {t('CANCEL')}
           </Button>
-          <Button onClick={handleSubmit} color="primary" variant="outlined" disabled={isLoading}>
+          <Button type="submit" color="primary" variant="outlined" disabled={isLoading}>
             {t('SUBMIT')}
             {
               isLoading

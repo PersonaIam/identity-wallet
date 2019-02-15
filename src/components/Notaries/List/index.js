@@ -13,7 +13,7 @@ class NotaryList extends PureComponent {
   };
 
   render() {
-    const { favoriteNotaries, notaryInfoList, onSelect, t } = this.props;
+    const { favoriteNotaries, notaryInfoList, onMessage, onSelect, t } = this.props;
 
     return (
       <Fragment>
@@ -26,6 +26,7 @@ class NotaryList extends PureComponent {
                     key={index}
                     favoriteNotaries={favoriteNotaries}
                     notaryInfo={notaryInfo}
+                    onMessage={onMessage}
                     onSelect={onSelect}
                     t={t}
                   />
@@ -47,6 +48,7 @@ class NotaryList extends PureComponent {
 NotaryList.propTypes = {
   notaryInfoList: PropTypes.array.isRequired,
   favoriteNotaries: PropTypes.object.isRequired,
+  onMessage: PropTypes.func,
   onSelect: PropTypes.func,
   t: PropTypes.func.isRequired,
 };

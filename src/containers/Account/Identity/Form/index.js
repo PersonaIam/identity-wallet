@@ -48,10 +48,12 @@ class IdentityForm extends Component {
 
     return (
       <Dialog
+        PaperComponent="form"
+        TransitionComponent={Zoom}
         maxWidth="md"
         open={true}
         onClose={onClose}
-        TransitionComponent={Zoom}
+        onSubmit={handleSubmit}
       >
           <DialogTitle>{t('IDENTITY')} - {t(name)}</DialogTitle>
 
@@ -98,7 +100,7 @@ class IdentityForm extends Component {
             <Button onClick={onClose} color="primary">
               {t('CANCEL')}
             </Button>
-            <Button onClick={handleSubmit} color="primary" variant="outlined">
+            <Button type="submit" color="primary" variant="outlined">
               {t('SAVE')}
             </Button>
           </DialogActions>
