@@ -27,7 +27,7 @@ const EditAttributeAlert = ({ attributeData, classes, onClose, onSubmit, t }) =>
       </DialogTitle>
 
       <DialogContent className={classes.alertContainer}>
-        <Typography variant="title">
+        <Typography variant="h6">
           {t('EDIT_ATTRIBUTE_WARNING', { value: t(attributeName) })}
           {attributeAssociations.length ? ':' : null}
         </Typography>
@@ -39,7 +39,7 @@ const EditAttributeAlert = ({ attributeData, classes, onClose, onSubmit, t }) =>
                 {
                   attributeAssociations.map(attribute => (
                     <li key={attribute.name}>
-                      <Typography variant="subheading">
+                      <Typography variant="subtitle1">
                         {t(attribute.name)}
                       </Typography>
                     </li>

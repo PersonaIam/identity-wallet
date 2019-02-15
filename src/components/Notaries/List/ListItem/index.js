@@ -40,7 +40,7 @@ const NotariesListItem = ({classes, favoriteNotaries, notaryInfo, onSelect, open
       <Paper className={classes.notaryListItem}>
         <CardContent>
           <div className="flex align-center">
-            <Typography variant="title">
+            <Typography variant="h6">
               {notaryInfo.contactInfo.firstName}&nbsp;{notaryInfo.contactInfo.lastName}
             </Typography>
 

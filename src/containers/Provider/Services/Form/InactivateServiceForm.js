@@ -53,7 +53,7 @@ class InactivateProviderServiceForm extends Component {
               : null
           }
           <DialogTitle>
-            <Typography variant="title" component="span">
+            <Typography variant="h6" component="span">
               { t('INACTIVATE_SERVICE') }
             </Typography>
           </DialogTitle>

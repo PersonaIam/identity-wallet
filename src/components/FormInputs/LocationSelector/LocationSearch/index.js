@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
-import ToggleIcon from 'material-ui-toggle-icon'
+import ToggleIcon from 'material-ui-toggle-icon';
 import Search from 'mdi-material-ui/Magnify';
 import Close from 'mdi-material-ui/Close';
 import Fade from 'react-reveal/Fade';

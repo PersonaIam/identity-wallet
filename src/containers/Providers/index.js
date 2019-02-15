@@ -37,7 +37,7 @@ class Providers extends Component {
       <div>
         <br />
         <div className='flex space-between'>
-          <Typography variant='display1' gutterBottom>
+          <Typography variant='h4' gutterBottom>
             { t('PROVIDERS') }
           </Typography>
         </div>
@@ -64,7 +64,7 @@ class Providers extends Component {
                 )
                 : (
                   <div className="text-center">
-                    <Typography variant='display1'>
+                    <Typography variant='h4'>
                       { t('NO_PROVIDERS_AVAILABLE') }
                     </Typography>
                   </div>

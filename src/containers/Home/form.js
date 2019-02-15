@@ -94,18 +94,18 @@ class PreRegisterForm extends Component {
           </Grid>
 
           <Grid item xs={11}>
-            <Typography variant="display1" style={{ paddingLeft: 0 }}>
+            <Typography variant="h4" style={{ paddingLeft: 0 }}>
               Contact permission
             </Typography>
             <Divider style={{ backgroundColor: 'rgba(255,255,255,0.5)' }}/>
             <br />
 
-            <Typography variant="subheading">
+            <Typography variant="subtitle1">
               We want to send you a notification once Persona is up and running and you can register in order to create
               your Persona Identity and start enjoying all its benefits.
             </Typography>
 
-            <Typography variant="subheading">
+            <Typography variant="subtitle1">
               We'll always treat your personal details with the utmost care and will never sell them to other companies
               for marketing purposes. Please send us an email at&nbsp;
               <a href="mailto:hello@persona.im">hello@persona.im</a>&nbsp;

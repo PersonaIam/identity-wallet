@@ -138,7 +138,7 @@ class IdentityTable extends Component {
                                         md={selectedAttribute ? 12 : 4}
                                         lg={selectedAttribute ? 12 : true}
                                       >
-                                        <Typography variant="body2" color="textPrimary" className="flex align-center">
+                                        <Typography variant="body1" color="textPrimary" className="flex align-center">
                                           {
                                             attribute.userAttribute && attribute.userAttribute.active
                                               ? (
@@ -201,7 +201,7 @@ class IdentityTable extends Component {
                           ? <Loading />
                           : (
                             <div className="text-center">
-                              <Typography variant="display1">{ t('NO_ATTRIBUTES_CREATED_YET') }</Typography>
+                              <Typography variant="h4" color="textSecondary">{ t('NO_ATTRIBUTES_CREATED_YET') }</Typography>
                             </div>
                           )
                       )
@@ -225,7 +225,7 @@ class IdentityTable extends Component {
                         <div>
                           <div className="flex align-center" style={{paddingBottom: 8}}>
                             <div className="fill-flex">
-                              <Typography variant="title" color="textSecondary">
+                              <Typography variant="h6" color="textSecondary">
                                 {t(selectedAttribute.name)}
                               </Typography>
 
@@ -264,6 +264,7 @@ class IdentityTable extends Component {
                           <Divider/>
 
                           <br/>
+
                           <AttributeValue
                             attribute={selectedAttribute}
                             onEdit={onAttributeSelect}

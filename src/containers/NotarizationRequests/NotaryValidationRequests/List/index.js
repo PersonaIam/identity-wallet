@@ -22,7 +22,7 @@ import ValidationActions from './ValidationActions/index';
 const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
   return (
     <div>
-      <Typography variant='body1' gutterBottom>
+      <Typography variant='body2' gutterBottom>
         {t(title) + ` (${notarizationRequestInfoList.length})`}
       </Typography>
       <Divider light/>
@@ -79,7 +79,7 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                       >
                         <ListItemText
                           primary={
-                            <Typography variant="body2" color="textPrimary">
+                            <Typography variant="body1" color="textPrimary">
                               { t(request.type) }
                             </Typography>
                           }
@@ -88,7 +88,8 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                               <Typography
                                 variant="caption"
                                 component="span"
-                                className="flex"
+                                className="flex align-center"
+                                color="textPrimary"
                                 style={{ wordBreak: 'break-all' }}
                               >
                                 <Account style={{ fontSize: '14px', marginRight: 2 }}/>
@@ -99,7 +100,8 @@ const NotarizationRequestsList = ({t, title, notarizationRequestInfoList}) => {
                               <Typography
                                 variant="caption"
                                 component="span"
-                                className="flex"
+                                className="flex align-center"
+                                color="textSecondary"
                                 style={{ wordBreak: 'break-all' }}
                               >
                                 <Calendar style={{ fontSize: '14px', marginRight: 2 }}/>

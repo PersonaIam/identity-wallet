@@ -77,7 +77,7 @@ class AdminProviderForm extends Component {
               : null
           }
           <DialogTitle>
-            <Typography variant="title" component="span">
+            <Typography variant="h6" component="span">
               { t('PROVIDER_FORM') }
             </Typography>
           </DialogTitle>

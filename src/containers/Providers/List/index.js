@@ -54,7 +54,7 @@ class ProvidersList extends Component {
                         {
                           providerName &&
                           (
-                            <Typography variant="title" component="h2" gutterBottom>
+                            <Typography variant="h6" component="h2" gutterBottom>
                               { providerName }
                             </Typography>
                           )

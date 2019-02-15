@@ -94,7 +94,7 @@ class ProviderServices extends Component {
       <div>
         <br/>
         <div className="flex space-between">
-          <Typography variant="display1">
+          <Typography variant="h4">
             {t('MY_SERVICES')}
           </Typography>
 

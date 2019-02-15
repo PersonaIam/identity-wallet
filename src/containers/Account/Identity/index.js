@@ -223,7 +223,11 @@ class AccountIdentity extends Component {
 
   render() {
     const { attributeTypes, classes, getUserAttributes, isLoading, t, userInfo } = this.props;
-    const { alertContent, selectedAttribute, selectedAttributeForValidation } = this.state;
+    const {
+      alertContent,
+      selectedAttribute,
+      selectedAttributeForValidation,
+    } = this.state;
 
     const attributeProgress = this.getAttributesProgress();
 
@@ -260,7 +264,7 @@ class AccountIdentity extends Component {
 
               <div>
                 <div className={`flex space-between ${classes.cardHeaderContent}`}>
-                  <Typography component="h2" variant="display1">{ t('MY_IDENTITY') }</Typography>
+                  <Typography component="h2" variant="h4" color="textSecondary">{ t('MY_IDENTITY') }</Typography>
 
                   <div className="text-center">
                     <Fade spy={isUserAttributesLoading}>

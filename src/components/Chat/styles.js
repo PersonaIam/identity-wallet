@@ -10,12 +10,16 @@ export default (theme) => {
       zIndex: 1000,
       maxWidth: '90vw',
     },
+    chatArea: {
+      zIndex: 2000,
+    },
     badge: {
       color: '#FFF !important',
       background: `linear-gradient(60deg,#f5700c,#ff9800)`,
       width: 28,
       height: 28,
       boxShadow: theme.shadows[6],
+      borderRadius: '50%',
     }
   }
 }

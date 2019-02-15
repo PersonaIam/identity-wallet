@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 // import Loadable from 'react-loadable';
 // import Loading from 'components/Loading';
 
@@ -33,9 +33,9 @@ import {withStyles} from '@material-ui/core/styles';
 import {translate} from 'react-i18next';
 
 export const RenderTextField = translate('common')((props) => {
-  const { input, label, meta: { touched, error }, displayErrorWhenNotTouched, required, i18n, t, tReady, ...custom} = props;
+  const {input, label, meta: {touched, error}, displayErrorWhenNotTouched, required, i18n, t, tReady, ...custom} = props;
 
-  const inputProps = { required: !!required };
+  const inputProps = {required: !!required};
 
   if (custom.minLength) inputProps.maxLength = custom.minLength;
   if (custom.maxLength) inputProps.maxLength = custom.maxLength;
@@ -48,9 +48,9 @@ export const RenderTextField = translate('common')((props) => {
         label ? <InputLabel required={required}>{t(label)}</InputLabel> : null
       }
       <Input
-        { ...input } { ...custom } inputProps={inputProps}
+        {...input} {...custom} inputProps={inputProps}
       />
-      { !!((touched || displayErrorWhenNotTouched) && error) ? <FormHelperText>{ t(error) }</FormHelperText> : null }
+      {!!((touched || displayErrorWhenNotTouched) && error) ? <FormHelperText>{t(error)}</FormHelperText> : null}
     </FormControl>
   );
 });
@@ -62,121 +62,136 @@ const styles = {
 };
 
 export const RenderSelectField = withStyles(styles)(translate('common')(class extends Component {
-      state = {
-        searchTerm: '',
-        isNative: null,
-      };
+    state = {
+      searchTerm: '',
+      isNative: null,
+    };
 
-      UNSAFE_componentWillMount() {
-        const { options } = this.props;
+    UNSAFE_componentWillMount() {
+      const {options} = this.props;
 
-        const isNative = options.find(option => (typeof option.name !== 'string' || option.tooltip));
+      const isNative = options.find(option => {
+        return (typeof option.name !== 'string' || option.tooltip);
+      });
 
-        this.setState({ isNative: !isNative })
+      this.setState({isNative: !isNative})
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+      const newOptions = nextProps.options;
+      const {options} = this.props;
+
+      if (options !== newOptions) {
+        const isNative = newOptions.find(option => {
+          return (typeof option.name !== 'string' || option.tooltip);
+        });
+
+        this.setState({isNative: !isNative})
       }
+    }
 
-    render() {
-        const {input, label, meta, required, options, disabled, displayErrorWhenNotTouched, t, tReady, classes, hideNoneOption, ...custom} = this.props;
-        const {touched, error} = meta;
-        const {isNative} = this.state;
+  render() {
+      const {input, label, meta, required, options, disabled, displayErrorWhenNotTouched, t, tReady, classes, hideNoneOption, ...custom} = this.props;
+      const {touched, error} = meta;
+      const {isNative} = this.state;
 
-        return (
-          <FormControl disabled={disabled} error={!!((touched || displayErrorWhenNotTouched) && error)} fullWidth>
-            <InputLabel required={required}>{t(label)}</InputLabel>
+      return (
+        <FormControl disabled={disabled} error={!!((touched || displayErrorWhenNotTouched) && error)} fullWidth>
+          <InputLabel required={required}>{t(label)}</InputLabel>
 
-            <Select
-              {...input}
-              {...custom}
-              native={!!isNative}
-              MenuProps={{
-                onEnter: () => {
-                  setTimeout(() => {
-                    if (document.activeElement) {
-                      document.activeElement.blur();
-                    }
-                  }, 500);
-                },
-              }}
-            >
-              {
-                hideNoneOption
-                  ? null
-                  : (
-                    isNative
-                      ? (
-                        <option value=""></option>
-                      )
-                      : (
+          <Select
+            {...input}
+            {...custom}
+            native={!!isNative}
+            MenuProps={{
+              onEnter: () => {
+                setTimeout(() => {
+                  if (document.activeElement) {
+                    document.activeElement.blur();
+                  }
+                }, 500);
+              },
+            }}
+          >
+            {
+              hideNoneOption
+                ? null
+                : (
+                  isNative
+                    ? (
+                      <option value=""></option>
+                    )
+                    : (
                       <MenuItem value="">
                         <em>{t('None')}</em>
                       </MenuItem>
-                      )
-                  )
-              }
-              {
-                options
-                  .map((option, index) => {
-                    if (isNative) {
-                      return (
-                        <option
-                          key={index}
-                          value={option.value}
-                          disabled={!!option.disabled}
-                        >
-                          { t(option.name) }
-                        </option>
-                      );
-                    }
+                    )
+                )
+            }
+            {
+              options
+                .map((option, index) => {
+                  if (isNative) {
                     return (
-                      (
-                        <MenuItem
-                          key={index}
-                          value={option.value}
-                          disabled={!!option.disabled}
-                          divider={index !== options.length -1}
-                          style={
+                      <option
+                        key={index}
+                        value={option.value}
+                        disabled={!!option.disabled}
+                      >
+                        {t(option.name)}
+                      </option>
+                    );
+                  }
+                  return (
+                    (
+                      <MenuItem
+                        key={index}
+                        value={option.value}
+                        disabled={!!option.disabled}
+                        divider={index !== options.length - 1}
+                        style={
+                          option.tooltip
+                            ? {
+                              whiteSpace: 'pre-wrap',
+                              height: 'auto',
+                            }
+                            : null
+                        }
+                      >
+                        <div>
+                          {typeof option.name === 'string' ? t(option.name) : option.name}
+
+                          {
                             option.tooltip
-                              ? {
-                                whiteSpace: 'pre-wrap',
-                                height: 'auto',
-                              }
+                              ? (
+                                <Typography
+                                  variant="caption"
+                                  style={{maxWidth: 210, marginBottom: 8}}
+                                  className="flex"
+                                  component="p"
+                                >
+                                  <Info/>{option.tooltip}
+                                </Typography>
+                              )
                               : null
                           }
-                        >
-                          <div>
-                            {typeof option.name === 'string' ? t(option.name) : option.name}
 
-                            {
-                              option.tooltip
-                                ? (
-                                  <Typography
-                                    variant="caption"
-                                    style={{ maxWidth: 210, marginBottom: 8 }}
-                                    className="flex"
-                                    component="p"
-                                  >
-                                    <Info />{option.tooltip}
-                                  </Typography>
-                                )
-                                : null
-                            }
+                        </div>
+                      </MenuItem>
+                    )
+                  );
+                })
+            }
+          </Select>
 
-                          </div>
-                        </MenuItem>
-                      )
-                    );
-                  })
-              }
-            </Select>
-
-            {!!((touched || displayErrorWhenNotTouched) && error) ? <FormHelperText>{t(error)}</FormHelperText> : null}
-          </FormControl>
-        );
-      }
+          {!!((touched || displayErrorWhenNotTouched) && error) ? <FormHelperText>{t(error)}</FormHelperText> : null}
+        </FormControl>
+      );
     }
-  ));
+  }
+));
 
-export const RenderCheckbox = translate('common')(({ input, label, disabled, t, tReady, ...custom}) => {
+export const RenderCheckbox = translate('common')(({input, label, disabled, t, tReady, ...custom}) => {
   return (
     <FormControlLabel
       control={
@@ -184,7 +199,7 @@ export const RenderCheckbox = translate('common')(({ input, label, disabled, t, 
           checked={input.value}
           onChange={input.onChange}
           disabled={!!disabled}
-          { ...custom }
+          {...custom}
         />
       }
       label={t(label)}
@@ -192,7 +207,7 @@ export const RenderCheckbox = translate('common')(({ input, label, disabled, t, 
   );
 });
 
-export const RenderSwitch = translate('common')(({ input, label, disabled, t, tReady, ...custom}) => {
+export const RenderSwitch = translate('common')(({input, label, disabled, t, tReady, ...custom}) => {
   return (
     <FormControlLabel
       control={
@@ -200,7 +215,7 @@ export const RenderSwitch = translate('common')(({ input, label, disabled, t, tR
           checked={input.value}
           onChange={input.onChange}
           disabled={!!disabled}
-          { ...custom }
+          {...custom}
         />
       }
       label={t(label)}
@@ -208,8 +223,8 @@ export const RenderSwitch = translate('common')(({ input, label, disabled, t, tR
   );
 });
 
-export const RenderDatePicker = translate('common')(({ input, label, disablePast, meta, t, tReady, required, format, minDate, maxDate, openToYearSelection }) => {
-  const { touched, error } = meta;
+export const RenderDatePicker = translate('common')(({input, label, disablePast, meta, t, tReady, required, format, minDate, maxDate, openToYearSelection}) => {
+  const {touched, error} = meta;
 
   return (
     <div className="date-picker-wrapper">

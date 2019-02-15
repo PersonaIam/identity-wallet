@@ -63,7 +63,7 @@ class ProviderServiceForm extends Component {
               : null
           }
           <DialogTitle>
-            <Typography variant="title" component="span">
+            <Typography variant="h6" component="span">
               { t('SERVICE_FORM') }
             </Typography>
           </DialogTitle>

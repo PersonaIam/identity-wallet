@@ -92,7 +92,7 @@ class IdentityUse extends Component {
       return (
         <div className="text-center">
           <br />
-          <Typography variant="display1">{ t('NO_REQUESTS_CREATED_YET') }</Typography>
+          <Typography variant="h4" color="textSecondary">{ t('NO_REQUESTS_CREATED_YET') }</Typography>
         </div>
       );
     }

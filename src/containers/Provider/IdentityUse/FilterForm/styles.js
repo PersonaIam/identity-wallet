@@ -7,7 +7,7 @@ const styles = (theme) => {
       borderRadius: '10px',
       paddingBottom: 10,
       // background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
-      '& h1': {
+      '& h4': {
         color: 'rgba(250,250,250,0.92)',
         padding: '12px 24px 0 24px',
       },

@@ -78,7 +78,7 @@ class CreateIdentityUseRequestForm extends Component {
               : null
           }
           <DialogTitle>
-            <Typography variant="title" component="span">
+            <Typography variant="h6" component="span">
               { t('REQUEST_SERVICE') }
             </Typography>
           </DialogTitle>
@@ -87,17 +87,17 @@ class CreateIdentityUseRequestForm extends Component {
               missingAttributes && missingAttributes.length
                 ? (
                   <Fragment>
-                    <Typography variant="headline" color="secondary" className="flex align-center" gutterBottom>
+                    <Typography variant="h5" color="secondary" className="flex align-center" gutterBottom>
                       <AlertCircle />&nbsp;{t('CANNOT_REQUEST_SERVICE')}
                     </Typography>
 
-                    <Typography variant="subheading" color="textSecondary" gutterBottom>
+                    <Typography variant="subtitle1" color="textSecondary" gutterBottom>
                       {t('SERVICE_REQUIRES_SOME_ATTRIBUTES_THAT_ARE_INACTIVE')}:
                     </Typography>
 
 
 
-                    <Typography variant="subheading" color="textSecondary" gutterBottom>
+                    <Typography variant="subtitle1" color="textSecondary" gutterBottom>
                       {
                         missingAttributes.map((attribute, index) => {
                           return (<strong key={index}>

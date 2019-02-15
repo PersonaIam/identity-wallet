@@ -84,10 +84,7 @@ class Notaries extends Component {
       ? notaryInfoList
       : Object
         .keys(favoriteNotaries)
-        .map(key => favoriteNotaries[key].notaryInfo)
-
-
-    console.log('INSIDE RENDER');
+        .map(key => favoriteNotaries[key].notaryInfo);
 
     return (
       <Fragment>
@@ -106,7 +103,7 @@ class Notaries extends Component {
             activeTab === NOTARY_LIST_TABS[0].value
               ? (
                 <Fragment>
-                  <Typography variant="display1">
+                  <Typography variant="h4">
                     {t('FIND_NOTARIES')}
                   </Typography>
 
@@ -130,7 +127,7 @@ class Notaries extends Component {
             activeTab === NOTARY_LIST_TABS[1].value
               ? (
                 <Fragment>
-                  <Typography variant="display1">
+                  <Typography variant="h4">
                     {t('FAVORITE_NOTARIES')}
                   </Typography>
 

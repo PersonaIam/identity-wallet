@@ -8,7 +8,7 @@ import MapMarker from 'mdi-material-ui/MapMarkerRadius';
 const AddressDisplay = ({ address, country }) => {
   return (
     <div style={{ padding: '16px 8px' }}>
-      <Typography variant="subheading" color="textSecondary" className="flex align-center">
+      <Typography variant="subtitle1" color="textSecondary" className="flex align-center">
         <MapMarker />&nbsp;<span>{address}, {country}</span>
       </Typography>
     </div>

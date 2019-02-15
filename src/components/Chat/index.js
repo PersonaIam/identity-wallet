@@ -49,42 +49,44 @@ class Chat extends Component {
 
     return (
       <div className={classes.chat}>
-        {
-          showConversations && !selectedConversation
-            ? (
-              <Slide right>
-                <Paper>
-                  <ConversationsList
-                    conversations={conversations}
-                    onClose={() => this.toggleShowConversations(null)}
-                    openConversation={openConversation}
-                    t={t}
-                    userInfo={userInfo}
-                  />
-                </Paper>
-              </Slide>
-            )
-            : null
-        }
+        <div className={classes.chatArea}>
+          {
+            showConversations && !selectedConversation
+              ? (
+                <Slide right>
+                  <Paper>
+                    <ConversationsList
+                      conversations={conversations}
+                      onClose={() => this.toggleShowConversations(null)}
+                      openConversation={openConversation}
+                      t={t}
+                      userInfo={userInfo}
+                    />
+                  </Paper>
+                </Slide>
+              )
+              : null
+          }
 
-        <Slide right>
-          <div>
-            {
-              selectedConversation
-                ? (
+          <Slide right>
+            <div>
+              {
+                selectedConversation
+                  ? (
 
-                  <ConversationDetails
-                    conversationInfo={selectedConversation}
-                    onClose={closeConversation}
-                    sendMessage={this.onMessageSubmit}
-                    userInfo={userInfo}
-                  />
+                    <ConversationDetails
+                      conversationInfo={selectedConversation}
+                      onClose={closeConversation}
+                      sendMessage={this.onMessageSubmit}
+                      userInfo={userInfo}
+                    />
 
-                )
-                : null
-            }
-          </div>
-        </Slide>
+                  )
+                  : null
+              }
+            </div>
+          </Slide>
+        </div>
 
         <br/>
 

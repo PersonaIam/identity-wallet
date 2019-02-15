@@ -1,32 +1,32 @@
 /**
  * Created by vladtomsa on 12/11/2018
  */
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import CardContent from '@material-ui/core/CardContent';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import { withStyles } from '@material-ui/core/styles';
-import { getNotariesByLocation, resetNotaries } from 'actions/notaries';
+import StepContent from '@material-ui/core/StepContent';
+import {withStyles} from '@material-ui/core/styles';
+import Close from 'mdi-material-ui/Close';
+import {getNotariesByLocation, resetNotaries} from 'actions/notaries';
 import styles from './styles';
-
-import NotaryList from 'components/Notaries/List';
-import NotariesSearchForm from 'components/Notaries/SearchForm';
+import SelectNotaries from './SelectNotaries';
 import AttributeValidationCreateForm from './form';
 
 const STEPS = [
-  { label: 'SEARCH_FOR_NOTARIES' },
-  { label: 'SELECT_NOTARY' },
-  { label: 'SUBMIT_NOTARIZATION' },
+  {name: 'SELECT_NOTARY', value: 0},
+  {name: 'SUBMIT_NOTARIZATION', value: 1},
 ];
 
 class AttributeValidationCreate extends Component {
   state = {
-    activeStep: 0,
+    activeStep: STEPS[0].value,
     notaryInfo: null,
   };
 
@@ -35,20 +35,17 @@ class AttributeValidationCreate extends Component {
   }
 
   getCurrentStep = () => {
-    const { notaryInfoList, favoriteNotaries, onClose, onSubmit, selectedAttribute,  t } = this.props;
-    const { activeStep, notaryInfo } = this.state;
+    const {notaryInfoList, favoriteNotaries, onClose, onSubmit, selectedAttribute, t} = this.props;
+    const {activeStep, notaryInfo} = this.state;
 
     switch (activeStep) {
       case 0:
         return (
-          <NotariesSearchForm onSubmit={this.onFindNotaries} t={t}/>
-        );
-      case 1:
-        return (
-          <NotaryList
-            notaryInfoList={notaryInfoList}
+          <SelectNotaries
             favoriteNotaries={favoriteNotaries}
-            onSelect={this.onNotarySelect}
+            notaryInfoList={notaryInfoList}
+            onSearchSubmit={this.onFindNotaries}
+            onSelectNotary={this.onNotarySelect}
             t={t}
           />
         );
@@ -83,16 +80,17 @@ class AttributeValidationCreate extends Component {
   };
 
   getNotaries = (params = {}) => {
-    const {getNotariesByLocation, pageNumber, pageSize} = this.props;
+    const {
+      getNotariesByLocation,
+      pageNumber,
+      pageSize,
+    } = this.props;
 
     getNotariesByLocation({
       ...params,
       pageNumber: params.pageNumber || pageNumber,
       pageSize: params.pageSize || pageSize,
-    })
-      .then((value) => {
-        this.setState({ activeStep: 1 })
-      })
+    });
   };
 
   onFindNotaries = (values) => {
@@ -111,20 +109,21 @@ class AttributeValidationCreate extends Component {
   onNotarySelect = (notaryInfo) => {
     this.setState({
       notaryInfo,
-      activeStep: 2,
+      activeStep: STEPS.find(step => step.name === 'SUBMIT_NOTARIZATION').value,
     });
   };
 
   toggleStepLabelClick = (index) => {
-    const { activeStep } = this.state;
+    const {activeStep} = this.state;
+
     if (activeStep > index) {
-      this.setState({ activeStep: index });
+      this.setState({activeStep: index});
     }
   };
 
   render() {
-    const { classes, onClose, t } = this.props;
-    const { activeStep } = this.state;
+    const {classes, onClose, selectedAttribute, t} = this.props;
+    const {activeStep} = this.state;
 
     return (
       <Dialog
@@ -133,22 +132,34 @@ class AttributeValidationCreate extends Component {
         maxWidth="lg"
         onClose={onClose}
       >
-       <DialogContent className={classes.dialogContent}>
-         <Stepper activeStep={activeStep} orientation="horizontal">
-           {STEPS.map(({ label }, index) => {
-             return (
-               <Step key={label}>
-                 <StepLabel onClick={() => this.toggleStepLabelClick(index)}>{t(label)}</StepLabel>
-               </Step>
-             );
-           })}
-         </Stepper>
+        <DialogTitle>
+          <span className="flex align-center">
+            <span className="fill-flex">
+             {t('CREATE_VALIDATION_REQUEST_FOR', {attribute: t(selectedAttribute.name).toLowerCase()})}
+          </span>
+            &nbsp;
+            <IconButton onClick={onClose}>
+            <Close />
+          </IconButton>
+          </span>
 
-         <CardContent>
-           { this.getCurrentStep() }
-         </CardContent>
+        </DialogTitle>
+        <DialogContent className={classes.dialogContent}>
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {STEPS.map(({name}, index) => {
+              return (
+                <Step key={name}>
+                  <StepLabel onClick={() => this.toggleStepLabelClick(index)}>{t(name)}</StepLabel>
 
-       </DialogContent>
+                  <StepContent>
+                    {this.getCurrentStep()}
+                  </StepContent>
+                </Step>
+              );
+            })}
+          </Stepper>
+
+        </DialogContent>
       </Dialog>
     )
   }

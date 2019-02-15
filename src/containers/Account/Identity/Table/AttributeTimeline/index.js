@@ -50,7 +50,7 @@ const IdentityTimeline = ({ classes, expire_timestamp, timestamp, t, width }) =>
 
   return (
     <div className={`${classes.root} ${classes[expirationStatus]}`}>
-      <Typography variant="body2">{t('TIMELINE')}</Typography>
+      <Typography variant="body1">{t('TIMELINE')}</Typography>
       <br />
       <div className="flex space-between">
         <Typography variant="caption" className="flex align-center" component="p">

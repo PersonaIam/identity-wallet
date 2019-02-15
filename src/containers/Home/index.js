@@ -28,7 +28,7 @@ const Home = ({ classes, isLoading, createSubscription, readPrivacyPolicy,  t })
           </Grid>
 
           <Grid item xs={11} md={6} lg={5}>
-            <Typography variant="headline" color="textSecondary">
+            <Typography variant="h5" color="textSecondary">
               { t('HOME_1') }
             </Typography>
           </Grid>
@@ -41,7 +41,7 @@ const Home = ({ classes, isLoading, createSubscription, readPrivacyPolicy,  t })
             <Paper>
               <Grid container spacing={16} justify="center" alignItems="center">
                 <Grid item xs={12} md={6} lg={5}>
-                  <Typography variant="headline" color="textSecondary">
+                  <Typography variant="h5" color="textSecondary">
                     { t('HOME_2') }
                   </Typography>
                 </Grid>
@@ -59,7 +59,7 @@ const Home = ({ classes, isLoading, createSubscription, readPrivacyPolicy,  t })
 
               {/*<Grid item xs={12} className={classes.form}>*/}
                 {/*<br />*/}
-                {/*<Typography variant="display1" className="text-center">*/}
+                {/*<Typography variant="h4" className="text-center">*/}
                   {/*{ t('HOME_3') }*/}
                 {/*</Typography>*/}
                 {/*<br />*/}

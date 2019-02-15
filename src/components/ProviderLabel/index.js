@@ -15,7 +15,7 @@ const styles = (theme) => {
     label: {
       background: `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
       color: '#FFF',
-      left: -32,
+      left: -24,
       padding: '8px 20px',
       position: 'absolute',
       '&:before': {

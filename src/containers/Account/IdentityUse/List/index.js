@@ -46,18 +46,18 @@ const IdentityUseRequestsList = ({classes, t, title, params, providerIdentityUse
 
           <Grid item xs={12} md={9}>
             <CardContent>
-              <Typography variant='display1'>
+              <Typography variant='h4'>
                 {providerName}
               </Typography>
 
-              {/*<Typography variant="subheading" gutterBottom>*/}
+              {/*<Typography variant="subtitle1" gutterBottom>*/}
                 {/*{providerInfo.personaAddress}*/}
               {/*</Typography>*/}
             </CardContent>
 
             <Divider/>
 
-            <List>
+            <List disablePadding>
               <ListSubheader>{t('REQUESTED_SERVICES')}</ListSubheader>
 
               {
@@ -65,6 +65,7 @@ const IdentityUseRequestsList = ({classes, t, title, params, providerIdentityUse
                   return (
                     <ListItem
                       button
+                      disablePadding
                       key={index}
                       style={{ opacity: serviceRequest.status === IDENTITY_USE_REQUEST_STATUSES.CANCELED ? 0.4 : 1 }}
                       divider={index !== providerIdentityUseRequests.length - 1}
@@ -80,11 +81,9 @@ const IdentityUseRequestsList = ({classes, t, title, params, providerIdentityUse
                               {moment(personaStampToDate(serviceRequest.timestamp)).format(DATE_TIME_FORMAT)}
                             </Typography>
 
-                            <Typography variant="caption" color="textSecondary" component="span">
+                            <Typography variant="caption" color="textSecondary" component="span" gutterBottom>
                               {t(serviceRequest.status)}
                             </Typography>
-
-                            <br />
 
                             <Typography variant="caption" color="textSecondary" component="span">
                               {t('REQUIRED_ATTRIBUTES')}

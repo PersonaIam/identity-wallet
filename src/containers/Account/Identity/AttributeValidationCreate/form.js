@@ -32,7 +32,7 @@ class AttributeValidationCreateForm extends Component {
       <form onSubmit={handleSubmit}>
         <Grid container spacing={16}>
           <Grid item xs={12}>
-            <Typography variant="headline" color="textSecondary">
+            <Typography variant="h5" color="textSecondary">
               { text }
             </Typography>
           </Grid>

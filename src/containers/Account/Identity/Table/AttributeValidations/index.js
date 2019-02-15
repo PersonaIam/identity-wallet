@@ -105,7 +105,7 @@ class AttributeValidations extends Component {
           className={classes.pannelSummary}
           expandIcon={<ExpandMoreIcon />}
         >
-          <Typography variant='subheading' color='textSecondary'>{ t('N_VALIDATIONS', { value: userAttributeValidations.length }) }</Typography>
+          <Typography variant='subtitle1' color='textSecondary'>{ t('N_VALIDATIONS', { value: userAttributeValidations.length }) }</Typography>
         </ExpansionPanelSummary>
 
         <ExpansionPanelDetails className={classes.pannelDetails}>
@@ -130,7 +130,7 @@ class AttributeValidations extends Component {
                                 <Typography
                                   component='span'
                                   className='flex'
-                                  variant='body1'
+                                  variant='body2'
                                   color='textPrimary'
                                   style={{ wordBreak: 'break-all' }}
                                 >
@@ -141,7 +141,8 @@ class AttributeValidations extends Component {
                                 <Typography
                                   variant='caption'
                                   component='span'
-                                  className='flex'
+                                  className='flex align-center'
+                                  color="textSecondary"
                                   style={{ wordBreak: 'break-all' }}
                                 >
                                   <Calendar style={{ fontSize: '14px', marginRight: 2 }}/>

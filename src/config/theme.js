@@ -6,6 +6,11 @@ import red from '@material-ui/core/colors/red';
 const error = red;
 
 const themeOverrides = {
+  MuiAppBar: {
+    colorPrimary: {
+      background: `linear-gradient(45deg, #01579B, #323561)`,
+    },
+  },
   MuiButton: {
     root:{
       borderRadius: 30,
@@ -52,7 +57,12 @@ const themeOverrides = {
     },
   },
   MuiFab: {
-    root: {
+    primary: {
+      '& svg': {
+        color: '#FFFFFF',
+      },
+    },
+    secondary: {
       '& svg': {
         color: '#FFFFFF',
       },
@@ -64,6 +74,13 @@ const themeOverrides = {
         color: 'rgba(0, 0, 0, 0.54)'
       },
     },
+  },
+  MuiStepper: {
+    root: {
+      '@media (max-width:599.95px)': {
+        padding: 6,
+      },
+    }
   },
   MuiSnackbarContent: {
     message: {

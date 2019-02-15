@@ -49,7 +49,7 @@ class FilePreview extends Component {
             {t(attribute.type)}
           </DialogTitle>
           <DialogContent>
-            <Typography variant="display1">
+            <Typography variant="h4">
               {attribute.value}
             </Typography>
           </DialogContent>

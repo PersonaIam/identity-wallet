@@ -46,13 +46,13 @@ const styles = (theme) => ({
   fileUploadIcon: {
     width: 50,
     height: 50,
-    color: theme.typography.display1.color,
+    color: theme.palette.text.secondary,
     '&:hover': {
       opacity: 0.8
     }
   },
   fileUploadText: {
-    fontSize: theme.typography.subheading.fontSize
+    fontSize: theme.typography.subtitle1.fontSize
   },
   fileUploadTextMaxSize: {
     fontSize: 11,
@@ -134,7 +134,7 @@ class FileUpload extends Component {
             }
 
             <Typography
-              type="display1" component="p" align="center" color="textSecondary"
+              type="h4" component="p" align="center" color="textSecondary"
               classes={{ root: classes.fileUploadText }}
             >
               { t(message) }

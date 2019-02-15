@@ -35,7 +35,7 @@ class CourseSearchFilter extends Component {
     return (
       <Paper className={classes.filterContainer}>
         <form onSubmit={handleSubmit}>
-          <Typography variant="display1">{ t('/provider/identity-use-requests') }</Typography>
+          <Typography variant="h4">{ t('/provider/identity-use-requests') }</Typography>
           <ExpansionPanel
             classes={{
               root: classes.filterFormPanel,

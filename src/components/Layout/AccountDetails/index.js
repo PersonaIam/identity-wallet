@@ -155,7 +155,7 @@ class AccountDetailsHeader extends Component {
                   {
                     userInfo && userInfo.contactInfo && (userInfo.contactInfo.firstName || userInfo.contactInfo.lastName)
                       ? (
-                        <Typography variant="display1" color="secondary" component="p" className="flex align-center">
+                        <Typography variant="h5" color="secondary" component="p" className="flex align-center">
                           {/*<Account />&nbsp;*/}
                           <span>{userInfo.contactInfo.firstName}&nbsp;{userInfo.contactInfo.lastName}</span>
                         </Typography>
@@ -164,15 +164,15 @@ class AccountDetailsHeader extends Component {
                   }
 
 
-                  <Typography variant="caption">
+                  <Typography variant="caption" color="textSecondary" style={{ lineHeight: 1 }}>
                     {t('ADDRESS')}
                   </Typography>
 
-                  <Typography variant="headline" component="h2">
+                  <Typography variant="h6" component="h2">
                     {accountInfo.address}
                   </Typography>
 
-                  <Typography variant="body1">
+                  <Typography variant="body2">
                     {t('BALANCE')}: {toshiToPersona(accountInfo.unconfirmedBalance, true)} {getToken()}
                   </Typography>
                 </div>
@@ -229,25 +229,32 @@ class AccountDetailsHeader extends Component {
                       {
                         invitationTab === INVITATION_TABS[0].value
                           ? (
-                            <div>
-                              <Paper className="link-container">
-                                <Typography variant="subheading" color="textPrimary">
-                                  {INVITATION_LINK(userInfo.referralInfo.referralCode)}
+                            <Fragment>
+                              <div className={classes.inviteOthers}>
+                                <Typography variant="body1" gutterBottom>
+                                  {t('INVITE_OTHERS_TO_GROW')}
                                 </Typography>
-                              </Paper>
+                              </div>
+                              <div>
+                                <Paper className="link-container">
+                                  <Typography variant="subtitle1" color="textPrimary">
+                                    {INVITATION_LINK(userInfo.referralInfo.referralCode)}
+                                  </Typography>
+                                </Paper>
 
-                              <CopyToClipboard
-                                text={INVITATION_LINK(userInfo.referralInfo.referralCode)}
-                                onCopy={linkCopied}
-                              >
-                                <Button
-                                  variant="contained"
-                                  color="secondary"
+                                <CopyToClipboard
+                                  text={INVITATION_LINK(userInfo.referralInfo.referralCode)}
+                                  onCopy={linkCopied}
                                 >
-                                  {t('COPY_LINK')}
-                                </Button>
-                              </CopyToClipboard>
-                            </div>
+                                  <Button
+                                    variant="contained"
+                                    color="secondary"
+                                  >
+                                    {t('COPY_LINK')}
+                                  </Button>
+                                </CopyToClipboard>
+                              </div>
+                            </Fragment>
                           )
                           : null
                       }

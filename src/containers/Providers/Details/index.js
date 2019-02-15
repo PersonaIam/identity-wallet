@@ -107,12 +107,12 @@ class Providers extends Component {
           <div>
             {
               providerName &&
-              <Typography variant='display1' style={{wordBreak: 'break-all'}}>
+              <Typography variant='h4' style={{wordBreak: 'break-all'}}>
                 {providerName}
               </Typography>
             }
 
-            <Typography variant='subheading' style={{wordBreak: 'break-all'}}>
+            <Typography variant='subtitle1' style={{wordBreak: 'break-all'}}>
               {personaAddress}
             </Typography>
           </div>

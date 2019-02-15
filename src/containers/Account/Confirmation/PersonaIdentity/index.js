@@ -16,7 +16,7 @@ const PersonaIdentity = ({ address, classes, onLogin, passphrase, t }) => {
     <div className={classes.identity}>
       <br />
 
-      <Typography variant="display1" component="h4" color="primary">{ t('WELCOME_TO_PERSONA') }!</Typography>
+      <Typography variant="h4" component="h4" color="primary">{ t('WELCOME_TO_PERSONA') }!</Typography>
 
       <br />
       <br />
@@ -28,7 +28,7 @@ const PersonaIdentity = ({ address, classes, onLogin, passphrase, t }) => {
       </Typography>
 
       <Paper elevation={0} className={classes.passphrase}>
-        <Typography variant="display1">{ passphrase }</Typography>
+        <Typography variant="h4">{ passphrase }</Typography>
       </Paper>
 
       <Typography variant="caption" component="strong">

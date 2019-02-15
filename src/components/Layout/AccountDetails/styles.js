@@ -48,6 +48,12 @@ const styles = (theme) => {
         },
       },
     },
+    inviteOthers: {
+      margin: '0 28px',
+      '& *': {
+        color: '#FFF',
+      },
+    },
     tab: {
       '& *': {
         color: '#FFF',

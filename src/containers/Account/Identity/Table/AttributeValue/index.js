@@ -27,6 +27,7 @@ const styles = (theme) => {
     valueContainer: {
       '& button': {
         letterSpacing: '1px !important',
+        marginTop: 6,
         '& *': {
           color: theme.palette.text.secondary,
         },
@@ -157,7 +158,7 @@ class Index extends Component {
             <div>
               <Typography
                 component="p"
-                variant="display1"
+                variant="h4"
                 style={{wordBreak: 'break-all', padding: '2px 0', marginBottom: 14,}}
               >
                 {decryptedValue}
@@ -205,7 +206,12 @@ class Index extends Component {
                     : (
                       <div className="flex wrap-content">
                         <Tooltip title={<DecryptTooltip/>}>
-                          <Button size="small" variant="outlined" color="inherit" onClick={toggleShowHide}>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="inherit"
+                            onClick={toggleShowHide}
+                          >
                             <Eye/>&nbsp;&nbsp;{t('SHOW_VALUE')}
                           </Button>
                         </Tooltip>
@@ -230,7 +236,13 @@ class Index extends Component {
           isFile
             ? (
               <div className="flex wrap-content">
-                <Button onClick={this.toggleDownloadFileAttribute} disabled={!!isFileDownloading} size="small">
+                <Button
+                  onClick={this.toggleDownloadFileAttribute}
+                  disabled={!!isFileDownloading}
+                  variant="outlined"
+                  color="inherit"
+                  size="small"
+                >
                   {
                     isFileDownloading
                       ? <CircularProgress color="secondary" size={20}/>

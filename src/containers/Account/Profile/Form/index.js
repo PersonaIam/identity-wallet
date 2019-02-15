@@ -117,7 +117,7 @@ class AccountProfileForm extends Component {
                       ? (
                         <Grid item xs={12}>
                           <Fade>
-                            <Typography variant="headline" color="secondary" className="flex align-center">
+                            <Typography variant="h5" color="secondary" className="flex align-center">
                               {t('ABOUT_TO_BECOME_NOTARY')}
                             </Typography>
                           </Fade>
@@ -160,7 +160,7 @@ class AccountProfileForm extends Component {
 
                   <Grid item xs={12}>
                     <br/>
-                    <Typography variant="headline" gutterBottom color="textSecondary">
+                    <Typography variant="h5" gutterBottom color="textSecondary">
                       {t('CONTACT_INFO')}
                     </Typography>
 

@@ -33,7 +33,7 @@ class NotaryList extends PureComponent {
               })
             )
             : (
-              <Typography variant="body2">
+              <Typography variant="body1">
                 {t('NO_NOTARIES_AVAILABLE')}
               </Typography>
             )

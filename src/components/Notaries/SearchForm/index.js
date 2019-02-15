@@ -7,6 +7,7 @@ import { reduxForm, Field } from 'redux-form';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Search from 'mdi-material-ui/Magnify';
 import LocationSelector from 'components/FormInputs/LocationSelector';
 
 const validate = (values) => {
@@ -56,9 +57,20 @@ const NotariesSerchForm = ({handleSubmit, t}) => {
         </Grid>
 
         <Grid item xs={12}>
-          <br />
           <div className="flex justify-end">
-            <Button type="submit" variant="contained" color="primary">{ t('FIND_NOTARIES') }</Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className="flex align-center"
+              size="small"
+            >
+              &nbsp;
+              { t('FIND_NOTARIES') }
+              &nbsp;
+              <Search />
+              &nbsp;
+            </Button>
           </div>
         </Grid>
       </Grid>

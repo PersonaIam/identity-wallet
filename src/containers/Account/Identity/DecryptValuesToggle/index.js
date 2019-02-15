@@ -44,7 +44,7 @@ class DecryptValuesToggle extends Component {
       <form onSubmit={this.onSubmit}>
         <ExpansionPanel expanded={!!isExpanded}  onChange={this.toggleIsExpanded}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="title">
+            <Typography variant="h6">
               {t('DECRYPT_ALL_VALUES')}
             </Typography>
           </ExpansionPanelSummary>

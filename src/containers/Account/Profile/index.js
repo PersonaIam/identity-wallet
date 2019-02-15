@@ -116,7 +116,7 @@ class Profile extends Component {
                 open={!!valuesToUpdate}
                 message={
                   <div>
-                    <Typography variant="subheading" gutterBottom>
+                    <Typography variant="subtitle1" gutterBottom>
                       {t(changes.length ? 'PLEASE_CONFIRM_THE_FALLOWING_CHANGES' : 'NO_CHANGES_WERE_MADE')}
                     </Typography>
 

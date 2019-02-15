@@ -100,7 +100,7 @@ class ProviderIdentityUseDetail extends Component {
           &nbsp;&nbsp;
           <div className="fill-flex">
             <div className="flex align-center wrap-content">
-              <Typography variant='display1' style={{wordBreak: 'break-all'}}>
+              <Typography variant='h4' style={{wordBreak: 'break-all'}}>
                 {identityUseRequestInfo.name}
               </Typography>
               &nbsp;&nbsp;
@@ -139,7 +139,7 @@ class ProviderIdentityUseDetail extends Component {
         <Divider/>
         <br />
 
-        <Typography variant='subheading' color="textSecondary" style={{wordBreak: 'break-all'}} gutterBottom>
+        <Typography variant='subtitle1' color="textSecondary" style={{wordBreak: 'break-all'}} gutterBottom>
           <strong>{t('OWNER')}</strong>: {identityUseRequestInfo.owner}
         </Typography>
 

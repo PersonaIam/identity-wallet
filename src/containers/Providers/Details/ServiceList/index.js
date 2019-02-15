@@ -33,7 +33,7 @@ function ProviderServiceList(props) {
 
             return (
               <Fragment key={status}>
-                <Typography variant="subheading" color="textSecondary" className="flex align-center">
+                <Typography variant="subtitle1" color="textSecondary" className="flex align-center">
                   <Circle className={classes[status]}/>&nbsp;{t(`${status}_SERVICES`)}
                 </Typography>
                 <br />
@@ -47,7 +47,7 @@ function ProviderServiceList(props) {
                         <Paper>
                           <CardContent>
                             <div className="flex">
-                              <Typography className="fill-flex" variant="display1" color="secondary" gutterBottom>
+                              <Typography className="fill-flex" variant="h4" color="secondary" gutterBottom>
                                 {service.name}
                               </Typography>
 
@@ -82,7 +82,7 @@ function ProviderServiceList(props) {
 
                             <br />
 
-                            <Typography variant="body2" color="textSecondary" component="span">
+                            <Typography variant="body1" color="textSecondary" component="span">
                               <strong>{t('REQUIRED_ATTRIBUTES')}</strong>
                             </Typography>
 

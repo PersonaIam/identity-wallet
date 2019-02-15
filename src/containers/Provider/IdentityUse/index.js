@@ -151,7 +151,7 @@ class IdentityUse extends Component {
                     >
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                         <div>
-                          <Typography variant="headline" gutterBottom color="textPrimary">
+                          <Typography variant="h5" gutterBottom color="textPrimary">
                             {service.name}
                           </Typography>
 
