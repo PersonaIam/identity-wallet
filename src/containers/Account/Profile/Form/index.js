@@ -45,7 +45,10 @@ const validate = (values) => {
       errors.contactInfo.email = 'INVALID_EMAIL';
     }
 
-    if (values.userRoleId === USER_ROLES.NOTARY) {
+    if (
+      values.userRoleId === USER_ROLES.NOTARY
+      || values.userRoleId === USER_ROLES.PROVIDER
+    ) {
       if (!values.contactInfo.firstName) {
         errors.contactInfo.firstName = 'FIRST_NAME_REQUIRED';
       }
@@ -199,18 +202,18 @@ class AccountProfileForm extends Component {
                       />
                     </Grid>
 
-                    <Grid item xs={12}>
-                      <Field
-                        name="phoneNumber"
-                        component={RenderTextField}
-                        placeholder={t('PHONE_NUMBER')}
-                        endAdornment={
-                          <InputAdornment position="start">
-                            <Phone/>
-                          </InputAdornment>
-                        }
-                      />
-                    </Grid>
+                    {/*<Grid item xs={12}>*/}
+                      {/*<Field*/}
+                        {/*name="phoneNumber"*/}
+                        {/*component={RenderTextField}*/}
+                        {/*placeholder={t('PHONE_NUMBER')}*/}
+                        {/*endAdornment={*/}
+                          {/*<InputAdornment position="start">*/}
+                            {/*<Phone/>*/}
+                          {/*</InputAdornment>*/}
+                        {/*}*/}
+                      {/*/>*/}
+                    {/*</Grid>*/}
 
                     <Grid item xs={12}>
                       <Field
