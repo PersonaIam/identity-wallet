@@ -6,7 +6,7 @@ import {identityUseConstants} from 'constants/identityUse';
 import {onNotificationErrorInit, onNotificationSuccessInit} from './notifications';
 import {getPublicKey, encryptValue, decryptValue} from "../helpers/personaService";
 import {getProviderByAddress} from "./providers";
-import {IDENTITY_USE_REQUEST_ACTION} from "../constants";
+import {DEFAULT_ATTRIBUTE_CREDIBILITY_MONTHS, IDENTITY_USE_REQUEST_ACTION} from "../constants";
 
 const timeout = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -46,7 +46,19 @@ export const getIdentityUseRequests = (params) => async (dispatch) => {
       }
 
       if (validation_requests) {
+        const { trust_points } = await blockchain.get('/attribute-validations/credibility', {
+          params: {
+            owner: params.owner,
+            months: DEFAULT_ATTRIBUTE_CREDIBILITY_MONTHS,
+          }
+        });
+
+        const trustPoints = {};
+
+        trust_points.forEach(tPoint => trustPoints[tPoint.attributeId] = tPoint.credibility);
+
         request.attributes.forEach(attribute => {
+          attribute.trustPoints = trustPoints[attribute.attributeId];
           attribute.validations = validation_requests.filter(request => request.type === attribute.type);
         })
       }

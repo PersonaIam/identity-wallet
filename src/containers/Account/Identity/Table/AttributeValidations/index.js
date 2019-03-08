@@ -122,7 +122,7 @@ class AttributeValidations extends Component {
                         {groupedValidations[section].map(item => (
                           <ListItem
                             button
-                            key={`item-${section}-${item}`}
+                            key={`item-${section}-${item.timestamp}`}
                             divider
                           >
                             <ListItemText

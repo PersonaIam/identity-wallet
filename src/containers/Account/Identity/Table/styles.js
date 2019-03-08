@@ -3,6 +3,7 @@
  */
 import amber from '@material-ui/core/colors/amber';
 import lightGreen from '@material-ui/core/colors/lightGreen';
+import red from '@material-ui/core/colors/red';
 import grey from '@material-ui/core/colors/grey';
 import {ATTRIBUTE_EXPIRATIONS_STATES} from "constants/index";
 
@@ -40,6 +41,9 @@ const styles = (theme) => {
     inactive: {
       color: amber[500],
     },
+    rejected: {
+      color: red[500],
+    },
     badge: {
       color: '#FFF !important',
       background: `linear-gradient(45deg, ${theme.palette.secondary.main}, ${theme.palette.secondary.dark})`,
@@ -47,6 +51,12 @@ const styles = (theme) => {
       '&.disabled': {
         background: `linear-gradient(45deg, ${grey[400]}, ${grey[500]})`,
       }
+    },
+    warningBadge: {
+      background: `linear-gradient(45deg, ${amber[600]}, ${amber[900]})`,
+    },
+    errorBadge: {
+      background: `linear-gradient(45deg, ${red[600]}, ${red[900]})`,
     },
     infoIconRight: {
       color: theme.palette.text.secondary,

@@ -2,7 +2,7 @@
  * Created by vladtomsa on 09/10/2018
  */
 import { blockchain } from 'config/http';
-import { VALIDATION_REQUEST_ACTION } from 'constants/index';
+import { DEFAULT_ATTRIBUTE_CREDIBILITY_MONTHS, VALIDATION_REQUEST_ACTION } from 'constants/index';
 import { attributesConstants } from 'constants/attributes';
 import { getBlockchainAccount } from './blockchainAccount';
 import { onNotificationErrorInit, onNotificationSuccessInit } from './notifications';
@@ -58,7 +58,19 @@ export const getUserAttributes = (address) =>  async (dispatch) => {
 
     const { attributes } = await blockchain.get(`/attributes?owner=${address}`);
 
+    const { trust_points } = await blockchain.get('/attribute-validations/credibility', {
+      params: {
+        owner: address,
+        months: DEFAULT_ATTRIBUTE_CREDIBILITY_MONTHS,
+      }
+    });
+
+    const trustPoints = {};
+
+    trust_points.forEach(tPoint => trustPoints[tPoint.attributeId] = tPoint.credibility);
+
     attributes.forEach((attribute) => {
+      attribute.trustPoints = trustPoints[attribute.id];
       attribute.attributeAssociations  = attributes
         .filter(attr => {
           const associations = JSON.parse(attr.associations) || [];
@@ -168,7 +180,6 @@ const getValidationRequests = async (params) => {
   return attribute_validation_requests;
 };
 
-
 export const handleAttributeRequest = (data, actionType) => async (dispatch, getState) => {
   try {
     dispatch(validationUpdateInit());
@@ -216,7 +227,6 @@ export const handleAttributeRequest = (data, actionType) => async (dispatch, get
     return false;
   }
 };
-
 
 export const getAttributeTypes = () =>  async (dispatch) => {
   try {

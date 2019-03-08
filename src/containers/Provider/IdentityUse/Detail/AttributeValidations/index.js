@@ -45,11 +45,11 @@ const AttributeValidations = ({ attribute, classes, onClose, t }) => {
       <DialogContent>
         <div className="flex align-center layout-padding">
           <Typography variant="body1" color="textSecondary" className="fill-flex">
-            {t('NOTARY')}
+            {t('VALIDATION')}
           </Typography>
 
           <Typography variant="body1" color="textSecondary">
-            {t('VALIDATION')}
+            {t('NOTARY')}
           </Typography>
         </div>
 
@@ -58,18 +58,18 @@ const AttributeValidations = ({ attribute, classes, onClose, t }) => {
             return (
               <Fragment key={index}>
                 <div className="flex align-center layout-padding">
-                  <Typography variant="body1" color="textPrimary" className="fill-flex">
-                    {validation.validator}
-                  </Typography>
-
-                  <Typography variant="body1" color="textPrimary" className="flex align-center">
-                    {t(validation.status)}
-                    &nbsp;
+                  <Typography variant="body2" color="textPrimary" className="fill-flex flex align-center">
                     {
                       validation.status === VALIDATION_REQUESTS_STATUSES.COMPLETED
                         ? <CheckCircle className={classes[validation.status]} />
                         : <CloseCircle className={classes[validation.status]} />
                     }
+                    &nbsp;
+                    {t(validation.status)}
+                  </Typography>
+
+                  <Typography variant="body2" color="textPrimary" className="flex align-center">
+                    {validation.validator}
                   </Typography>
                 </div>
 

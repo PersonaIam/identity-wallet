@@ -18,7 +18,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import {DATE_FORMAT, ATTRIBUTE_EXPIRATIONS_STATES} from 'constants/index';
+import {DATE_FORMAT, ATTRIBUTE_EXPIRATIONS_STATES, MAX_CREDIBILITY_TRUST_POINTS} from 'constants/index';
 import Loading from 'components/Loading';
 import {personaStampToDate, getAttributeExpirationStatusAndRemainingDays} from 'helpers/personaService';
 import moment from 'moment';
@@ -26,6 +26,7 @@ import AttributeValue from './AttributeValue';
 import AttributeExtraInfo from './AttributeExtaInfo';
 import AttributeValidations from './AttributeValidations';
 
+import AccountRemove from 'mdi-material-ui/AccountRemove';
 import AlertCircle from 'mdi-material-ui/AlertCircle';
 import AlertDanger from 'mdi-material-ui/AlertDecagram';
 import CalendarCheck from 'mdi-material-ui/CalendarCheck';
@@ -44,15 +45,20 @@ class IdentityTable extends Component {
     this.setState({selectedAttribute});
   };
 
-  getAttributeExpireTimestampInfo = (attribute) => {
+  calculateCredibility = (trustPoints) => {
+    const toEvaluate = Math.min(trustPoints, MAX_CREDIBILITY_TRUST_POINTS);
+
+    return  Math.floor((toEvaluate / MAX_CREDIBILITY_TRUST_POINTS) * 100);
+  };
+
+  getAttributeWarnings = (attribute) => {
     const {classes, t, width} = this.props;
     const userAttribute = attribute.userAttribute;
     const isSmallDevice = width === 'xs';
-    let attributeWarning = (
-      <Typography variant="caption" color="textSecondary">
-        &nbsp;
-      </Typography>
-    );
+
+    let attributeExpirationWarning = null;
+
+    let attributeRejectedWarning = null;
 
     if (userAttribute && userAttribute.expire_timestamp) {
       const {
@@ -62,7 +68,7 @@ class IdentityTable extends Component {
 
       switch (expirationStatus) {
         case (ATTRIBUTE_EXPIRATIONS_STATES.WILL_EXPIRE):
-          attributeWarning = (
+          attributeExpirationWarning = (
             <Chip
               avatar={isSmallDevice ? null : <Avatar className={classes.avatar}><AlertCircle/></Avatar>}
               label={t('ATTRIBUTE_ABOUT_TO_EXPIRE', {attribute: isSmallDevice ? '' : t(attribute.name), days: remainingDays})}
@@ -73,7 +79,7 @@ class IdentityTable extends Component {
         case (ATTRIBUTE_EXPIRATIONS_STATES.EXPIRED):
           const expirationDate = moment(personaStampToDate(userAttribute.expire_timestamp));
 
-          attributeWarning = (
+          attributeExpirationWarning = (
             <Chip
               avatar={isSmallDevice ? null : <Avatar className={classes.avatar}><AlertDanger/></Avatar>}
               label={t('ATTRIBUTE_EXPIRED', {attribute: isSmallDevice ? '' : t(attribute.name), date: expirationDate.format(DATE_FORMAT)})}
@@ -82,7 +88,7 @@ class IdentityTable extends Component {
           );
           break;
         default:
-          attributeWarning = (
+          attributeExpirationWarning = (
             <Typography variant="caption" color="textSecondary">
               {
                 t('EXPIRES_ON', {
@@ -94,7 +100,36 @@ class IdentityTable extends Component {
       }
     }
 
-    return attributeWarning;
+    if (userAttribute && userAttribute.rejected) {
+      attributeRejectedWarning = (
+        <Tooltip title={t('REJECTED_EXPLICATION')}>
+          <Chip
+            avatar={isSmallDevice ? null : <Avatar className={classes.avatar}><AlertDanger/></Avatar>}
+            label={t('ATTRIBUTE_IS_REJECTED')}
+            className={classes[ATTRIBUTE_EXPIRATIONS_STATES.EXPIRED]}
+          />
+        </Tooltip>
+      );
+    }
+
+    if (userAttribute && userAttribute.dangerOfRejection) {
+      attributeRejectedWarning = (
+        <Tooltip title={t('IN_DANGER_EXPLICATION')}>
+          <Chip
+            avatar={isSmallDevice ? null : <Avatar className={classes.avatar}><AlertDanger/></Avatar>}
+            label={t('ATTRIBUTE_IN_DANGER_OF_REJECTED')}
+            className={classes[ATTRIBUTE_EXPIRATIONS_STATES.WILL_EXPIRE]}
+          />
+        </Tooltip>
+      );
+    }
+
+    return (
+      <div>
+        { attributeRejectedWarning }
+        { attributeExpirationWarning }
+      </div>
+    );
   };
 
   render() {
@@ -140,28 +175,85 @@ class IdentityTable extends Component {
                                       >
                                         <Typography variant="body2" color="textPrimary" className="flex align-center">
                                           {
-                                            attribute.userAttribute && attribute.userAttribute.active
+                                            attribute.userAttribute
                                               ? (
-                                                <Tooltip title={t('ACTIVE')}>
-                                                  <CircleSlice className={`${classes.statusIcon} ${classes.active}`} />
-                                                </Tooltip>
+                                                attribute.userAttribute.rejected
+                                                  ? (
+                                                    <Tooltip title={t('REJECTED')}>
+                                                      <CircleSlice className={`${classes.statusIcon} ${classes.rejected}`} />
+                                                    </Tooltip>
+                                                  )
+                                                  : (
+                                                    attribute.userAttribute.active
+                                                    ? (
+                                                      <Tooltip title={t('ACTIVE')}>
+                                                        <CircleSlice className={`${classes.statusIcon} ${classes.active}`} />
+                                                      </Tooltip>
+                                                    )
+                                                    : (
+                                                      <Tooltip title={t('INACTIVE')}>
+                                                        <CircleSlice className={`${classes.statusIcon} ${classes.inactive}`} />
+                                                      </Tooltip>
+                                                    )
+                                                  )
                                               )
-                                              : (
-                                                <Tooltip title={t('INACTIVE')}>
-                                                  <CircleSlice className={`${classes.statusIcon} ${classes.inactive}`} />
-                                                </Tooltip>
-                                              )
+                                              : null
                                           }
                                           &nbsp;
-                                          { t(attribute.name) }
+                                          <span>
+                                            { t(attribute.name) }
+                                            {
+                                              attribute.userAttribute.trustPoints
+                                                ? (
+                                                  <Fragment>
+                                                    <br />
+                                                    <Typography variant="caption" color="textSecondary">
+                                                      { t('CREDIBILITY') }:&nbsp;
+                                                      { this.calculateCredibility(attribute.userAttribute.trustPoints) }%&nbsp;
+                                                      (
+                                                      {attribute.userAttribute.trustPoints}/
+                                                      {MAX_CREDIBILITY_TRUST_POINTS}
+                                                      )
+                                                    </Typography>
+                                                  </Fragment>
+                                                )
+                                                : null
+                                            }
+                                          </span>
+
                                         </Typography>
+
+
                                       </Grid>
 
                                       <Grid item xs>
-                                        { this.getAttributeExpireTimestampInfo(attribute) }
+                                        { this.getAttributeWarnings(attribute) }
                                       </Grid>
 
                                       <Grid item className="flex align-center">
+                                        {
+                                          userAttribute.yellowFlags
+                                            ? (
+                                              <div style={{ padding: 8 }}>
+                                                <Tooltip title={t('REJECTED_VALIDATIONS', { value: userAttribute.yellowFlags })}>
+                                                  <Badge
+                                                    badgeContent={userAttribute.yellowFlags}
+                                                    classes={{
+                                                      badge: `${classes.badge} ${userAttribute.rejected ? classes.errorBadge : classes.warningBadge}`
+                                                    }}
+                                                  >
+                                                    <AccountRemove className={classes.infoIconRight}/>
+                                                  </Badge>
+                                                </Tooltip>
+                                              </div>
+                                            )
+                                            : (
+                                            selectedAttribute || width === 'xs'
+                                              ? null
+                                              : <div style={{ width: 40 }}></div>
+                                            )
+                                        }
+
                                         <div style={{ padding: 8 }}>
                                           <Tooltip title={t('N_ASSOCIATIONS', { value: attributeAssociations.length })}>
                                             <Badge
@@ -273,6 +365,8 @@ class IdentityTable extends Component {
                             t={t}
                           />
 
+                          <AttributeValidations attribute={selectedAttribute} t={t}/>
+
                           {
                             expire_timestamp || (attributeAssociations && attributeAssociations.length)
                               ? (
@@ -285,8 +379,6 @@ class IdentityTable extends Component {
                               )
                               : null
                           }
-
-                          <AttributeValidations attribute={selectedAttribute} t={t}/>
                         </div>
                       </div>
                     </Fade>

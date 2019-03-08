@@ -27,6 +27,8 @@ export const AVAILABLE_LANGUAGES = [
   }
 ];
 
+export const DEFAULT_ATTRIBUTE_CREDIBILITY_MONTHS = 6;
+
 export const DATE_FORMAT = 'YYYY-MM-DD';
 
 export const DATE_HOUR_MINUTE_FORMAT = 'HH:mm';
@@ -49,6 +51,8 @@ export const IDENTITY_USE_REQUEST_STATUSES = {
   ENDED: 'ENDED',
   CANCELED: 'CANCELED',
 };
+
+export const MAX_CREDIBILITY_TRUST_POINTS = 16;
 
 export const PERSONATOSHI_UNIT = Math.pow(10, 8); // 1 PERSONA has 100000000 "toshi"
 

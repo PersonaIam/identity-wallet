@@ -145,11 +145,15 @@ class Index extends Component {
 
     const showFilePreview = isFile && decryptedValue;
 
-    const isValidationDisabled =
+    const isValidationDisabled = (
       attribute.options
       && attribute.userAttribute
       && attribute.options.documentRequired
-      && !attribute.userAttribute.attributeAssociations.length;
+      && !attribute.userAttribute.attributeAssociations.length
+    ) || (
+      attribute.userAttribute
+      && attribute.userAttribute.rejected
+    );
 
     const DecryptTooltip = () => (
       <div>
@@ -224,7 +228,13 @@ class Index extends Component {
                         </Tooltip>
                         &nbsp;&nbsp;
                         <Tooltip title={
-                          isValidationDisabled ? t('ATTRIBUTE_ASSOCIATIONS_REQUIRED') : ''
+                          isValidationDisabled
+                            ? (
+                              attribute.userAttribute && attribute.userAttribute.rejected
+                                ? t('ATTRIBUTE_IS_REJECTED')
+                                : t('ATTRIBUTE_ASSOCIATIONS_REQUIRED')
+                            )
+                            : ''
                         }>
                           <div>
                             <Button

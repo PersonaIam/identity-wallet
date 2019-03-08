@@ -28,7 +28,7 @@ import {
   getIdentityUseRequests,
   resetIdentityUseRequests,
 } from 'actions/identityUse';
-import { PROVIDER_SERVICE_STATUSES } from 'constants/index';
+import {MAX_CREDIBILITY_TRUST_POINTS, PROVIDER_SERVICE_STATUSES} from 'constants/index';
 import AttributeValue from './AttributeValue';
 import AttributeValidations from './AttributeValidations';
 import IdentityUseActions from '../IdentityUseActions';
@@ -43,6 +43,12 @@ class ProviderIdentityUseDetail extends Component {
   state = {
     selectedAttribute: null,
     action: null,
+  };
+
+  calculateCredibility = (trustPoints) => {
+    const toEvaluate = Math.min(trustPoints, MAX_CREDIBILITY_TRUST_POINTS);
+
+    return  Math.floor((toEvaluate / MAX_CREDIBILITY_TRUST_POINTS) * 100);
   };
 
   toggleSelectedAttribute = (attribute, action) => this.setState({selectedAttribute: attribute, action});
@@ -151,6 +157,23 @@ class ProviderIdentityUseDetail extends Component {
           >
             {
               identityUseRequestInfo.attributes.map((attribute, index) => {
+                const listItemTextProps = {
+                  primary: t(attribute.type),
+                };
+
+                if (attribute.trustPoints) {
+                  listItemTextProps.secondary = (
+                    <Typography variant="caption" color="textSecondary">
+                      { t('CREDIBILITY') }:&nbsp;
+                      { this.calculateCredibility(attribute.trustPoints) }%&nbsp;
+                      (
+                      {attribute.trustPoints}/
+                      {MAX_CREDIBILITY_TRUST_POINTS}
+                      )
+                    </Typography>
+                  );
+                }
+
                 return (
                   <ListItem
                     button
@@ -159,7 +182,7 @@ class ProviderIdentityUseDetail extends Component {
                     onClick={() => this.toggleSelectedAttribute(attribute, AVAILABLE_ACTIONS.VIEW_VALUE)}
                   >
                     <ListItemText
-                      primary={t(attribute.type)}
+                      {...listItemTextProps}
                     />
                     <ListItemSecondaryAction>
                       <Button onClick={() => this.toggleSelectedAttribute(attribute, AVAILABLE_ACTIONS.VIEW_VALIDATIONS)}>
