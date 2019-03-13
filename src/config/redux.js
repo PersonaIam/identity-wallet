@@ -18,6 +18,7 @@ import notariesReducer from 'reducers/notaries';
 import notificationReducer from 'reducers/notification';
 import providerReducer from 'reducers/provider';
 import providersReducer from 'reducers/providers';
+import sanctionsReducer from 'reducers/sanctions';
 import subscriptionsReducer from 'reducers/subscriptions';
 
 export const history = createHistory();
@@ -37,6 +38,7 @@ export const rootReducer = combineReducers({
   notification: notificationReducer,
   provider: providerReducer, // used for provider user administration
   providers: providersReducer, // used for simple users
+  sanctions: sanctionsReducer,
   subscription: subscriptionsReducer,
 });
 

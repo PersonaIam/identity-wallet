@@ -27,6 +27,10 @@ body {
   align-items: flex-start;
 }
 
+.break-all {
+  word-break: break-all;
+}
+
 .clickable {
   cursor: pointer;
 }

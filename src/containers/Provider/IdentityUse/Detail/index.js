@@ -7,9 +7,11 @@ import {push} from "react-router-redux";
 import {translate} from 'react-i18next';
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import CardContent from '@material-ui/core/CardContent';
 import Chip from '@material-ui/core/Chip';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
+import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -28,10 +30,11 @@ import {
   getIdentityUseRequests,
   resetIdentityUseRequests,
 } from 'actions/identityUse';
-import {MAX_CREDIBILITY_TRUST_POINTS, PROVIDER_SERVICE_STATUSES} from 'constants/index';
+import {MAX_CREDIBILITY_TRUST_POINTS, PROVIDER_SERVICE_STATUSES, SANCTIONABLE_ATTRIBUTES} from 'constants/index';
 import AttributeValue from './AttributeValue';
 import AttributeValidations from './AttributeValidations';
 import IdentityUseActions from '../IdentityUseActions';
+import SanctionsListCheck from './SanctionsListCheck';
 import styles from './styles';
 
 const AVAILABLE_ACTIONS = {
@@ -48,7 +51,7 @@ class ProviderIdentityUseDetail extends Component {
   calculateCredibility = (trustPoints) => {
     const toEvaluate = Math.min(trustPoints, MAX_CREDIBILITY_TRUST_POINTS);
 
-    return  Math.floor((toEvaluate / MAX_CREDIBILITY_TRUST_POINTS) * 100);
+    return Math.floor((toEvaluate / MAX_CREDIBILITY_TRUST_POINTS) * 100);
   };
 
   toggleSelectedAttribute = (attribute, action) => this.setState({selectedAttribute: attribute, action});
@@ -81,7 +84,7 @@ class ProviderIdentityUseDetail extends Component {
       classes, goToList,
       identityUseRequestInfo,
       t,
-      match: {params: {serviceId, owner}} ,
+      match: {params: {serviceId, owner}},
     } = this.props;
 
     const {action, selectedAttribute} = this.state;
@@ -89,6 +92,33 @@ class ProviderIdentityUseDetail extends Component {
     if (!identityUseRequestInfo) return <Loading/>;
 
     const isServiceActive = identityUseRequestInfo.service_status === PROVIDER_SERVICE_STATUSES.ACTIVE;
+
+    const sanctionableAttributes = {};
+
+    identityUseRequestInfo.attributes
+      .forEach(attribute => {
+        if (SANCTIONABLE_ATTRIBUTES[attribute.type]) {
+          sanctionableAttributes[attribute.type] = attribute;
+        }
+      });
+
+    const ownerSizeProps = {
+      xs: 12,
+    };
+
+    const displaySanctionCheck = sanctionableAttributes
+      && (
+        sanctionableAttributes['ssn']
+        || (
+          sanctionableAttributes['first_name']
+          && sanctionableAttributes['last_name']
+        )
+      );
+
+    if (displaySanctionCheck) {
+      ownerSizeProps.md = 6;
+      ownerSizeProps.lg = 8;
+    }
 
     return (
       <div>
@@ -140,20 +170,59 @@ class ProviderIdentityUseDetail extends Component {
             />
           </div>
         </div>
-        <br />
+        <br/>
 
         <Divider/>
-        <br />
-
-        <Typography variant='subtitle1' color="textSecondary" style={{wordBreak: 'break-all'}} gutterBottom>
-          <strong>{t('OWNER')}</strong>: {identityUseRequestInfo.owner}
-        </Typography>
-
-        <br />
+        <br/>
 
         <Paper>
+          <CardContent>
+            <Grid container justify="space-between" alignItems="center">
+              <Grid
+                item
+                {
+                  ...ownerSizeProps
+                }
+              >
+                <Typography
+                  variant='subtitle1'
+                  color="textSecondary"
+                  className="fill-flex break-all"
+                  gutterBottom
+                >
+                  <strong>{t('OWNER')}</strong>: {identityUseRequestInfo.owner}
+                </Typography>
+              </Grid>
+
+              {
+                displaySanctionCheck
+                  ? (
+                    <Grid
+                      item
+                      xs={12}
+                      md={12 - ownerSizeProps.md}
+                      lg={12 - ownerSizeProps.lg}
+                    >
+                      <div className="flex justify-end">
+                        <SanctionsListCheck
+                          sanctionableAttributes={sanctionableAttributes}
+                          t={t}
+                        />
+                      </div>
+                    </Grid>
+                  )
+                  : null
+              }
+            </Grid>
+          </CardContent>
+
           <List
-            subheader={<ListSubheader component="div">{t('ATTRIBUTES')}</ListSubheader>}
+            subheader={
+              <ListSubheader
+                component="div"
+              >
+                {t('ATTRIBUTES')}
+              </ListSubheader>}
           >
             {
               identityUseRequestInfo.attributes.map((attribute, index) => {
@@ -164,8 +233,8 @@ class ProviderIdentityUseDetail extends Component {
                 if (attribute.trustPoints) {
                   listItemTextProps.secondary = (
                     <Typography variant="caption" color="textSecondary">
-                      { t('CREDIBILITY') }:&nbsp;
-                      { this.calculateCredibility(attribute.trustPoints) }%&nbsp;
+                      {t('CREDIBILITY')}:&nbsp;
+                      {this.calculateCredibility(attribute.trustPoints)}%&nbsp;
                       (
                       {attribute.trustPoints}/
                       {MAX_CREDIBILITY_TRUST_POINTS}
@@ -185,7 +254,9 @@ class ProviderIdentityUseDetail extends Component {
                       {...listItemTextProps}
                     />
                     <ListItemSecondaryAction>
-                      <Button onClick={() => this.toggleSelectedAttribute(attribute, AVAILABLE_ACTIONS.VIEW_VALIDATIONS)}>
+                      <Button
+                        color="default"
+                        onClick={() => this.toggleSelectedAttribute(attribute, AVAILABLE_ACTIONS.VIEW_VALIDATIONS)}>
                         <span className="flex align-center">
                           <Incognito/>&nbsp;
                           {t('N_VALIDATIONS', {value: attribute.validations ? attribute.validations.length : 0})}
@@ -198,6 +269,7 @@ class ProviderIdentityUseDetail extends Component {
             }
           </List>
         </Paper>
+
 
         {
           selectedAttribute && action === AVAILABLE_ACTIONS.VIEW_VALUE

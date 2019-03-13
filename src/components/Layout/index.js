@@ -47,6 +47,8 @@ class Layout extends Component {
     if (
       // pathName === '/my-validation-requests'
       pathName === '/validation-requests'
+      || pathName.includes('/identity-use-requests')
+      || pathName.includes('/provider/services')
       // || pathName === '/notaries'
     ) {
       showDetails = false;

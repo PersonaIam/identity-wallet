@@ -63,6 +63,12 @@ export const PROVIDER_SERVICE_STATUSES = {
   INACTIVE: 'INACTIVE'
 };
 
+export const SANCTIONABLE_ATTRIBUTES = {
+  'first_name': true,
+  'last_name': true,
+  'ssn': true,
+};
+
 export const USER_ROLES = {
   IDENTITY_USER: 1,
   NOTARY: 2,
